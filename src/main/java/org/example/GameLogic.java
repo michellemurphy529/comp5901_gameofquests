@@ -12,8 +12,10 @@ public class GameLogic {
 
     //Set Decks
     public void setAdventureDeck() {
+        adventureDeck.initializeDeck();
     }
     public void setEventDeck() {
+        eventDeck.initializeDeck();
     }
 
     //Get Decks

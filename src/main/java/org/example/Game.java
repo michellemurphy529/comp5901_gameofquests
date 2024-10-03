@@ -9,6 +9,8 @@ public class Game {
     }
 
     public void setDecks() {
+        gameLogic.setAdventureDeck();
+        gameLogic.setEventDeck();
     }
 
     public Deck getAdventureDeck() {
@@ -20,5 +22,10 @@ public class Game {
     }
 
     public static void main(String[] args) {
+        //Initialize game
+        Game game = new Game(new GameLogic());
+
+        //Set up decks
+        game.setDecks();
     }
 }
