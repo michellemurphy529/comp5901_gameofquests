@@ -12,4 +12,7 @@ public abstract class Deck {
     public abstract int getSize();
     public abstract ArrayList<Card> getDeck();
     protected abstract void initializeDeck();
+
+    public void shuffle() {
+    }
 }

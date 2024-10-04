@@ -3,7 +3,10 @@ package org.example;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class GameTest {
 
@@ -156,5 +159,47 @@ class GameTest {
     void RESP_001(){
         RESP_001_test_001();
         RESP_001_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-002-Test-001: Properly shuffle Adventure Deck")
+    void RESP_002_test_001(){
+        Game game = new Game(new GameLogic());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+
+        //Get original ordering of the deck
+        ArrayList<Card> originalOrder = new ArrayList<>(adventureDeck.getDeck());
+
+        //Shuffle the deck
+        adventureDeck.shuffle();
+
+        //Get shuffled ordering of the deck
+        ArrayList<Card> shuffledOrder = adventureDeck.getDeck();
+
+        assertEquals(100, adventureDeck.getSize());
+        assertNotEquals(originalOrder, shuffledOrder);
+    }
+
+    @Test
+    @DisplayName("RESP-002-Test-002: Properly shuffle Event Deck")
+    void RESP_002_test_002(){
+        Game game = new Game(new GameLogic());
+        game.setDecks();
+        Deck eventDeck = game.getEventDeck();
+
+        ArrayList<Card> originalOrder = new ArrayList<>(eventDeck.getDeck());
+        eventDeck.shuffle();
+        ArrayList<Card> shuffledOrder = eventDeck.getDeck();
+
+        assertEquals(17, eventDeck.getSize());
+        assertNotEquals(originalOrder, shuffledOrder);
+    }
+
+    @Test
+    @DisplayName("RESP-002: System properly shuffles decks (event and adventure), before distribution")
+    void RESP_002(){
+        RESP_002_test_001();
+        RESP_002_test_002();
     }
 }
