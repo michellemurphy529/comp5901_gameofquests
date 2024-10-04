@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public abstract class Deck {
     protected ArrayList<Card> cards;
@@ -14,5 +15,6 @@ public abstract class Deck {
     protected abstract void initializeDeck();
 
     public void shuffle() {
+        Collections.shuffle(cards);
     }
 }

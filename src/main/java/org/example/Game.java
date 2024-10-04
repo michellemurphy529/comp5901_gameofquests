@@ -27,5 +27,12 @@ public class Game {
 
         //Set up decks
         game.setDecks();
+
+        //Shuffle decks
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
     }
 }
