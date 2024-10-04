@@ -26,6 +26,10 @@ public class Game {
     }
 
     private void setUpPlayers() {
+        String[] playerIDs = {"P1", "P2", "P3", "P4"};
+        for (String ID : playerIDs) {
+            players.add(new Player(ID));
+        }
     }
 
     public ArrayList<Player> getPlayers() {
