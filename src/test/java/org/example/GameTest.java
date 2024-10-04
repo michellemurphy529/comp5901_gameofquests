@@ -202,4 +202,27 @@ class GameTest {
         RESP_002_test_001();
         RESP_002_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-004-Test-001: The system ensures the game always has exactly 4 players (with the 4 unique ID’s as " +
+            "follows, ‘P1’, ‘P2’, ‘P3’ and ‘P4’)")
+    void RESP_004_test_001(){
+        Game game = new Game(new GameLogic());
+
+        //Test there are exactly 4 players
+        assertEquals(4, game.getPlayers().size());
+
+        //Test Player ID's are 'P1', 'P2', 'P3' & 'P4'
+        assertEquals("P1", game.getPlayers().get(0).getPlayerID());
+        assertEquals("P2", game.getPlayers().get(1).getPlayerID());
+        assertEquals("P3", game.getPlayers().get(2).getPlayerID());
+        assertEquals("P4", game.getPlayers().get(3).getPlayerID());
+    }
+
+    @Test
+    @DisplayName("RESP-004: The system ensures the game always has exactly 4 players (with the 4 unique ID’s as " +
+            "follows, ‘P1’, ‘P2’, ‘P3’ and ‘P4’)")
+    void RESP_004(){
+        RESP_004_test_001();
+    }
 }

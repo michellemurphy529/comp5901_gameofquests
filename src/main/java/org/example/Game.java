@@ -1,11 +1,15 @@
 package org.example;
+import java.util.ArrayList;
 
 public class Game {
 
     protected GameLogic gameLogic;
+    protected ArrayList<Player> players;
 
     public Game(GameLogic gameLogic) {
         this.gameLogic = gameLogic;
+        this.players = new ArrayList<Player>();
+        setUpPlayers();
     }
 
     public void setDecks() {
@@ -19,6 +23,13 @@ public class Game {
 
     public Deck getEventDeck() {
         return gameLogic.getEventDeck();
+    }
+
+    private void setUpPlayers() {
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public static void main(String[] args) {
