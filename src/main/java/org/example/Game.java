@@ -29,6 +29,13 @@ public class Game {
     public ArrayList<Player> getPlayers() {
         return gameLogic.getPlayers();
     }
+    public String[] getPlayerIDs() {
+        return gameLogic.getPlayerIDs();
+    }
+
+    public void dealInitial12AdventureCards() {
+        gameLogic.distribute12AdventureCards();
+    }
 
     public static void main(String[] args) {
         //Initialize game
@@ -46,5 +53,7 @@ public class Game {
 
         //Set Players
         game.setPlayers();
+        //Distribute 12 Adventure Cards to each player
+        game.dealInitial12AdventureCards();
     }
 }

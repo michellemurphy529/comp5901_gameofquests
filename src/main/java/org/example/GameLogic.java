@@ -51,4 +51,21 @@ public class GameLogic {
     public String[] getPlayerIDs() {
         return playerIDs;
     }
+
+    public void distribute12AdventureCards() {
+    }
+
+    public ArrayList<AdventureCard> getPlayerHand(String playerID) {
+        return getPlayer(playerID).getHand();
+    }
+
+    //Need this for RESP-005-test-001 to not throw nullPointerException
+    public Player getPlayer(String playerID){
+        for (Player player : players) {
+            if (player.getPlayerID().equals(playerID)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

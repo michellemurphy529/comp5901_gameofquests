@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
@@ -226,4 +225,42 @@ class GameTest {
     void RESP_004(){
         RESP_004_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-005-Test-001: System distributes 12 cards from the adventure deck to each player")
+    void RESP_005_test_001(){
+        Game game = new Game(new GameLogic());
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Test each player has 12 cards
+        for (String playerID : game.getPlayerIDs()) {
+            assertEquals(12, game.gameLogic.getPlayerHand(playerID).size());
+
+            //Test each card is an AdventureCard
+            for (Card card : game.gameLogic.getPlayerHand(playerID)) {
+                assertInstanceOf(AdventureCard.class, card);
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("RESP-005-Test-002: System updates deck after distribution of 12 cards")
+    void RESP_005_test_002(){
+        Game game = new Game(new GameLogic());
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Test Adventure Deck has had 12 * 4 = 48 removed
+        int expectedSizeUpdated = 100 - (12 * 4);
+        assertEquals(expectedSizeUpdated, game.getAdventureDeck().getSize());
+    }
+
+    @Test
+    @DisplayName("RESP-005: System distributes 12 cards from the adventure deck to each player, updating the deck")
+    void RESP_005(){
+        RESP_005_test_001();
+        RESP_005_test_002();
+    }
+
 }
