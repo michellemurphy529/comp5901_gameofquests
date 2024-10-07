@@ -62,7 +62,7 @@ public class GameLogic {
         }
     }
 
-    public ArrayList<AdventureCard> getPlayerHand(String playerID) {
+    public ArrayList<Card> getPlayerHand(String playerID) {
         return getPlayer(playerID).getHand();
     }
 

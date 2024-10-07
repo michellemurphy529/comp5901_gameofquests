@@ -230,7 +230,7 @@ class GameTest {
     @DisplayName("RESP-005-Test-001: System distributes 12 cards from the adventure deck to each player")
     void RESP_005_test_001(){
         Game game = new Game(new GameLogic());
-        game.setDecks();    //Added otherwise cannot test properly
+        game.setDecks();
         game.setPlayers();
         game.dealInitial12AdventureCards();
 
@@ -249,7 +249,7 @@ class GameTest {
     @DisplayName("RESP-005-Test-002: System updates deck after distribution of 12 cards")
     void RESP_005_test_002(){
         Game game = new Game(new GameLogic());
-        game.setDecks();    //Added otherwise cannot test properly
+        game.setDecks();
         game.setPlayers();
         game.dealInitial12AdventureCards();
 

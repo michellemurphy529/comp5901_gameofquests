@@ -5,22 +5,22 @@ import java.util.ArrayList;
 public class Player {
 
     protected String playerID;
-    private ArrayList<AdventureCard> hand;
+    private ArrayList<Card> hand;
 
     public Player(String playerID) {
         this.playerID = playerID;
-        this.hand = new ArrayList<AdventureCard>();
+        this.hand = new ArrayList<Card>();
     }
 
     public String getPlayerID() {
         return playerID;
     }
 
-    public ArrayList<AdventureCard> getHand() {
+    public ArrayList<Card> getHand() {
         return hand;
     }
 
     public void addCardToHand(Card card){
-        hand.add((AdventureCard) card);
+        hand.add(card);
     }
 }
