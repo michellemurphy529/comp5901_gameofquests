@@ -42,5 +42,10 @@ public class EventDeck extends Deck {
             cards.add(new QuestCard(stages));
         }
     }
+
+    @Override
+    public Card drawCard() {
+        return null;
+    }
 }
 

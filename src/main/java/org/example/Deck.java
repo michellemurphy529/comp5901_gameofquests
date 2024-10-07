@@ -17,4 +17,6 @@ public abstract class Deck {
     public void shuffle() {
         Collections.shuffle(cards);
     }
+
+    public abstract Card drawCard();
 }

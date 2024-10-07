@@ -52,5 +52,12 @@ public class AdventureDeck extends Deck {
             cards.add(new WeaponCard(type, value));
         }
     }
+
+    @Override
+    public Card drawCard() {
+        Card cardDrawn = cards.getFirst();
+        cards.removeFirst();
+        return cardDrawn;
+    }
 }
 

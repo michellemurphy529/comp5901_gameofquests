@@ -19,4 +19,8 @@ public class Player {
     public ArrayList<AdventureCard> getHand() {
         return hand;
     }
+
+    public void addCardToHand(Card card){
+        hand.add((AdventureCard) card);
+    }
 }
