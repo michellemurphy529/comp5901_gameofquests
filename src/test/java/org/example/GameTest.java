@@ -208,6 +208,7 @@ class GameTest {
             "follows, ‘P1’, ‘P2’, ‘P3’ and ‘P4’)")
     void RESP_004_test_001(){
         Game game = new Game(new GameLogic());
+        game.setPlayers();
 
         //Test there are exactly 4 players
         assertEquals(4, game.getPlayers().size());

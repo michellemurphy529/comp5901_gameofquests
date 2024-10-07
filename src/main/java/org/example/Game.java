@@ -4,12 +4,9 @@ import java.util.ArrayList;
 public class Game {
 
     protected GameLogic gameLogic;
-    protected ArrayList<Player> players;
 
     public Game(GameLogic gameLogic) {
         this.gameLogic = gameLogic;
-        this.players = new ArrayList<Player>();
-        setUpPlayers();
     }
 
     public void setDecks() {
@@ -25,15 +22,12 @@ public class Game {
         return gameLogic.getEventDeck();
     }
 
-    private void setUpPlayers() {
-        String[] playerIDs = {"P1", "P2", "P3", "P4"};
-        for (String ID : playerIDs) {
-            players.add(new Player(ID));
-        }
+    public void setPlayers() {
+        gameLogic.setUpPlayers();
     }
 
     public ArrayList<Player> getPlayers() {
-        return players;
+        return gameLogic.getPlayers();
     }
 
     public static void main(String[] args) {
@@ -49,5 +43,8 @@ public class Game {
 
         adventureDeck.shuffle();
         eventDeck.shuffle();
+
+        //Set Players
+        game.setPlayers();
     }
 }
