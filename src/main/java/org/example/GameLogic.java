@@ -10,14 +10,10 @@ public class GameLogic {
     String[] playerIDs;
 
     public GameLogic() {
-        //Adventure Deck
         this.adventureDeck = new AdventureDeck();
-        //Event Decks
         this.eventDeck = new EventDeck();
-        //Players
         this.players = new ArrayList<Player>();
     }
-
     //Set Decks
     public void setAdventureDeck() {
         adventureDeck.initializeDeck();
@@ -25,21 +21,13 @@ public class GameLogic {
     public void setEventDeck() {
         eventDeck.initializeDeck();
     }
-
     //Get Decks
     public Deck getAdventureDeck() {
         return adventureDeck;
     }
-    public ArrayList<Card> getAdventureDiscardDeck() {
-        return adventureDeck.getDiscardPile();
-    }
     public Deck getEventDeck() {
         return eventDeck;
     }
-    public ArrayList<Card> getEventDiscardDeck() {
-        return eventDeck.getDiscardPile();
-    }
-
     //Set Players
     public void setUpPlayers() {
         setUpPlayerIDs();
@@ -51,7 +39,6 @@ public class GameLogic {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
     //Set Player IDs
     public void setUpPlayerIDs() {
         playerIDs = new String[] {"P1", "P2", "P3", "P4"};
@@ -60,7 +47,20 @@ public class GameLogic {
     public String[] getPlayerIDs() {
         return playerIDs;
     }
-
+    //Get Player Hand
+    public ArrayList<Card> getPlayerHand(String playerID) {
+        return getPlayer(playerID).getHand();
+    }
+    //Get Player
+    public Player getPlayer(String playerID){
+        for (Player player : players) {
+            if (player.getPlayerID().equals(playerID)) {
+                return player;
+            }
+        }
+        return null;
+    }
+    //Deal 12 Cards at start
     public void distribute12AdventureCards() {
         for (int i = 0; i < 12; i++) {
             for (String playerID : getPlayerIDs()) {
@@ -70,24 +70,10 @@ public class GameLogic {
             }
         }
     }
-
-    public ArrayList<Card> getPlayerHand(String playerID) {
-        return getPlayer(playerID).getHand();
-    }
-
-    public Player getPlayer(String playerID){
-        for (Player player : players) {
-            if (player.getPlayerID().equals(playerID)) {
-                return player;
-            }
-        }
-        return null;
-    }
-
     public Card drawCard(String playerID, Deck deck) {
         //Draw card from Deck
         Card cardDrawn = deck.drawCard();
-        
+
         //Add Card drawn to Players hand
         Player player = getPlayer(playerID);
         player.addCardToHand(cardDrawn);
@@ -95,7 +81,6 @@ public class GameLogic {
         //return card
         return cardDrawn;
     }
-
     public void discardCard(String playerID, Deck deck, Card card) {
         //Remove card from Players hand
         Player player = getPlayer(playerID);

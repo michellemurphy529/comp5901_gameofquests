@@ -9,27 +9,22 @@ public class EventDeck extends Deck {
         super();
         this.discards = new ArrayList<Card>();
     }
-
     @Override
     public int getSize() {
         return cards.size();
     }
-
     @Override
     public int getDiscardPileSize() {
         return discards.size();
     }
-
     @Override
     public ArrayList<Card> getDeck() {
         return cards;
     }
-
     @Override
     public ArrayList<Card> getDiscardPile() {
         return discards;
     }
-
     @Override
     protected void initializeDeck() {
         // Adding 12 Quest Cards
@@ -48,13 +43,11 @@ public class EventDeck extends Deck {
         cards.add(new ProsperityCard());
         cards.add(new ProsperityCard());
     }
-
     private void addQuestCards(int stages, int quantity) {
         for (int i = 0; i < quantity; i++) {
             cards.add(new QuestCard(stages));
         }
     }
-
     @Override
     public Card drawCard() {
         if(cards.isEmpty()){
@@ -62,13 +55,11 @@ public class EventDeck extends Deck {
         }
         return cards.removeFirst();
     }
-
     private void useDiscardsAndReshuffle() {
         cards.addAll(discards);
         shuffle();
         discards.clear();
     }
-
     public void discardCard(Card card) {
         discards.add(card);
     }

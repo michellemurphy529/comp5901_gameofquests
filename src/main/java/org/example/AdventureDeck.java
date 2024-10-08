@@ -9,27 +9,22 @@ public class AdventureDeck extends Deck {
         super();
         this.discards = new ArrayList<Card>();
     }
-
     @Override
     public int getSize() {
         return cards.size();
     }
-
     @Override
     public int getDiscardPileSize() {
         return discards.size();
     }
-
     @Override
     public ArrayList<Card> getDeck() {
         return cards;
     }
-
     @Override
     public ArrayList<Card> getDiscardPile() {
         return discards;
     }
-
     @Override
     protected void initializeDeck() {
         // Adding 50 Foe cards
@@ -52,19 +47,16 @@ public class AdventureDeck extends Deck {
         addWeaponCards("L", 20, 6);     // 6 Lances - value 20
         addWeaponCards("E", 30, 2);     // 2 Excalibur's - value 30
     }
-
     private void addFoeCards(int value, int quantity) {
         for (int i = 0; i < quantity; i++) {
             cards.add(new FoeCard(value));
         }
     }
-
     private void addWeaponCards(String type, int value, int quantity) {
         for (int i = 0; i < quantity; i++) {
             cards.add(new WeaponCard(type, value));
         }
     }
-
     @Override
     public Card drawCard() {
         if(cards.isEmpty()){
@@ -72,13 +64,11 @@ public class AdventureDeck extends Deck {
         }
         return cards.removeFirst();
     }
-
     private void useDiscardsAndReshuffle() {
         cards.addAll(discards);
         shuffle();
         discards.clear();
     }
-
     public void discardCard(Card card) {
         discards.add(card);
     }

@@ -8,55 +8,44 @@ public class Game {
     public Game(GameLogic gameLogic) {
         this.gameLogic = gameLogic;
     }
-
     public void setDecks() {
         gameLogic.setAdventureDeck();
         gameLogic.setEventDeck();
     }
-
+    //Get Decks
     public Deck getAdventureDeck() {
         return gameLogic.getAdventureDeck();
     }
-
-    public ArrayList<Card> getAdventureDiscardDeck() {
-        return gameLogic.getAdventureDiscardDeck();
-    }
-
     public Deck getEventDeck() {
         return gameLogic.getEventDeck();
     }
-
-    public ArrayList<Card> getEventDiscardDeck() {
-        return gameLogic.getEventDiscardDeck();
-    }
-
+    //Set Players
     public void setPlayers() {
         gameLogic.setUpPlayers();
     }
-
+    //Get Players
     public ArrayList<Player> getPlayers() {
         return gameLogic.getPlayers();
     }
+    //Get Player IDs
     public String[] getPlayerIDs() {
         return gameLogic.getPlayerIDs();
     }
-
+    //Deal first 12 cards
     public void dealInitial12AdventureCards() {
         gameLogic.distribute12AdventureCards();
     }
-
+    //Draw Cards
     public Card drawAdventureCard(String playerID) {
         return gameLogic.drawCard(playerID, gameLogic.getAdventureDeck());
     }
-
     public Card drawEventCard(String playerID) {
         return gameLogic.drawCard(playerID, gameLogic.getEventDeck());
     }
-
+    //Discard Cards
     public void discardAdventureCard(String playerID, Card card) {
         gameLogic.discardCard(playerID, gameLogic.getAdventureDeck(), card);
     }
-
     public void discardEventCard(String playerID, Card card) {
         gameLogic.discardCard(playerID, gameLogic.getEventDeck(), card);
     }
