@@ -8,10 +8,17 @@ public class GameLogic {
     private Deck eventDeck;
     protected ArrayList<Player> players;
     String[] playerIDs;
+    private Deck adventureDiscard;
+    private Deck eventDiscard;
 
     public GameLogic() {
+        //Adventure Decks
         this.adventureDeck = new AdventureDeck();
+        this.adventureDiscard = new AdventureDeck();
+        //Event Decks
         this.eventDeck = new EventDeck();
+        this.eventDiscard = new EventDeck();
+        //Players
         this.players = new ArrayList<Player>();
     }
 
@@ -27,8 +34,14 @@ public class GameLogic {
     public Deck getAdventureDeck() {
         return adventureDeck;
     }
+    public Deck getAdventureDiscardDeck() {
+        return adventureDiscard;
+    }
     public Deck getEventDeck() {
         return eventDeck;
+    }
+    public Deck getEventDiscardDeck() {
+        return eventDiscard;
     }
 
     //Set Players
@@ -72,6 +85,10 @@ public class GameLogic {
                 return player;
             }
         }
+        return null;
+    }
+
+    public Card drawCard(String playerID, Deck deck) {
         return null;
     }
 }

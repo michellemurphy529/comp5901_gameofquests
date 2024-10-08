@@ -265,4 +265,96 @@ class GameTest {
         RESP_005_test_002();
     }
 
+    @Test
+    @DisplayName("RESP-003-Test-001: When the adventure deck runs out, the system reshuffles the adventure discard pile " +
+            "and reuses it as the new adventure deck")
+    void RESP_003_test_001(){
+        Game game = new Game(new GameLogic());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        adventureDeck.shuffle();
+        game.setPlayers();
+
+        //Test Adventure Deck has total number of cards and Discard Deck has 0
+        assertEquals(100, game.getAdventureDeck().getSize());
+        assertEquals(0, game.getAdventureDiscardDeck().getSize());
+
+        //Mock distributing all but 1 card from Adventure Deck
+        for (int i = 0; i < 99; i++) {
+            Card card = game.drawAdventureCard("P1");
+            game.discardAdventureCard("P1", card);
+        }
+
+        //Test Adventure Deck has 1 card and Discard Deck has 99
+        assertEquals(1, game.getAdventureDeck().getSize());
+        assertEquals(99, game.getAdventureDiscardDeck().getSize());
+
+        //Test for reshuffle
+        ArrayList<Card> orderBeforeReshuffle = new ArrayList<>(game.getAdventureDiscardDeck().getDeck());
+
+        //Distribute last Adventure Card from deck to invoke reshuffle of discard pile and reuse as new deck
+        Card card = game.drawAdventureCard("P2");
+
+        //Test Adventure Deck has 99 cards (1 card is in P2 hand) and Discard Deck has 0
+        assertEquals(99, game.getAdventureDeck().getSize());
+        assertEquals(0, game.getAdventureDiscardDeck().getSize());
+
+        //Confirm P1 has 0 cards in hand, P2 has 1 card in hand
+        assertEquals(0, game.gameLogic.getPlayer("P1").getHand().size());
+        assertEquals(1, game.gameLogic.getPlayer("P2").getHand().size());
+
+        //Test for reshuffle
+        ArrayList<Card> orderAfterReshuffle = game.getAdventureDiscardDeck().getDeck();
+        assertNotEquals(orderBeforeReshuffle, orderAfterReshuffle);
+    }
+
+    @Test
+    @DisplayName("RESP-003-Test-002: When the event deck runs out, the system reshuffles the event discard pile " +
+            "and reuses it as the new event deck")
+    void RESP_003_test_002(){
+        Game game = new Game(new GameLogic());
+        game.setDecks();
+        Deck eventDeck = game.getEventDeck();
+        eventDeck.shuffle();
+        game.setPlayers();
+
+        //Test Event Deck has total number of cards and Discard Deck has 0
+        assertEquals(17, game.getEventDeck().getSize());
+        assertEquals(0, game.getEventDiscardDeck().getSize());
+
+        //Mock distributing all cards from Event Deck
+        for (int i = 0; i < 16; i++) {
+            Card card = game.drawEventCard("P3");
+            game.discardEventCard("P3", card);
+        }
+
+        //Test Event Deck has 1 card and Discard Deck has 16
+        assertEquals(1, game.getEventDeck().getSize());
+        assertEquals(16, game.getEventDiscardDeck().getSize());
+
+        //Test for reshuffle
+        ArrayList<Card> orderBeforeReshuffle = new ArrayList<>(game.getEventDiscardDeck().getDeck());
+
+        //Distribute last Event Card from deck to invoke reshuffle of discard pile and reuse as new deck
+        Card card = game.drawEventCard("P4");
+
+        //Test Event Deck has 16 cards and Discard Deck has 0
+        assertEquals(16, game.getEventDeck().getSize());
+        assertEquals(0, game.getEventDiscardDeck().getSize());
+
+        //Confirm P3 has 0 cards in hand, P4 has 1 card in hand
+        assertEquals(0, game.gameLogic.getPlayer("P3").getHand().size());
+        assertEquals(1, game.gameLogic.getPlayer("P4").getHand().size());
+
+        //Test for reshuffle
+        ArrayList<Card> orderAfterReshuffle = game.getEventDeck().getDeck();
+        assertNotEquals(orderBeforeReshuffle, orderAfterReshuffle);
+    }
+
+    @Test
+    @DisplayName("RESP-003: When a deck runs out, the system reshuffles the discard pile and reuses it as the new deck")
+    void RESP_003(){
+        RESP_003_test_001();
+        RESP_003_test_002();
+    }
 }
