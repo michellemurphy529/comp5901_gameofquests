@@ -49,6 +49,13 @@ public class Game {
     public void discardEventCard(String playerID, Card card) {
         gameLogic.discardCard(playerID, gameLogic.getEventDeck(), card);
     }
+    //Get Current Player Turn
+    public Player getCurrentPlayer() {
+        return gameLogic.getCurrentPlayer();
+    }
+    public void playTurn() {
+        gameLogic.nextTurn();
+    }
 
     public static void main(String[] args) {
         //Initialize game

@@ -89,4 +89,9 @@ public class GameLogic {
         //Discard card into discard pile in Deck
         deck.discardCard(card);
     }
+    public Player getCurrentPlayer() {
+        return players.get(0);
+    }
+    public void nextTurn() {
+    }
 }

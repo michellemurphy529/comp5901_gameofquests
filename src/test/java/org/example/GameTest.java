@@ -357,4 +357,49 @@ class GameTest {
         RESP_003_test_001();
         RESP_003_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-006-Test-001: Follows fixed order of player P1, P2, P3, P4, then P1 etc.")
+    void RESP_006_test_001() {
+        Game game = new Game(new GameLogic());
+        game.setPlayers();
+
+        String[] expectedOrderOfPlayerIDs = {"P1", "P2", "P3", "P4"};
+        int roundOfTurns = 3;
+
+        for (int playerTurn = 0; playerTurn < roundOfTurns; playerTurn++) {
+            for (int i = 0; i < expectedOrderOfPlayerIDs.length; i++) {
+                //Test current player follows order P1, P2, P3, P4, then P1 again
+                String currentPlayerID = game.getCurrentPlayer().getPlayerID();
+                assertEquals(expectedOrderOfPlayerIDs[i], currentPlayerID);
+                //Next Player in order has a turn
+                game.gameLogic.nextTurn();
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("RESP-006-Test-002: System properly invokes playing of turns in the fixed order")
+    void RESP_006_test_002() {
+        Game game = new Game(new GameLogic());
+        game.setPlayers();
+
+        String[] expectedOrderOfPlayerIDs = {"P1", "P2", "P3", "P4"};
+        int roundOfTurns = 5;
+
+        for (int playerTurn = 0; playerTurn < roundOfTurns; playerTurn++) {
+            for (int i = 0; i < expectedOrderOfPlayerIDs.length; i++) {
+                String currentPlayerID = game.getCurrentPlayer().getPlayerID();
+                assertEquals(expectedOrderOfPlayerIDs[i], currentPlayerID);
+                game.playTurn();
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("RESP-006: The system follows the fixed order of play P1, then P2, then P3, then P4, then repeats with P1")
+    void RESP_006(){
+        RESP_006_test_001();
+        RESP_006_test_002();
+    }
 }
