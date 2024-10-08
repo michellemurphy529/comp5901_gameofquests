@@ -8,11 +8,13 @@ public class GameLogic {
     private Deck eventDeck;
     protected ArrayList<Player> players;
     String[] playerIDs;
+    private int currentPlayerIndex;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
         this.eventDeck = new EventDeck();
         this.players = new ArrayList<Player>();
+        this.currentPlayerIndex = 0;
     }
     //Set Decks
     public void setAdventureDeck() {
@@ -90,8 +92,9 @@ public class GameLogic {
         deck.discardCard(card);
     }
     public Player getCurrentPlayer() {
-        return players.get(0);
+        return players.get(currentPlayerIndex);
     }
     public void nextTurn() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 }
