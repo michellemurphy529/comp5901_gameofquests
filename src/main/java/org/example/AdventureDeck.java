@@ -3,9 +3,11 @@ package org.example;
 import java.util.ArrayList;
 
 public class AdventureDeck extends Deck {
+    protected ArrayList<Card> discards;
 
     public AdventureDeck() {
         super();
+        this.discards = new ArrayList<Card>();
     }
 
     @Override
@@ -15,7 +17,7 @@ public class AdventureDeck extends Deck {
 
     @Override
     public int getDiscardPileSize() {
-        return 0;
+        return discards.size();
     }
 
     @Override
@@ -25,7 +27,7 @@ public class AdventureDeck extends Deck {
 
     @Override
     public ArrayList<Card> getDiscardPile() {
-        return null;
+        return discards;
     }
 
     @Override
@@ -65,9 +67,20 @@ public class AdventureDeck extends Deck {
 
     @Override
     public Card drawCard() {
-        Card cardDrawn = cards.getFirst();
-        cards.removeFirst();
-        return cardDrawn;
+        if(cards.isEmpty()){
+            useDiscardsAndReshuffle();
+        }
+        return cards.removeFirst();
+    }
+
+    private void useDiscardsAndReshuffle() {
+        cards.addAll(discards);
+        shuffle();
+        discards.clear();
+    }
+
+    public void discardCard(Card card) {
+        discards.add(card);
     }
 }
 

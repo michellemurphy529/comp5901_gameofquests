@@ -21,4 +21,5 @@ public abstract class Deck {
     }
 
     public abstract Card drawCard();
+    public abstract void discardCard(Card card);
 }

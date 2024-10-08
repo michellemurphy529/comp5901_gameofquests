@@ -8,16 +8,12 @@ public class GameLogic {
     private Deck eventDeck;
     protected ArrayList<Player> players;
     String[] playerIDs;
-    private Deck adventureDiscard;
-    private Deck eventDiscard;
 
     public GameLogic() {
-        //Adventure Decks
+        //Adventure Deck
         this.adventureDeck = new AdventureDeck();
-        this.adventureDiscard = new AdventureDeck();
         //Event Decks
         this.eventDeck = new EventDeck();
-        this.eventDiscard = new EventDeck();
         //Players
         this.players = new ArrayList<Player>();
     }
@@ -34,14 +30,14 @@ public class GameLogic {
     public Deck getAdventureDeck() {
         return adventureDeck;
     }
-    public Deck getAdventureDiscardDeck() {
-        return adventureDiscard;
+    public ArrayList<Card> getAdventureDiscardDeck() {
+        return adventureDeck.getDiscardPile();
     }
     public Deck getEventDeck() {
         return eventDeck;
     }
-    public Deck getEventDiscardDeck() {
-        return eventDiscard;
+    public ArrayList<Card> getEventDiscardDeck() {
+        return eventDeck.getDiscardPile();
     }
 
     //Set Players
@@ -89,6 +85,23 @@ public class GameLogic {
     }
 
     public Card drawCard(String playerID, Deck deck) {
-        return null;
+        //Draw card from Deck
+        Card cardDrawn = deck.drawCard();
+        
+        //Add Card drawn to Players hand
+        Player player = getPlayer(playerID);
+        player.addCardToHand(cardDrawn);
+
+        //return card
+        return cardDrawn;
+    }
+
+    public void discardCard(String playerID, Deck deck, Card card) {
+        //Remove card from Players hand
+        Player player = getPlayer(playerID);
+        player.removeFromHand(card);
+
+        //Discard card into discard pile in Deck
+        deck.discardCard(card);
     }
 }

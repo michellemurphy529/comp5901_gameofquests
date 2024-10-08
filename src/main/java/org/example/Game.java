@@ -1,5 +1,4 @@
 package org.example;
-import javax.naming.event.EventContext;
 import java.util.ArrayList;
 
 public class Game {
@@ -19,7 +18,7 @@ public class Game {
         return gameLogic.getAdventureDeck();
     }
 
-    public Deck getAdventureDiscardDeck() {
+    public ArrayList<Card> getAdventureDiscardDeck() {
         return gameLogic.getAdventureDiscardDeck();
     }
 
@@ -27,7 +26,7 @@ public class Game {
         return gameLogic.getEventDeck();
     }
 
-    public Deck getEventDiscardDeck() {
+    public ArrayList<Card> getEventDiscardDeck() {
         return gameLogic.getEventDiscardDeck();
     }
 
@@ -47,17 +46,19 @@ public class Game {
     }
 
     public Card drawAdventureCard(String playerID) {
-        return gameLogic.drawCard(playerID, getAdventureDeck());
+        return gameLogic.drawCard(playerID, gameLogic.getAdventureDeck());
     }
 
     public Card drawEventCard(String playerID) {
-        return gameLogic.drawCard(playerID, getEventDeck());
+        return gameLogic.drawCard(playerID, gameLogic.getEventDeck());
     }
 
     public void discardAdventureCard(String playerID, Card card) {
+        gameLogic.discardCard(playerID, gameLogic.getAdventureDeck(), card);
     }
 
     public void discardEventCard(String playerID, Card card) {
+        gameLogic.discardCard(playerID, gameLogic.getEventDeck(), card);
     }
 
     public static void main(String[] args) {
