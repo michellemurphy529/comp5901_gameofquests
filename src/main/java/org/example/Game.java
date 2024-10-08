@@ -4,9 +4,11 @@ import java.util.ArrayList;
 public class Game {
 
     protected GameLogic gameLogic;
+    protected GameDisplay gameDisplay;
 
-    public Game(GameLogic gameLogic) {
+    public Game(GameLogic gameLogic, GameDisplay gameDisplay) {
         this.gameLogic = gameLogic;
+        this.gameDisplay = gameDisplay;
     }
     public void setDecks() {
         gameLogic.setAdventureDeck();
@@ -56,10 +58,15 @@ public class Game {
     public void playTurn() {
         gameLogic.nextTurn();
     }
+    public ArrayList<Player> getWinners() {
+        return gameLogic.determineWinners();
+    }
+    public void displayWinnersAndTerminate(ArrayList<Player> winners) {
+    }
 
     public static void main(String[] args) {
         //Initialize game
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
 
         //Set up decks
         game.setDecks();

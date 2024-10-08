@@ -23,4 +23,6 @@ public class Player {
     public void removeFromHand(Card card) {
         hand.remove(card);
     }
+    public void addShields(int shieldCount) {
+    }
 }

@@ -12,7 +12,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-001-Test-001: Set up Adventure Deck with proper number of cards and their types + values")
     void RESP_001_test_001(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck adventureDeck = game.getAdventureDeck();
 
@@ -98,7 +98,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-001-Test-002: Set up Event Deck with proper number of cards and their types + values")
     void RESP_001_test_002(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck eventDeck = game.getEventDeck();
 
@@ -163,7 +163,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-002-Test-001: Properly shuffle Adventure Deck")
     void RESP_002_test_001(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck adventureDeck = game.getAdventureDeck();
 
@@ -183,7 +183,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-002-Test-002: Properly shuffle Event Deck")
     void RESP_002_test_002(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck eventDeck = game.getEventDeck();
 
@@ -206,7 +206,7 @@ class GameTest {
     @DisplayName("RESP-004-Test-001: The system ensures the game always has exactly 4 players (with the 4 unique ID’s as " +
             "follows, ‘P1’, ‘P2’, ‘P3’ and ‘P4’)")
     void RESP_004_test_001(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setPlayers();
 
         //Test there are exactly 4 players
@@ -229,7 +229,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-005-Test-001: System distributes 12 cards from the adventure deck to each player")
     void RESP_005_test_001(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         game.setPlayers();
         game.dealInitial12AdventureCards();
@@ -248,7 +248,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-005-Test-002: System updates deck after distribution of 12 cards")
     void RESP_005_test_002(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         game.setPlayers();
         game.dealInitial12AdventureCards();
@@ -269,7 +269,7 @@ class GameTest {
     @DisplayName("RESP-003-Test-001: When the adventure deck runs out, the system reshuffles the adventure discard pile " +
             "and reuses it as the new adventure deck")
     void RESP_003_test_001(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck adventureDeck = game.getAdventureDeck();
         adventureDeck.shuffle();
@@ -312,7 +312,7 @@ class GameTest {
     @DisplayName("RESP-003-Test-002: When the event deck runs out, the system reshuffles the event discard pile " +
             "and reuses it as the new event deck")
     void RESP_003_test_002(){
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck eventDeck = game.getEventDeck();
         eventDeck.shuffle();
@@ -361,7 +361,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-006-Test-001: Follows fixed order of player P1, P2, P3, P4, then P1 etc.")
     void RESP_006_test_001() {
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setPlayers();
 
         String[] expectedOrderOfPlayerIDs = {"P1", "P2", "P3", "P4"};
@@ -381,7 +381,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-006-Test-002: System properly invokes playing of turns in the fixed order")
     void RESP_006_test_002() {
-        Game game = new Game(new GameLogic());
+        Game game = new Game(new GameLogic(), new GameDisplay());
         game.setPlayers();
 
         String[] expectedOrderOfPlayerIDs = {"P1", "P2", "P3", "P4"};
@@ -401,5 +401,61 @@ class GameTest {
     void RESP_006(){
         RESP_006_test_001();
         RESP_006_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-007-Test-001: System determines if one player has 7 shields and displays their " +
+            "PlayerID to the users and displays a game termination message")
+    void RESP_007_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setPlayers();
+
+        //Test one player is winner with 7 shields
+        game.gameLogic.getPlayer("P1").addShields(6);
+        game.gameLogic.getPlayer("P2").addShields(7);
+        game.gameLogic.getPlayer("P3").addShields(4);
+        game.gameLogic.getPlayer("P4").addShields(5);
+        ArrayList<Player> winners = game.gameLogic.determineWinners();
+        assertEquals(1, winners.size());
+
+        //Display winner ID and termination message
+        game.displayWinnersAndTerminate(winners);
+
+        //Test Output from GameDisplay class
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains("Winner(s) with 7 or more shields are: P2"));
+        assertTrue(output.contains("Game is terminated... Goodbye!"));
+    }
+
+    @Test
+    @DisplayName("RESP-007-Test-002: System determines if all players have more than 7 shields and displays their " +
+            "PlayerID to the users and displays a game termination message")
+    void RESP_007_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setPlayers();
+
+        //Test all players are winners with 7 or more shields
+        game.gameLogic.getPlayer("P1").addShields(10);
+        game.gameLogic.getPlayer("P2").addShields(7);
+        game.gameLogic.getPlayer("P3").addShields(8);
+        game.gameLogic.getPlayer("P4").addShields(20);
+        ArrayList<Player> winners = game.getWinners();
+        assertEquals(4, winners.size());
+
+        //Display winner ID and termination message
+        game.displayWinnersAndTerminate(winners);
+
+        //Test Output from GameDisplay class
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains("Winner(s) with 7 or more shields are: P1, P2, P3, P4"));
+        assertTrue(output.contains("Game is terminated... Goodbye!"));
+    }
+
+    @Test
+    @DisplayName("RESP-007: System determines if one or more players have 7 shields, and System displays " +
+            "the ID of each winner and then terminates")
+    void RESP_007(){
+        RESP_007_test_001();
+        RESP_007_test_002();
     }
 }
