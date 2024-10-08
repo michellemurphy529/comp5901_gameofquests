@@ -14,8 +14,18 @@ public class EventDeck extends Deck {
     }
 
     @Override
+    public int getDiscardPileSize() {
+        return 0;
+    }
+
+    @Override
     public ArrayList<Card> getDeck() {
         return cards;
+    }
+
+    @Override
+    public ArrayList<Card> getDiscardPile() {
+        return null;
     }
 
     @Override

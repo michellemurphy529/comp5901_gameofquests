@@ -11,7 +11,9 @@ public abstract class Deck {
     }
 
     public abstract int getSize();
+    public abstract int getDiscardPileSize();
     public abstract ArrayList<Card> getDeck();
+    public abstract ArrayList<Card> getDiscardPile();
     protected abstract void initializeDeck();
 
     public void shuffle() {

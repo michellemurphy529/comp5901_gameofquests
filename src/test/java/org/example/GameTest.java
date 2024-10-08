@@ -275,36 +275,36 @@ class GameTest {
         adventureDeck.shuffle();
         game.setPlayers();
 
-        //Test Adventure Deck has total number of cards and Discard Deck has 0
-        assertEquals(100, game.getAdventureDeck().getSize());
-        assertEquals(0, game.getAdventureDiscardDeck().getSize());
+        //Test Adventure Deck has total number of cards (100) and Discard Deck has 0
+        assertEquals(100, adventureDeck.getSize());
+        assertEquals(0, adventureDeck.getDiscardPileSize());
 
-        //Mock distributing all but 1 card from Adventure Deck
-        for (int i = 0; i < 99; i++) {
+        //Mock distributing all cards from Adventure Deck
+        for (int i = 0; i < 100; i++) {
             Card card = game.drawAdventureCard("P1");
             game.discardAdventureCard("P1", card);
         }
 
-        //Test Adventure Deck has 1 card and Discard Deck has 99
-        assertEquals(1, game.getAdventureDeck().getSize());
-        assertEquals(99, game.getAdventureDiscardDeck().getSize());
+        //Test Adventure Deck has 0 cards and Discard Deck has 100
+        assertEquals(0, adventureDeck.getSize());
+        assertEquals(100, adventureDeck.getDiscardPileSize());
 
-        //Test for reshuffle
-        ArrayList<Card> orderBeforeReshuffle = new ArrayList<>(game.getAdventureDiscardDeck().getDeck());
+        //Test for reshuffle ordering before discards become card deck
+        ArrayList<Card> orderBeforeReshuffle = new ArrayList<>(adventureDeck.getDiscardPile());
 
         //Distribute last Adventure Card from deck to invoke reshuffle of discard pile and reuse as new deck
         Card card = game.drawAdventureCard("P2");
 
         //Test Adventure Deck has 99 cards (1 card is in P2 hand) and Discard Deck has 0
-        assertEquals(99, game.getAdventureDeck().getSize());
-        assertEquals(0, game.getAdventureDiscardDeck().getSize());
+        assertEquals(99, adventureDeck.getSize());
+        assertEquals(0, adventureDeck.getDiscardPileSize());
 
         //Confirm P1 has 0 cards in hand, P2 has 1 card in hand
         assertEquals(0, game.gameLogic.getPlayer("P1").getHand().size());
         assertEquals(1, game.gameLogic.getPlayer("P2").getHand().size());
 
-        //Test for reshuffle
-        ArrayList<Card> orderAfterReshuffle = game.getAdventureDiscardDeck().getDeck();
+        //Test for reshuffle after cards are regular deck again
+        ArrayList<Card> orderAfterReshuffle = adventureDeck.getDeck();
         assertNotEquals(orderBeforeReshuffle, orderAfterReshuffle);
     }
 
@@ -318,36 +318,36 @@ class GameTest {
         eventDeck.shuffle();
         game.setPlayers();
 
-        //Test Event Deck has total number of cards and Discard Deck has 0
-        assertEquals(17, game.getEventDeck().getSize());
-        assertEquals(0, game.getEventDiscardDeck().getSize());
+        //Test Event Deck has total number of cards (17) and Discard Deck has 0
+        assertEquals(17, eventDeck.getSize());
+        assertEquals(0, eventDeck.getDiscardPileSize());
 
         //Mock distributing all cards from Event Deck
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 17; i++) {
             Card card = game.drawEventCard("P3");
             game.discardEventCard("P3", card);
         }
 
-        //Test Event Deck has 1 card and Discard Deck has 16
-        assertEquals(1, game.getEventDeck().getSize());
-        assertEquals(16, game.getEventDiscardDeck().getSize());
+        //Test Event Deck has 0 cards and Discard Deck has 17
+        assertEquals(0, eventDeck.getSize());
+        assertEquals(17, eventDeck.getDiscardPileSize());
 
-        //Test for reshuffle
-        ArrayList<Card> orderBeforeReshuffle = new ArrayList<>(game.getEventDiscardDeck().getDeck());
+        //Test for reshuffle ordering before discards become card deck
+        ArrayList<Card> orderBeforeReshuffle = new ArrayList<>(eventDeck.getDiscardPile());
 
         //Distribute last Event Card from deck to invoke reshuffle of discard pile and reuse as new deck
         Card card = game.drawEventCard("P4");
 
         //Test Event Deck has 16 cards and Discard Deck has 0
-        assertEquals(16, game.getEventDeck().getSize());
-        assertEquals(0, game.getEventDiscardDeck().getSize());
+        assertEquals(16, eventDeck.getSize());
+        assertEquals(0, eventDeck.getDiscardPileSize());
 
         //Confirm P3 has 0 cards in hand, P4 has 1 card in hand
         assertEquals(0, game.gameLogic.getPlayer("P3").getHand().size());
         assertEquals(1, game.gameLogic.getPlayer("P4").getHand().size());
 
-        //Test for reshuffle
-        ArrayList<Card> orderAfterReshuffle = game.getEventDeck().getDeck();
+        //Test for reshuffle after cards are regular deck again
+        ArrayList<Card> orderAfterReshuffle = eventDeck.getDeck();
         assertNotEquals(orderBeforeReshuffle, orderAfterReshuffle);
     }
 
