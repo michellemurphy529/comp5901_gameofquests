@@ -584,4 +584,86 @@ class GameTest {
         RESP_010_test_001();
     }
 
+    @Test
+    @DisplayName("RESP-011-Test-001: The system ensures that player 1 cannot have a shield count of less than 0")
+    void RESP_011_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Test removing shields from every player 1 stays at 0
+        Player p1 = game.gameLogic.getPlayer("P1");
+        p1.removeShields(2);
+        assertEquals(0, p1.getShieldCount());
+    }
+
+    @Test
+    @DisplayName("RESP-011-Test-002: The system ensures that player 2 cannot have a shield count of less than 0")
+    void RESP_011_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Test removing shields from every player 2 stays at 0
+        Player p2 = game.gameLogic.getPlayer("P2");
+        p2.removeShields(6);
+        assertEquals(0, p2.getShieldCount());
+    }
+
+    @Test
+    @DisplayName("RESP-011-Test-003: The system ensures that player 3 cannot have a shield count of less than 0")
+    void RESP_011_test_003() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Test removing shields from every player 3 stays at 0
+        Player p3 = game.gameLogic.getPlayer("P3");
+        p3.removeShields(10);
+        assertEquals(0, p3.getShieldCount());
+    }
+
+    @Test
+    @DisplayName("RESP-011-Test-004: The system ensures that player 4 cannot have a shield count of less than 0")
+    void RESP_011_test_004() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Test removing shields from every player 4 stays at 0
+        Player p4 = game.gameLogic.getPlayer("P4");
+        p4.removeShields(1);
+        p4.removeShields(1);
+        p4.removeShields(1);
+        assertEquals(0, p4.getShieldCount());
+    }
+
+    @Test
+    @DisplayName("RESP-011: The system ensures that players cannot have a shield count of less than 0")
+    void RESP_011(){
+        RESP_011_test_001();
+        RESP_011_test_002();
+        RESP_011_test_003();
+        RESP_011_test_004();
+    }
 }
