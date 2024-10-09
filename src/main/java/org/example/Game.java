@@ -66,6 +66,11 @@ public class Game {
         //Display Card to user
         gameDisplay.displayCardDrawn(cardDrawn);
 
+        //Plague Card Drawn
+        if(cardDrawn.getType().equals("Plague")) {
+            gameLogic.carryOutPlagueAction();
+        }
+
         //Next Player Logic
         //Next Turn invoked
         gameLogic.nextTurn();

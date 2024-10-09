@@ -31,4 +31,7 @@ public class Player {
     public int getShieldCount() {
         return shields;
     }
+    public void removeShields(int shieldCount) {
+        shields -= shieldCount;
+    }
 }

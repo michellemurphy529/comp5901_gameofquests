@@ -111,4 +111,7 @@ public class GameLogic {
     public Card getLastCardDrawn() {
         return lastCardDrawn;
     }
+    public void carryOutPlagueAction() {
+        getCurrentPlayer().removeShields(2);
+    }
 }
