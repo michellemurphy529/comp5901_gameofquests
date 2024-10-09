@@ -520,6 +520,7 @@ class GameTest {
             "and displays it")
     void RESP_009_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
         game.setPlayers();
 
         //Trigger next player's turn
