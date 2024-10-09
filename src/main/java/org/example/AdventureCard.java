@@ -14,6 +14,6 @@ public class AdventureCard extends Card {
 
     @Override
     public String displayCardName() {
-        return "";
+        return getType() + getValue();
     }
 }

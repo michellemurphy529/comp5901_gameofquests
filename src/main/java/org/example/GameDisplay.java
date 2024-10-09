@@ -39,6 +39,14 @@ public class GameDisplay {
         StringBuilder noWinnersMessage = new StringBuilder("\n" + playerID + "'s Turn:\n");
         display(noWinnersMessage);
     }
+    public void drawingEventCardMessage() {
+        StringBuilder drawingEventCardMessage = new StringBuilder("Drawing Event Card...");
+        display(drawingEventCardMessage);
+    }
+    public void displayCardDrawn(Card card) {
+        StringBuilder drawnCardMessage = new StringBuilder("You drew: " + card.displayCardName() + "\n");
+        display(drawnCardMessage);
+    }
     public void display(StringBuilder message) {
         output.println(message);
         consoleOutput.println(message);

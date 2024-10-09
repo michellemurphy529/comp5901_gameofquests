@@ -1,12 +1,7 @@
 package org.example;
 
-public class PlagueCard extends Card {
+public class PlagueCard extends EventCard {
     public PlagueCard() {
         super("Plague");
-    }
-
-    @Override
-    public String displayCardName() {
-        return "";
     }
 }

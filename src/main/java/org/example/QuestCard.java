@@ -1,6 +1,6 @@
 package org.example;
 
-public class QuestCard extends Card {
+public class QuestCard extends EventCard {
 
     private final int stages;
 
@@ -15,6 +15,6 @@ public class QuestCard extends Card {
 
     @Override
     public String displayCardName() {
-        return "";
+        return getType() + getStages();
     }
 }

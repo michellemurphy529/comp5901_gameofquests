@@ -9,6 +9,7 @@ public class GameLogic {
     protected ArrayList<Player> players;
     String[] playerIDs;
     private int currentPlayerIndex;
+    private Card lastCardDrawn;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -75,6 +76,7 @@ public class GameLogic {
     public Card drawCard(String playerID, Deck deck) {
         //Draw card from Deck
         Card cardDrawn = deck.drawCard();
+        lastCardDrawn = cardDrawn;
 
         //Add Card drawn to Players hand
         Player player = getPlayer(playerID);
@@ -107,6 +109,6 @@ public class GameLogic {
         return winners;
     }
     public Card getLastCardDrawn() {
-        return new FoeCard(15); //dummy card
+        return lastCardDrawn;
     }
 }
