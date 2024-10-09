@@ -57,6 +57,7 @@ public class Game {
     }
     //Get Current player hand
     public void displayCurrentPlayerHand() {
+        gameDisplay.displayPlayerHand(getCurrentPlayer());
     }
     public void playTurn() {
         //Logic for Current Player Turn

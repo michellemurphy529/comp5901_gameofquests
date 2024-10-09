@@ -47,6 +47,17 @@ public class GameDisplay {
         StringBuilder drawnCardMessage = new StringBuilder("You drew: " + card.displayCardName() + "\n");
         display(drawnCardMessage);
     }
+    public void displayPlayerHand(Player player) {
+        StringBuilder displayPlayerHand = new StringBuilder("\n" + player.getPlayerID() + " hand: ");
+        ArrayList<Card> playerHand = player.getHand();
+        for (int i = 0; i < playerHand.size(); i++) {
+            displayPlayerHand.append(playerHand.get(i).displayCardName());
+            if (i < playerHand.size() - 1) {
+                displayPlayerHand.append(" ");
+            }
+        }
+        display(displayPlayerHand);
+    }
     public void display(StringBuilder message) {
         output.println(message);
         consoleOutput.println(message);
