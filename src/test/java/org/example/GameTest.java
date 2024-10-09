@@ -666,4 +666,145 @@ class GameTest {
         RESP_011_test_003();
         RESP_011_test_004();
     }
+
+    @Test
+    @DisplayName("RESP-015-Test-001: System displays the hand of Player 1")
+    void RESP_015_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Display Player's hand
+        game.displayCurrentPlayerHand();
+
+        //Test player 1 hand is displayed
+        ArrayList<Card> p1Hand = game.getCurrentPlayer().getHand();
+        StringBuilder expectedOutput = new StringBuilder("\nP1 hand: ");
+        for (int i = 0; i < p1Hand.size(); i++) {
+            expectedOutput.append(p1Hand.get(i).displayCardName());
+            if (i < p1Hand.size() - 1) {
+                expectedOutput.append(" ");
+            }
+        }
+        expectedOutput.append("\n");
+
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-015-Test-002: System displays the hand of Player 2")
+    void RESP_015_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Force Player 2 is current player
+        game.gameLogic.nextTurn();
+
+        //Display Player's hand
+        game.displayCurrentPlayerHand();
+
+        //Test player 2 hand is displayed
+        ArrayList<Card> p2Hand = game.getCurrentPlayer().getHand();
+        StringBuilder expectedOutput = new StringBuilder("\nP2 hand: ");
+        for (int i = 0; i < p2Hand.size(); i++) {
+            expectedOutput.append(p2Hand.get(i).displayCardName());
+            if (i < p2Hand.size() - 1) {
+                expectedOutput.append(" ");
+            }
+        }
+        expectedOutput.append("\n");
+
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-015-Test-003: System displays the hand of Player 3")
+    void RESP_015_test_003() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Force Player 3 is current player
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+
+        //Display Player's hand
+        game.displayCurrentPlayerHand();
+
+        //Test player 3 hand is displayed
+        ArrayList<Card> p3Hand = game.getCurrentPlayer().getHand();
+        StringBuilder expectedOutput = new StringBuilder("\nP3 hand: ");
+        for (int i = 0; i < p3Hand.size(); i++) {
+            expectedOutput.append(p3Hand.get(i).displayCardName());
+            if (i < p3Hand.size() - 1) {
+                expectedOutput.append(" ");
+            }
+        }
+        expectedOutput.append("\n");
+
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-015-Test-004: System displays the hand of Player 4")
+    void RESP_015_test_004() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Force Player 4 is current player
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+
+        //Display Player's hand
+        game.displayCurrentPlayerHand();
+
+        //Test player 4 hand is displayed
+        ArrayList<Card> p4Hand = game.getCurrentPlayer().getHand();
+        StringBuilder expectedOutput = new StringBuilder("\nP4 hand: ");
+        for (int i = 0; i < p4Hand.size(); i++) {
+            expectedOutput.append(p4Hand.get(i).displayCardName());
+            if (i < p4Hand.size() - 1) {
+                expectedOutput.append(" ");
+            }
+        }
+        expectedOutput.append("\n");
+
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-015: System displays the hand of the current player")
+    void RESP_015(){
+        RESP_015_test_001();
+        RESP_015_test_002();
+        RESP_015_test_003();
+        RESP_015_test_004();
+    }
 }

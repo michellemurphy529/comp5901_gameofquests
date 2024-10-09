@@ -55,6 +55,9 @@ public class Game {
     public Player getCurrentPlayer() {
         return gameLogic.getCurrentPlayer();
     }
+    //Get Current player hand
+    public void displayCurrentPlayerHand() {
+    }
     public void playTurn() {
         //Logic for Current Player Turn
         //Display to user which Player's turn it is
