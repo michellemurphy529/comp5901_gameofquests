@@ -32,6 +32,6 @@ public class Player {
         return shields;
     }
     public void removeShields(int shieldCount) {
-        shields -= shieldCount;
+        shields = Math.max(shields - shieldCount, 0);
     }
 }
