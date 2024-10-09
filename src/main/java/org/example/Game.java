@@ -65,6 +65,8 @@ public class Game {
         gameDisplay.displayWinners(winners);
         gameDisplay.displayTerminationMessage();
     }
+    public void displayNoWinners() {
+    }
 
     public static void main(String[] args) {
         //Initialize game

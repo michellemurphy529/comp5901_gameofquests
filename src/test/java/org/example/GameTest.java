@@ -458,4 +458,36 @@ class GameTest {
         RESP_007_test_001();
         RESP_007_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-008-Test-001: System properly processes when there are no winners and continues with next players turn")
+    void RESP_008_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setPlayers();
+
+        //Test there are no winners
+        game.gameLogic.getPlayer("P1").addShields(2);
+        game.gameLogic.getPlayer("P2").addShields(0);
+        game.gameLogic.getPlayer("P3").addShields(6);
+        game.gameLogic.getPlayer("P4").addShields(0);
+        ArrayList<Player> winners = game.getWinners();
+        assertEquals(0, winners.size());
+
+        for (int i = 0; i < 5; i++) {
+            //Display no winners and continue with next player turn
+            game.displayNoWinners();
+            game.playTurn();
+
+            //Test Output from GameDisplay class
+            String output = game.gameDisplay.getOutput();
+            assertTrue(output.contains("There are no winner(s).\nGame of Quest's continues..."));
+            assertTrue(output.contains("\n" + game.getCurrentPlayer().getPlayerID() + "'s Turn:\n"));
+        }
+    }
+
+    @Test
+    @DisplayName("RESP-008: System properly processes when there are no winners and continues with next players turn")
+    void RESP_008(){
+        RESP_008_test_001();
+    }
 }
