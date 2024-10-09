@@ -98,10 +98,12 @@ public class GameLogic {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
     public ArrayList<Player> determineWinners() {
-        Player dummyPlayer = getPlayer("P1");
-        ArrayList<Player> listNotNull = new ArrayList<>();
-        listNotNull.add(dummyPlayer);
-        listNotNull.add(dummyPlayer);
-        return listNotNull; //Need this to not throw null pointer exception for testing
+        ArrayList<Player> winners = new ArrayList<>();
+        for (Player player : players) {
+            if (player.getShieldCount() >= 7) {
+                winners.add(player);
+            }
+        }
+        return winners;
     }
 }

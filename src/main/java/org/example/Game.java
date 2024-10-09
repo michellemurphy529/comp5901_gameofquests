@@ -62,6 +62,8 @@ public class Game {
         return gameLogic.determineWinners();
     }
     public void displayWinnersAndTerminate(ArrayList<Player> winners) {
+        gameDisplay.displayWinners(winners);
+        gameDisplay.displayTerminationMessage();
     }
 
     public static void main(String[] args) {

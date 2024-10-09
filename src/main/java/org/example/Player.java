@@ -6,10 +6,12 @@ public class Player {
 
     protected String playerID;
     private ArrayList<Card> hand;
+    private int shields;
 
     public Player(String playerID) {
         this.playerID = playerID;
         this.hand = new ArrayList<Card>();
+        this.shields = 0;
     }
     public String getPlayerID() {
         return playerID;
@@ -24,5 +26,9 @@ public class Player {
         hand.remove(card);
     }
     public void addShields(int shieldCount) {
+        shields += shieldCount;
+    }
+    public int getShieldCount() {
+        return shields;
     }
 }
