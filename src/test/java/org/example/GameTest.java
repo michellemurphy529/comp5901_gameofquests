@@ -382,6 +382,9 @@ class GameTest {
     @DisplayName("RESP-006-Test-002: System properly invokes playing of turns in the fixed order")
     void RESP_006_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck eventDeck = game.getEventDeck();
+        eventDeck.shuffle();
         game.setPlayers();
 
         String[] expectedOrderOfPlayerIDs = {"P1", "P2", "P3", "P4"};
@@ -392,6 +395,7 @@ class GameTest {
                 String currentPlayerID = game.getCurrentPlayer().getPlayerID();
                 assertEquals(expectedOrderOfPlayerIDs[i], currentPlayerID);
                 game.playTurn();
+                game.discardEventCard(currentPlayerID, game.getLastCardDrawn());
             }
         }
     }
@@ -463,6 +467,9 @@ class GameTest {
     @DisplayName("RESP-008-Test-001: System properly processes when there are no winners and continues with next players turn")
     void RESP_008_test_001() {
         Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck eventDeck = game.getEventDeck();
+        eventDeck.shuffle();
         game.setPlayers();
 
         //Test there are no winners
