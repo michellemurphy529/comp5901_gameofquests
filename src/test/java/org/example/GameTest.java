@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -806,5 +807,60 @@ class GameTest {
         RESP_015_test_002();
         RESP_015_test_003();
         RESP_015_test_004();
+    }
+
+    @Test
+    @DisplayName("RESP-016-Test-001: System displays the players hand with foes listed first in increasing order, followed " +
+            "by weapons in increasing order, with swords before horses.")
+    void RESP_016_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Force Player 4 is current player
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+
+        //Add each type of Adventure Card to Player hand
+        ArrayList<Card> playerHand = game.getCurrentPlayer().getHand();
+        playerHand.clear();
+        playerHand.add(new FoeCard(5));
+        playerHand.add(new FoeCard(10));
+        playerHand.add(new FoeCard(15));
+        playerHand.add(new FoeCard(20));
+        playerHand.add(new FoeCard(25));
+        playerHand.add(new FoeCard(30));
+        playerHand.add(new FoeCard(35));
+        playerHand.add(new FoeCard(40));
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new FoeCard(70));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("H", 10));
+        playerHand.add(new WeaponCard("S", 10));
+        playerHand.add(new WeaponCard("B", 15));
+        playerHand.add(new WeaponCard("L", 20));
+        playerHand.add(new WeaponCard("E", 30));
+        Collections.shuffle(playerHand);
+
+        //Display Player's hand
+        game.displayCurrentPlayerHand();
+
+        //Test player 4 hand is displayed in the right order
+        String expectedOutput = "\nP4 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 S10 H10 B15 L20 E30\n";
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-016: System displays the players hand with foes listed first in increasing order, followed " +
+            "by weapons in increasing order, with swords before horses.")
+    void RESP_016(){
+        RESP_016_test_001();
     }
 }
