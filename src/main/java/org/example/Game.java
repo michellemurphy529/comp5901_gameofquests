@@ -56,16 +56,19 @@ public class Game {
         return gameLogic.getCurrentPlayer();
     }
     public void playTurn() {
-        //Next Turn invoked
-        gameLogic.nextTurn();
+        //Logic for Current Player Turn
         //Display to user which Player's turn it is
         String playerID = getCurrentPlayer().getPlayerID();
-        gameDisplay.displayNextTurn(playerID);
+        gameDisplay.displayTurn(playerID);
         //Draw Event Card on next Player's turn
         gameDisplay.drawingEventCardMessage();
         Card cardDrawn = drawEventCard(playerID);
         //Display Card to user
         gameDisplay.displayCardDrawn(cardDrawn);
+
+        //Next Player Logic
+        //Next Turn invoked
+        gameLogic.nextTurn();
     }
     public ArrayList<Player> getWinners() {
         return gameLogic.determineWinners();
@@ -76,6 +79,15 @@ public class Game {
     }
     public void displayNoWinners() {
         gameDisplay.displayNoWinners();
+    }
+    public void processEndOfQuest() {
+        ArrayList<Player> winners = getWinners();
+        if(winners.isEmpty()){
+            displayNoWinners();
+            playTurn();
+        }else{
+            displayWinnersAndTerminate(winners);
+        }
     }
     public Card getLastCardDrawn() {
         return gameLogic.getLastCardDrawn();

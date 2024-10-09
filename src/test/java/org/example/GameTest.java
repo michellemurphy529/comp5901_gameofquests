@@ -480,16 +480,16 @@ class GameTest {
         ArrayList<Player> winners = game.getWinners();
         assertEquals(0, winners.size());
 
-        for (int i = 0; i < 5; i++) {
-            //Display no winners and continue with next player turn
-            game.displayNoWinners();
-            game.playTurn();
+        //Added in REFAC-007
+        game.processEndOfQuest();
 
-            //Test Output from GameDisplay class
-            String output = game.gameDisplay.getOutput();
-            assertTrue(output.contains("There are no winner(s).\nGame of Quest's continues..."));
-            assertTrue(output.contains("\n" + game.getCurrentPlayer().getPlayerID() + "'s Turn:\n"));
-        }
+        String expectedOutput = "There are no winner(s).\nGame of Quest's continues...\n" +
+                "\nP1's Turn:\n\n" +
+                "Drawing Event Card..." +
+                "\nYou drew: " + game.getLastCardDrawn().displayCardName() + "\n\n";
+
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
     }
 
     @Test
@@ -518,7 +518,8 @@ class GameTest {
         assertInstanceOf(EventCard.class, lastCardDrawn);
 
         //Test Last card drawn is the same card last added to the Player's hand
-        Card cardInPlayerHand = game.getCurrentPlayer().getHand().getLast();
+        //Changed to call specifically P1 as the next turn has already been invoked
+        Card cardInPlayerHand = game.gameLogic.getPlayer("P1").getHand().getLast();
         assertEquals(lastCardDrawn, cardInPlayerHand);
     }
 
@@ -534,10 +535,11 @@ class GameTest {
         game.playTurn();
 
         //Test Event Card drawn is displayed
+        String expectedOutput = "\nP1's Turn:\n\n" +
+                "Drawing Event Card..." +
+                "\nYou drew: " + game.getLastCardDrawn().displayCardName() + "\n\n";
         String output = game.gameDisplay.getOutput();
-        assertTrue(output.contains("\n" + game.getCurrentPlayer().getPlayerID() + "'s Turn:\n"));
-        assertTrue(output.contains("Drawing Event Card..."));
-        assertTrue(output.contains("You drew: " + game.getLastCardDrawn().displayCardName() + "\n"));
+        assertEquals(expectedOutput, output);
     }
 
     @Test

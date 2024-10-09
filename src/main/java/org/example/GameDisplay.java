@@ -35,7 +35,7 @@ public class GameDisplay {
         StringBuilder noWinnersMessage = new StringBuilder("There are no winner(s).\nGame of Quest's continues...");
         display(noWinnersMessage);
     }
-    public void displayNextTurn(String playerID) {
+    public void displayTurn(String playerID) {
         StringBuilder noWinnersMessage = new StringBuilder("\n" + playerID + "'s Turn:\n");
         display(noWinnersMessage);
     }
