@@ -548,4 +548,40 @@ class GameTest {
         RESP_009_test_001();
         RESP_009_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-010-Test-001: System carries out Event card action for Plague (current player loses 2 shields)")
+    void RESP_010_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Add Plague Card as first card that will be drawn from Event Deck
+        Card plagueCard = new PlagueCard();
+        eventDeck.cards.addFirst(plagueCard);
+
+        //Add 2 shields to Player 1
+        Player p1 = game.gameLogic.getPlayer("P1");
+        p1.addShields(2);
+        //Test that before Plague Card Player 1 has 2 shields
+        assertEquals(2, p1.getShieldCount());
+
+        //Trigger Player 1 turn
+        game.playTurn();
+
+        //Test Player that draws Plague Card loses 2 shields
+        assertEquals(0, p1.getShieldCount());
+    }
+
+    @Test
+    @DisplayName("RESP-010: System carries out Event card action for Plague (current player loses 2 shields)")
+    void RESP_010(){
+        RESP_010_test_001();
+    }
+
 }
