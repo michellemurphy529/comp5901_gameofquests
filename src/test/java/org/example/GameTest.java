@@ -490,4 +490,52 @@ class GameTest {
     void RESP_008(){
         RESP_008_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-009-Test-001: When the next player’s turn is triggered, the system draws an event card")
+    void RESP_009_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Trigger next player's turn
+        game.playTurn();
+
+        //Test last card drawn is an event card
+        Card lastCardDrawn = game.getLastCardDrawn();
+        assertInstanceOf(EventCard.class, lastCardDrawn);
+
+        //Test Last card drawn is the same card last added to the Player's hand
+        Card cardInPlayerHand = game.getCurrentPlayer().getHand().getLast();
+        assertEquals(lastCardDrawn, cardInPlayerHand);
+    }
+
+    @Test
+    @DisplayName("RESP-009-Test-002: When the next player’s turn is triggered, the system draws an event card" +
+            "and displays it")
+    void RESP_009_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setPlayers();
+
+        //Trigger next player's turn
+        game.playTurn();
+
+        //Test Event Card drawn is displayed
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains("\n" + game.getCurrentPlayer().getPlayerID() + "'s Turn:\n"));
+        assertTrue(output.contains("Drawing Event Card..."));
+        assertTrue(output.contains("You drew: " + game.getLastCardDrawn().displayCardName() + "\n"));
+    }
+
+    @Test
+    @DisplayName("RESP-009: When the next player’s turn is triggered, the system draws an event card and displays it")
+    void RESP_009(){
+        RESP_009_test_001();
+        RESP_009_test_002();
+    }
 }

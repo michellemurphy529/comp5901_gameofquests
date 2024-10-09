@@ -10,4 +10,5 @@ public abstract class Card {
     public String getType() {
         return type;
     }
+    public abstract String displayCardName();
 }

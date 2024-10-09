@@ -11,4 +11,9 @@ public class AdventureCard extends Card {
     public int getValue() {
         return value;
     }
+
+    @Override
+    public String displayCardName() {
+        return "";
+    }
 }

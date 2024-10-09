@@ -5,4 +5,8 @@ public class QueensFavorCard extends Card {
         super("Queen's Favor");
     }
 
+    @Override
+    public String displayCardName() {
+        return "";
+    }
 }

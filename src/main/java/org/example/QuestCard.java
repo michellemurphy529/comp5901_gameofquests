@@ -12,4 +12,9 @@ public class QuestCard extends Card {
     public int getStages(){
         return stages;
     }
+
+    @Override
+    public String displayCardName() {
+        return "";
+    }
 }

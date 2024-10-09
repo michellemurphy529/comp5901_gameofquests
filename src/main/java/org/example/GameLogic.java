@@ -106,4 +106,7 @@ public class GameLogic {
         }
         return winners;
     }
+    public Card getLastCardDrawn() {
+        return new FoeCard(15); //dummy card
+    }
 }

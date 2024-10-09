@@ -69,6 +69,9 @@ public class Game {
     public void displayNoWinners() {
         gameDisplay.displayNoWinners();
     }
+    public Card getLastCardDrawn() {
+        return gameLogic.getLastCardDrawn();
+    }
 
     public static void main(String[] args) {
         //Initialize game
