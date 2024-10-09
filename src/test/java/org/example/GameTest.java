@@ -694,7 +694,7 @@ class GameTest {
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
-        assertEquals(expectedOutput, output);
+        assertEquals(expectedOutput.toString(), output);
     }
 
     @Test
@@ -727,7 +727,7 @@ class GameTest {
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
-        assertEquals(expectedOutput, output);
+        assertEquals(expectedOutput.toString(), output);
     }
 
     @Test
@@ -761,7 +761,7 @@ class GameTest {
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
-        assertEquals(expectedOutput, output);
+        assertEquals(expectedOutput.toString(), output);
     }
 
     @Test
@@ -796,7 +796,7 @@ class GameTest {
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
-        assertEquals(expectedOutput, output);
+        assertEquals(expectedOutput.toString(), output);
     }
 
     @Test
