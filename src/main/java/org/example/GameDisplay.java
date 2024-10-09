@@ -31,6 +31,14 @@ public class GameDisplay {
         StringBuilder terminationMessage = new StringBuilder("Game is terminated... Goodbye!");
         display(terminationMessage);
     }
+    public void displayNoWinners() {
+        StringBuilder noWinnersMessage = new StringBuilder("There are no winner(s).\nGame of Quest's continues...");
+        display(noWinnersMessage);
+    }
+    public void displayNextTurn(String playerID) {
+        StringBuilder noWinnersMessage = new StringBuilder("\n" + playerID + "'s Turn:\n");
+        display(noWinnersMessage);
+    }
     public void display(StringBuilder message) {
         output.println(message);
         consoleOutput.println(message);

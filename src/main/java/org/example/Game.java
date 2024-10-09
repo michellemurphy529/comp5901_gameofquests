@@ -57,6 +57,7 @@ public class Game {
     }
     public void playTurn() {
         gameLogic.nextTurn();
+        gameDisplay.displayNextTurn(getCurrentPlayer().getPlayerID());
     }
     public ArrayList<Player> getWinners() {
         return gameLogic.determineWinners();
@@ -66,6 +67,7 @@ public class Game {
         gameDisplay.displayTerminationMessage();
     }
     public void displayNoWinners() {
+        gameDisplay.displayNoWinners();
     }
 
     public static void main(String[] args) {
