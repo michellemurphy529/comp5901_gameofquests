@@ -1142,4 +1142,65 @@ class GameTest {
         RESP_019_test_001();
         RESP_019_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-020-Test-001: System displays the trimmed hand")
+    void RESP_020_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        adventureDeck.shuffle();
+        game.setPlayers();
+
+        //Add 3 extra cards to Player 1 hand
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        ArrayList<Card> playerHand = game.getCurrentPlayer().getHand();
+        //Add 12 cards
+        playerHand.clear();
+        playerHand.add(new FoeCard(5));
+        playerHand.add(new FoeCard(10));
+        playerHand.add(new FoeCard(15));
+        playerHand.add(new FoeCard(20));
+        playerHand.add(new FoeCard(25));
+        playerHand.add(new FoeCard(30));
+        playerHand.add(new FoeCard(35));
+        playerHand.add(new FoeCard(40));
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new FoeCard(70));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("H", 10));
+        //Add F50, D5, L20
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("L", 20));
+
+        //Get input from user 3 times
+        String userInput1 = "F50\n";
+        String userInput2 = "D5\n";
+        String userInput3 = "L20\n";
+
+        //Get user input for trimming
+        String cardToDiscard1 = game.gameDisplay.getDiscardInput(new Scanner(userInput1));
+        game.gameLogic.removeCardsAndDiscard(cardToDiscard1, playerID);
+        String cardToDiscard2 = game.gameDisplay.getDiscardInput(new Scanner(userInput2));
+        game.gameLogic.removeCardsAndDiscard(cardToDiscard2, playerID);
+        String cardToDiscard3 = game.gameDisplay.getDiscardInput(new Scanner(userInput3));
+        game.gameLogic.removeCardsAndDiscard(cardToDiscard3, playerID);
+
+        //Display Trimmed Hand
+        game.displayTrimmedHand(playerID);
+
+        String expectedOutput = "\nTrimming Complete... Here is your new hand!\n" +
+                "P1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 H10\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-020: System displays the trimmed hand")
+    void RESP_020(){
+        RESP_020_test_001();
+    }
 }

@@ -105,6 +105,8 @@ public class Game {
     public int computeNumberOfCardsToDiscard(String playerID) {
         return gameLogic.getNumberOfCardsToDiscard(playerID);
     }
+    public void displayTrimmedHand(String playerID) {
+    }
 
     public static void main(String[] args) {
         //Initialize game
