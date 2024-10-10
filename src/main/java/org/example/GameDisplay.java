@@ -60,6 +60,10 @@ public class GameDisplay {
         }
         display(displayPlayerHand);
     }
+    public void displayTrimmedHandMessage() {
+        StringBuilder trimmedHandMessage = new StringBuilder("\nTrimming Complete... Here is your new hand!");
+        display(trimmedHandMessage);
+    }
     public void display(StringBuilder message) {
         output.println(message);
         consoleOutput.println(message);

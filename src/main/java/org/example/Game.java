@@ -106,6 +106,12 @@ public class Game {
         return gameLogic.getNumberOfCardsToDiscard(playerID);
     }
     public void displayTrimmedHand(String playerID) {
+        //Calling Trim hand message
+        gameDisplay.displayTrimmedHandMessage();
+        //Sort player hand who has had their trim completed
+        gameLogic.sortPlayerHand(gameLogic.getPlayer(playerID));
+        //Display trimmed hand of player
+        gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
 
     public static void main(String[] args) {

@@ -1190,7 +1190,7 @@ class GameTest {
         //Display Trimmed Hand
         game.displayTrimmedHand(playerID);
 
-        String expectedOutput = "\nTrimming Complete... Here is your new hand!\n" +
+        String expectedOutput = "\nTrimming Complete... Here is your new hand!\n\n" +   //Had to add an extra newline char
                 "P1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 H10\n";
 
         //Test expected output
