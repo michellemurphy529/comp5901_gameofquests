@@ -102,6 +102,9 @@ public class Game {
     public Card getLastCardDrawn() {
         return gameLogic.getLastCardDrawn();
     }
+    public int computeNumberOfCardsToDiscard(String playerID) {
+        return gameLogic.getNumberOfCardsToDiscard(playerID);
+    }
 
     public static void main(String[] args) {
         //Initialize game

@@ -117,4 +117,7 @@ public class GameLogic {
     public void sortPlayerHand(Player player) {
         player.sortHand();
     }
+    public int getNumberOfCardsToDiscard(String playerID) {
+        return -1;
+    }
 }

@@ -863,4 +863,107 @@ class GameTest {
     void RESP_016(){
         RESP_016_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-017-Test-001: System computes the number of cards to discard (n) from Player 1 hand")
+    void RESP_017_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Add 1 more card to Player 1 hand
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        Card card1 = game.drawAdventureCard(playerID);
+
+        int n = game.computeNumberOfCardsToDiscard(playerID);
+        //Test n = 1
+        assertEquals(1, n);
+    }
+
+    @Test
+    @DisplayName("RESP-017-Test-002: System computes the number of cards to discard (n) from Player 2 hand")
+    void RESP_017_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Add 4 more cards to Player 2 hand
+        game.gameLogic.nextTurn();
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        Card card1 = game.drawAdventureCard(playerID);
+        Card card2 = game.drawAdventureCard(playerID);
+        Card card3 = game.drawAdventureCard(playerID);
+        Card card4 = game.drawAdventureCard(playerID);
+
+        int n = game.computeNumberOfCardsToDiscard(playerID);
+        //Test n = 4
+        assertEquals(4, n);
+    }
+
+    @Test
+    @DisplayName("RESP-017-Test-003: System computes the number of cards to discard (n) from Player 3 hand")
+    void RESP_017_test_003() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //No cards added to Player 3 hand
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+        String playerID = game.getCurrentPlayer().getPlayerID();
+
+        int n = game.computeNumberOfCardsToDiscard(playerID);
+        //Test n = 0
+        assertEquals(0, n);
+    }
+
+    @Test
+    @DisplayName("RESP-017-Test-004: System computes the number of cards to discard (n) from Player 4 hand")
+    void RESP_017_test_004() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //No cards added to Player 4 hand
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        for (int i = 0; i < 14; i++) {
+            Card card = game.drawAdventureCard(playerID);
+        }
+
+        int n = game.computeNumberOfCardsToDiscard(playerID);
+        //Test n = 14
+        assertEquals(14, n);
+    }
+
+    @Test
+    @DisplayName("RESP-017: System computes the number of cards to discard (n)")
+    void RESP_017(){
+        RESP_017_test_001();
+        RESP_017_test_002();
+        RESP_017_test_003();
+        RESP_017_test_004();
+    }
 }
