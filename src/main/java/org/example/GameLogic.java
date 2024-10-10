@@ -118,6 +118,7 @@ public class GameLogic {
         player.sortHand();
     }
     public int getNumberOfCardsToDiscard(String playerID) {
-        return -1;
+        int handSize = getPlayer(playerID).getHandSize();
+        return Math.max(0, (handSize - 12));
     }
 }

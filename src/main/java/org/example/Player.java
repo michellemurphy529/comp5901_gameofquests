@@ -37,4 +37,5 @@ public class Player {
     public void sortHand() {
         hand.sort(new SortHand());
     }
+    public int getHandSize() { return hand.size(); }
 }
