@@ -3,11 +3,13 @@ package org.example;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GameDisplay {
     protected StringWriter stringWriter;
     protected PrintWriter output;
     protected PrintWriter consoleOutput;
+    public String lastInput;
 
     public GameDisplay() {
         this.stringWriter = new StringWriter();
@@ -61,5 +63,12 @@ public class GameDisplay {
     public void display(StringBuilder message) {
         output.println(message);
         consoleOutput.println(message);
+    }
+
+    //Input methods
+    public void promptForDiscardCards(int n) {
+    }
+    public ArrayList<String> getDiscardInput(Scanner userInput) {
+        return new ArrayList<>();
     }
 }

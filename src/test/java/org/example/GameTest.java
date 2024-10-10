@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -965,5 +966,70 @@ class GameTest {
         RESP_017_test_002();
         RESP_017_test_003();
         RESP_017_test_004();
+    }
+
+    @Test
+    @DisplayName("RESP-018-Test-001: System displays player’s hand and prompts the player to discard card(s) to trim hand")
+    void RESP_018_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        adventureDeck.shuffle();
+        game.setPlayers();
+
+        //Add 3 cards to Player 1 hand
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        ArrayList<Card> playerHand = game.getCurrentPlayer().getHand();
+        //Add 12 cards
+        playerHand.clear();
+        playerHand.add(new FoeCard(5));
+        playerHand.add(new FoeCard(10));
+        playerHand.add(new FoeCard(15));
+        playerHand.add(new FoeCard(20));
+        playerHand.add(new FoeCard(25));
+        playerHand.add(new FoeCard(30));
+        playerHand.add(new FoeCard(35));
+        playerHand.add(new FoeCard(40));
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new FoeCard(70));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("H", 10));
+        //Add F50, D5, L20
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("L", 20));
+
+        //Display hand
+        game.displayCurrentPlayerHand();
+        //Prompt user to discard
+        int n = game.computeNumberOfCardsToDiscard(playerID);
+        game.gameDisplay.promptForDiscardCards(n);
+        //Get input from user in list format
+        String userInput = "F50/D5/L20\n";
+        ArrayList<String> cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+
+        String expectedOutput = "\nP1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F50 F70 D5 D5 H10 L20\n" +
+                "Discard at least 3 cards.\n" +
+                "Type out cards in this format 'F5/H10/F50' and press the <return> key:\n";
+
+        //Test display hand and prompts discard
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+
+        //Test user input is being properly taken in
+        assertEquals("F50/D5/L20", game.gameDisplay.lastInput);
+
+        //Test cards wanted to discard are same as list
+        ArrayList<String> expectedList = new ArrayList<>();
+        expectedList.add("F50");
+        expectedList.add("D5");
+        expectedList.add("L20");
+        assertEquals(expectedList, cardsToDiscard);
+    }
+
+    @Test
+    @DisplayName("RESP-018: System displays player’s hand and prompts the player to discard card(s) to trim hand")
+    void RESP_018(){
+        RESP_018_test_001();
     }
 }
