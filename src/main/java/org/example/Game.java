@@ -57,6 +57,7 @@ public class Game {
     }
     //Get Current player hand
     public void displayCurrentPlayerHand() {
+        gameLogic.sortPlayerHand(getCurrentPlayer());
         gameDisplay.displayPlayerHand(getCurrentPlayer());
     }
     public void playTurn() {

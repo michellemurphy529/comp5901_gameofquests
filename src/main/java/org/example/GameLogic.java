@@ -114,4 +114,7 @@ public class GameLogic {
     public void carryOutPlagueAction() {
         getCurrentPlayer().removeShields(2);
     }
+    public void sortPlayerHand(Player player) {
+        player.sortHand();
+    }
 }

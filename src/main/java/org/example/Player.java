@@ -34,4 +34,7 @@ public class Player {
     public void removeShields(int shieldCount) {
         shields = Math.max(shields - shieldCount, 0);
     }
+    public void sortHand() {
+        hand.sort(new SortHand());
+    }
 }
