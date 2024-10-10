@@ -121,4 +121,6 @@ public class GameLogic {
         int handSize = getPlayer(playerID).getHandSize();
         return Math.max(0, (handSize - 12));
     }
+    public void removeCardsAndDiscard(ArrayList<String> cardsToDiscard, String playerID) {
+    }
 }

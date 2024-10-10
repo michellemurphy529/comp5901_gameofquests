@@ -1032,4 +1032,104 @@ class GameTest {
     void RESP_018(){
         RESP_018_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-019-Test-001: System removes card from the hand and discards it")
+    void RESP_019_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        adventureDeck.shuffle();
+        game.setPlayers();
+
+        //Add 3 cards to Player 1 hand
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        ArrayList<Card> playerHand = game.getCurrentPlayer().getHand();
+        //Add 12 cards
+        playerHand.clear();
+        playerHand.add(new FoeCard(5));
+        playerHand.add(new FoeCard(10));
+        playerHand.add(new FoeCard(15));
+        playerHand.add(new FoeCard(20));
+        playerHand.add(new FoeCard(25));
+        playerHand.add(new FoeCard(30));
+        playerHand.add(new FoeCard(35));
+        playerHand.add(new FoeCard(40));
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new FoeCard(70));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("H", 10));
+        //Add F50, D5, L20
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("L", 20));
+
+        //Get input from user in list format
+        String userInput = "F50\n";
+        ArrayList<String> cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+
+        //Test player hand has 15 cards in it
+        Player player = game.getCurrentPlayer();
+        assertEquals(15, player.getHandSize());
+
+        //Remove cards and discard
+        game.gameLogic.removeCardsAndDiscard(cardsToDiscard, playerID);
+
+        //Test player hand has 14 cards in it
+        assertEquals(14, player.getHandSize());
+    }
+
+    @Test
+    @DisplayName("RESP-019-Test-002: System removes card from the hand and discards it in adventure discard pile")
+    void RESP_019_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        adventureDeck.shuffle();
+        game.setPlayers();
+
+        //Add 3 cards to Player 1 hand
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        ArrayList<Card> playerHand = game.getCurrentPlayer().getHand();
+        //Add 12 cards
+        playerHand.clear();
+        playerHand.add(new FoeCard(5));
+        playerHand.add(new FoeCard(10));
+        playerHand.add(new FoeCard(15));
+        playerHand.add(new FoeCard(20));
+        playerHand.add(new FoeCard(25));
+        playerHand.add(new FoeCard(30));
+        playerHand.add(new FoeCard(35));
+        playerHand.add(new FoeCard(40));
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new FoeCard(70));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("H", 10));
+        //Add F50, D5, L20
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new WeaponCard("D", 5));
+        playerHand.add(new WeaponCard("L", 20));
+
+        //Get input from user in list format
+        String userInput = "F50\n";
+        ArrayList<String> cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+
+        //Test discard pile size is 0
+        int discardSizeBefore = game.gameLogic.getAdventureDeck().getDiscardPileSize();
+        assertEquals(0, discardSizeBefore);
+
+        //Remove cards and discard
+        game.gameLogic.removeCardsAndDiscard(cardsToDiscard, playerID);
+
+        //Test discard pile size is 1
+        int discardSizeAfter = game.gameLogic.getAdventureDeck().getDiscardPileSize();
+        assertEquals(1, discardSizeAfter);
+    }
+
+    @Test
+    @DisplayName("RESP-019: System removes card from the hand and discards it in the correct discard pile")
+    void RESP_019(){
+        RESP_019_test_001();
+        RESP_019_test_002();
+    }
 }
