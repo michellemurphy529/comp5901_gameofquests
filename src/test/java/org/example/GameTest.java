@@ -1004,27 +1004,30 @@ class GameTest {
         //Prompt user to discard
         int n = game.computeNumberOfCardsToDiscard(playerID);
         game.gameDisplay.promptForDiscardCards(n);
-        //Get input from user in list format
-        String userInput = "F50/D5/L20\n";
-        ArrayList<String> cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+        //Get input from user 3 times
+        String userInput1 = "F50\n";
+        String userInput2 = "D5\n";
+        String userInput3 = "L20\n";
+
+        //Test User input matches what is received each time
+        String cardsToDiscard1 = game.gameDisplay.getDiscardInput(new Scanner(userInput1));
+        assertEquals(cardsToDiscard1, game.gameDisplay.lastInput);
+
+        String cardsToDiscard2 = game.gameDisplay.getDiscardInput(new Scanner(userInput2));
+        assertEquals(cardsToDiscard2, game.gameDisplay.lastInput);
+
+        String cardsToDiscard3 = game.gameDisplay.getDiscardInput(new Scanner(userInput3));
+        assertEquals(cardsToDiscard3, game.gameDisplay.lastInput);
 
         String expectedOutput = "\nP1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F50 F70 D5 D5 H10 L20\n" +
-                "Discard at least 3 cards.\n" +
-                "Type out cards in this format 'F5/H10/F50' and press the <return> key:\n";
+                "\nDiscard 3 cards\n\n" +
+                "Type out cards in the format as it appears in your hand\n" +
+                "For Example: 'F5' (WITHOUT '' around the card name)\n" +
+                "then press the <return> key:\n";
 
         //Test display hand and prompts discard
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
-
-        //Test user input is being properly taken in
-        assertEquals("F50/D5/L20", game.gameDisplay.lastInput);
-
-        //Test cards wanted to discard are same as list
-        ArrayList<String> expectedList = new ArrayList<>();
-        expectedList.add("F50");
-        expectedList.add("D5");
-        expectedList.add("L20");
-        assertEquals(expectedList, cardsToDiscard);
     }
 
     @Test
@@ -1064,9 +1067,9 @@ class GameTest {
         playerHand.add(new WeaponCard("D", 5));
         playerHand.add(new WeaponCard("L", 20));
 
-        //Get input from user in list format
+        //Get input from user for 1 card
         String userInput = "F50\n";
-        ArrayList<String> cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+        String cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
 
         //Test player hand has 15 cards in it
         Player player = game.getCurrentPlayer();
@@ -1110,20 +1113,27 @@ class GameTest {
         playerHand.add(new WeaponCard("D", 5));
         playerHand.add(new WeaponCard("L", 20));
 
-        //Get input from user in list format
-        String userInput = "F50\n";
-        ArrayList<String> cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+        //Get input from user for 1 card
+        String userInput1 = "D5\n";
+        String cardToDiscard1 = game.gameDisplay.getDiscardInput(new Scanner(userInput1));
 
         //Test discard pile size is 0
-        int discardSizeBefore = game.gameLogic.getAdventureDeck().getDiscardPileSize();
-        assertEquals(0, discardSizeBefore);
+        assertEquals(0, game.gameLogic.getAdventureDeck().getDiscardPileSize());
+        //Remove card D5 and discard
+        game.gameLogic.removeCardsAndDiscard(cardToDiscard1, playerID);
+        //Test discard pile size is 1
+        assertEquals(1, game.gameLogic.getAdventureDeck().getDiscardPileSize());
 
-        //Remove cards and discard
-        game.gameLogic.removeCardsAndDiscard(cardsToDiscard, playerID);
+        //Test same thing for a second card
+        String userInput2 = "L20\n";
+        String cardToDiscard2 = game.gameDisplay.getDiscardInput(new Scanner(userInput2));
 
         //Test discard pile size is 1
-        int discardSizeAfter = game.gameLogic.getAdventureDeck().getDiscardPileSize();
-        assertEquals(1, discardSizeAfter);
+        assertEquals(1, game.gameLogic.getAdventureDeck().getDiscardPileSize());
+        //Remove card L20 and discard
+        game.gameLogic.removeCardsAndDiscard(cardToDiscard2, playerID);
+        //Test discard pile size is 2
+        assertEquals(2, game.gameLogic.getAdventureDeck().getDiscardPileSize());
     }
 
     @Test

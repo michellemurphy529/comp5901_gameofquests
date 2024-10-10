@@ -3,7 +3,6 @@ package org.example;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class GameDisplay {
@@ -68,15 +67,15 @@ public class GameDisplay {
 
     //Input methods
     public void promptForDiscardCards(int n) {
-        StringBuilder promptDiscard = new StringBuilder("Discard at least " + n + " cards.\n" +
-                "Type out cards in this format 'F5/H10/F50' and press the <return> key:");
+        StringBuilder promptDiscard = new StringBuilder("\nDiscard " + n + " cards\n\n" +
+                "Type out cards in the format as it appears in your hand\n" +
+                "For Example: 'F5' (WITHOUT '' around the card name)\n" +
+                "then press the <return> key:");
         display(promptDiscard);
     }
-    public ArrayList<String> getDiscardInput(Scanner userInput) {
+    public String getDiscardInput(Scanner userInput) {
         String input = userInput.nextLine();
         lastInput = input;
-        //Split input
-        String[] cardsFromUser = input.split("/");
-        return new ArrayList<>(Arrays.asList(cardsFromUser));
+        return input;
     }
 }

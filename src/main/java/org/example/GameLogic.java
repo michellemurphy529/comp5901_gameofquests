@@ -121,15 +121,15 @@ public class GameLogic {
         int handSize = getPlayer(playerID).getHandSize();
         return Math.max(0, (handSize - 12));
     }
-    public void removeCardsAndDiscard(ArrayList<String> cardsToDiscard, String playerID) {
-        String cardType = cardsToDiscard.getFirst().substring(0, 1);
-        Card cardToDiscard = getCardFromHand(getPlayerHand(playerID), cardType);
+    public void removeCardsAndDiscard(String cardStringToDiscard, String playerID) {
+        String cardType = cardStringToDiscard.substring(0, 1);
+        Card cardToDiscard = getCardFromHand(cardType, playerID);
         discardCard(playerID, getAdventureDeck(), cardToDiscard);
     }
-    public Card getCardFromHand(ArrayList<Card> playerHand, String cardType) {
+    public Card getCardFromHand(String cardTypeToFind, String playerID) {
         Card cardFound = null;
-        for (Card card : playerHand) {
-            if(card.getType().equals(cardType)) {
+        for (Card card : getPlayerHand(playerID)) {
+            if(card.getType().equals(cardTypeToFind)) {
                 cardFound = card;
             }
         }
