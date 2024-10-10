@@ -1203,4 +1203,81 @@ class GameTest {
     void RESP_020(){
         RESP_020_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-012-Test-001: System carries out Event card action for Queen’s Favor current player draws " +
+            "2 adventure cards and does not trim hand")
+    void RESP_012_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+
+        //Add Queen's Favor Card as first card that will be drawn from Event Deck
+        Card queenFavorCard = new QueensFavorCard();
+        eventDeck.cards.addFirst(queenFavorCard);
+
+        //Test that before Queens Favor Card player has 0 cards in their hand
+        assertEquals(0, game.getCurrentPlayer().getHandSize());
+
+        //Trigger player 1 turn
+        game.playTurn();
+
+        //Test that after Queens Favor Card player has 2 cards in their hand
+        assertEquals(2, game.getCurrentPlayer().getHandSize());
+
+        //Test hand for player is not invoked
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        game.determineIfPlayerNeedsToTrimHand(playerID);
+        assertEquals(2, game.getCurrentPlayer().getHandSize());
+    }
+
+    @Test
+    @DisplayName("RESP-012-Test-002: System carries out Event card action for Queen’s Favor current player draws 2 " +
+            "adventure cards and does trim hand")
+    void RESP_012_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Force Player 3 drawing Queen favor
+        game.gameLogic.nextTurn();
+        game.gameLogic.nextTurn();
+
+        //Add Queen's Favor Card as first card that will be drawn from Event Deck
+        Card queenFavorCard = new QueensFavorCard();
+        eventDeck.cards.addFirst(queenFavorCard);
+
+        //Test that before Queens Favor Card player has 0 cards in their hand
+        assertEquals(12, game.getCurrentPlayer().getHandSize());
+
+        //Trigger player 1 turn
+        game.playTurn();
+
+        //Test that after Queens Favor Card player has 2 cards in their hand
+        assertEquals(14, game.getCurrentPlayer().getHandSize());
+
+        //Trim hand for player in invoked
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        game.determineIfPlayerNeedsToTrimHand(playerID);
+
+        //Test player has their hand trimmed
+        assertEquals(12, game.getCurrentPlayer().getHandSize());
+    }
+
+    @Test
+    @DisplayName("RESP-012: System carries out Event card action for Queen’s Favor (current player draws 2 adventure " +
+            "cards and possibly trims hand)")
+    void RESP_012(){
+        RESP_012_test_001();
+        RESP_012_test_002();
+    }
 }

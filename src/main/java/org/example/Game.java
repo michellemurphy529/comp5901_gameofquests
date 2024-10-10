@@ -113,6 +113,8 @@ public class Game {
         //Display trimmed hand of player
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
+    public void determineIfPlayerNeedsToTrimHand(String playerID) {
+    }
 
     public static void main(String[] args) {
         //Initialize game
