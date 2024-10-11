@@ -6,13 +6,16 @@ public class Game {
 
     protected GameLogic gameLogic;
     protected GameDisplay gameDisplay;
+    protected Scanner input;
 
     public Game(GameLogic gameLogic, GameDisplay gameDisplay) {
         this.gameLogic = gameLogic;
         this.gameDisplay = gameDisplay;
+        this.input = new Scanner(System.in);
     }
     //Forcing Test Inputs
     public void setInput(Scanner overrideInput) {
+        this.input = overrideInput;
     }
     public void setDecks() {
         gameLogic.setAdventureDeck();
@@ -79,10 +82,24 @@ public class Game {
         if(cardDrawn.getType().equals("Plague")) {
             gameLogic.carryOutPlagueAction();
         }
+        //Queen's Favor Card Drawn
+        if(cardDrawn.getType().equals("Queen's Favor")) {
+            //Current player draws 2 Adventure Cards
+            dealNumberOfAdventureCardsToPlayer(playerID, 2);
+            //Discard Event Card immediately before possibility of Trimming Hand occurs
+            discardEventCard(playerID, cardDrawn);
+            //Possibly Trims their hand
+            determineIfPlayerNeedsToTrimHand(playerID);
+        }
 
         //Next Player Logic
         //Next Turn invoked
         gameLogic.nextTurn();
+    }
+    public void dealNumberOfAdventureCardsToPlayer(String playerID, int numberOfCards) {
+        for (int i = 0; i < numberOfCards; i++) {
+            drawAdventureCard(playerID);
+        }
     }
     public ArrayList<Player> getWinners() {
         return gameLogic.determineWinners();
@@ -118,6 +135,26 @@ public class Game {
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
     public void determineIfPlayerNeedsToTrimHand(String playerID) {
+        int n = computeNumberOfCardsToDiscard(playerID);
+        //Trim player hand
+        if(n > 0) {
+            trimHand(playerID, n);
+        }
+    }
+    public void trimHand(String playerID, int n) {
+        //Display current Player Hand
+        displayCurrentPlayerHand();
+        int numberOfCardsToDiscard = n;
+
+        //Begin Trimming loop
+        for (int i = 0; i < numberOfCardsToDiscard; i++) {
+            //Display Prompt for player to discard n cards
+            gameDisplay.promptForDiscardCards(n);
+            String cardToDiscard = gameDisplay.getDiscardInput(input);
+            gameLogic.removeCardsAndDiscard(cardToDiscard, playerID);
+            n -= 1;
+        }
+        displayTrimmedHand(playerID);
     }
 
     public static void main(String[] args) {
