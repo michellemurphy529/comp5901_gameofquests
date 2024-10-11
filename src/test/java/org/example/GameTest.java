@@ -1295,4 +1295,120 @@ class GameTest {
         RESP_012_test_001();
         RESP_012_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-013-Test-001: System carries out Event card action for Prosperity (all players draw 2 adventure cards " +
+            "and no players trim hand)")
+    void RESP_013_test_001() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+
+        //Player 2 drawing Prosperity card
+        game.gameLogic.nextTurn();
+
+        //Add Prosperity Card as first card that will be drawn from Event Deck
+        Card prosperity = new ProsperityCard();
+        eventDeck.cards.addFirst(prosperity);
+
+        //Test that all players have 0 cards in their hand before Prosperity Card drawn
+        assertEquals(0, game.gameLogic.getPlayer("P1").getHandSize());
+        assertEquals(0, game.gameLogic.getPlayer("P2").getHandSize());
+        assertEquals(0, game.gameLogic.getPlayer("P3").getHandSize());
+        assertEquals(0, game.gameLogic.getPlayer("P4").getHandSize());
+
+        //player 2 turn
+        game.playTurn();
+
+        //Test that all players have 2 cards in their hand after Prosperity Card drawn
+        assertEquals(2, game.gameLogic.getPlayer("P1").getHandSize());
+        assertEquals(2, game.gameLogic.getPlayer("P2").getHandSize());
+        assertEquals(2, game.gameLogic.getPlayer("P3").getHandSize());
+        assertEquals(2, game.gameLogic.getPlayer("P4").getHandSize());
+    }
+
+    @Test
+    @DisplayName("RESP-013-Test-002: System carries out Event card action for Prosperity (all players draw 2 adventure cards " +
+            "and all players trim hand)")
+    void RESP_013_test_002() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
+        game.setPlayers();
+        game.dealInitial12AdventureCards();
+
+        //Remove 2 cards from all players hands and add F5 and H10 to ensure they can be discarded in the trim
+        for (int i = 0; i < 2; i++) {
+            Card card1 = game.gameLogic.getPlayerHand("P1").getFirst();
+            Card card2 = game.gameLogic.getPlayerHand("P2").getFirst();
+            Card card3 = game.gameLogic.getPlayerHand("P3").getFirst();
+            Card card4 = game.gameLogic.getPlayerHand("P4").getFirst();
+            game.discardAdventureCard("P1", card1);
+            game.discardAdventureCard("P2", card2);
+            game.discardAdventureCard("P3", card3);
+            game.discardAdventureCard("P4", card4);
+        }
+        game.gameLogic.getPlayer("P1").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P1").addCardToHand(new WeaponCard("H", 10));
+        game.gameLogic.getPlayer("P2").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P2").addCardToHand(new WeaponCard("H", 10));
+        game.gameLogic.getPlayer("P3").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P3").addCardToHand(new WeaponCard("H", 10));
+        game.gameLogic.getPlayer("P4").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P4").addCardToHand(new WeaponCard("H", 10));
+
+        String userInput = "F5\nH10\nF5\nH10\nF5\nH10\nF5\nH10\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Player 2 drawing Prosperity card
+        game.gameLogic.nextTurn();
+
+        //Add Prosperity Card as first card that will be drawn from Event Deck
+        Card prosperity = new ProsperityCard();
+        eventDeck.cards.addFirst(prosperity);
+
+        //Get all players hand before Prosperity card is drawn
+        ArrayList<Card> p1Hand = game.gameLogic.getPlayer("P1").getHand();
+        ArrayList<Card> p2Hand = game.gameLogic.getPlayer("P2").getHand();
+        ArrayList<Card> p3Hand = game.gameLogic.getPlayer("P3").getHand();
+        ArrayList<Card> p4Hand = game.gameLogic.getPlayer("P4").getHand();
+
+        //Test that all players have 12 cards in their hand before Prosperity Card drawn
+        assertEquals(12, game.gameLogic.getPlayer("P1").getHandSize());
+        assertEquals(12, game.gameLogic.getPlayer("P2").getHandSize());
+        assertEquals(12, game.gameLogic.getPlayer("P3").getHandSize());
+        assertEquals(12, game.gameLogic.getPlayer("P4").getHandSize());
+
+        //player 2 turn
+        game.playTurn();
+
+        //Test that all players have 12 cards in their hand after Prosperity Card drawn
+        assertEquals(12, game.gameLogic.getPlayer("P1").getHandSize());
+        assertEquals(12, game.gameLogic.getPlayer("P2").getHandSize());
+        assertEquals(12, game.gameLogic.getPlayer("P3").getHandSize());
+        assertEquals(12, game.gameLogic.getPlayer("P4").getHandSize());
+
+        //Test hands of players are different from before the trimming occurs
+        assertNotEquals(p1Hand, game.gameLogic.getPlayer("P1").getHand());
+        assertNotEquals(p2Hand, game.gameLogic.getPlayer("P2").getHand());
+        assertNotEquals(p3Hand, game.gameLogic.getPlayer("P3").getHand());
+        assertNotEquals(p4Hand, game.gameLogic.getPlayer("P4").getHand());
+    }
+
+    @Test
+    @DisplayName("RESP-013: System carries out Event card action for Prosperity (all players draw 2 adventure cards " +
+            "and possibly trim hand)")
+    void RESP_013(){
+        RESP_013_test_001();
+        RESP_013_test_002();
+    }
 }
