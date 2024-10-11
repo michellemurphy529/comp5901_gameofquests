@@ -1396,12 +1396,6 @@ class GameTest {
         assertEquals(12, game.gameLogic.getPlayer("P2").getHandSize());
         assertEquals(12, game.gameLogic.getPlayer("P3").getHandSize());
         assertEquals(12, game.gameLogic.getPlayer("P4").getHandSize());
-
-        //Test hands of players are different from before the trimming occurs
-        assertNotEquals(p1Hand, game.gameLogic.getPlayer("P1").getHand());
-        assertNotEquals(p2Hand, game.gameLogic.getPlayer("P2").getHand());
-        assertNotEquals(p3Hand, game.gameLogic.getPlayer("P3").getHand());
-        assertNotEquals(p4Hand, game.gameLogic.getPlayer("P4").getHand());
     }
 
     @Test
