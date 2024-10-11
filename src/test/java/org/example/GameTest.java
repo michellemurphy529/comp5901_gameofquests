@@ -1223,16 +1223,16 @@ class GameTest {
         //Test that before Queens Favor Card player has 0 cards in their hand
         assertEquals(0, game.getCurrentPlayer().getHandSize());
 
+        //Get PlayerID before next turn is invoked
+        String playerID = game.getCurrentPlayer().getPlayerID();
+
         //Trigger player 1 turn
         game.playTurn();
 
+        //Test trim hand for player is not invoked
+        int handSize2 = game.gameLogic.getPlayer(playerID).getHandSize();
         //Test that after Queens Favor Card player has 2 cards in their hand
-        assertEquals(2, game.getCurrentPlayer().getHandSize());
-
-        //Test hand for player is not invoked
-        String playerID = game.getCurrentPlayer().getPlayerID();
-        game.determineIfPlayerNeedsToTrimHand(playerID);
-        assertEquals(2, game.getCurrentPlayer().getHandSize());
+        assertEquals(2, handSize2);
     }
 
     @Test
@@ -1252,25 +1252,40 @@ class GameTest {
         game.gameLogic.nextTurn();
         game.gameLogic.nextTurn();
 
+        //Get PlayerID before next turn is invoked
+        String playerID = game.getCurrentPlayer().getPlayerID();
+
+        //Remove 2 cards from Player 3 Hand and add F5 and H10 to ensure they can be discarded in the trim
+        for (int i = 0; i < 2; i++) {
+            Card card = game.getCurrentPlayer().getHand().getFirst();
+            game.discardAdventureCard(playerID, card);
+        }
+        game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer(playerID).addCardToHand(new WeaponCard("H", 10));
+
+        String userInput = "F5\nH10\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
         //Add Queen's Favor Card as first card that will be drawn from Event Deck
         Card queenFavorCard = new QueensFavorCard();
         eventDeck.cards.addFirst(queenFavorCard);
 
+        //Player hand size
+        int handSize1 = game.gameLogic.getPlayer(playerID).getHandSize();
         //Test that before Queens Favor Card player has 0 cards in their hand
-        assertEquals(12, game.getCurrentPlayer().getHandSize());
+        assertEquals(12, handSize1);
 
-        //Trigger player 1 turn
+        //Trigger player 3 turn
         game.playTurn();
 
-        //Test that after Queens Favor Card player has 2 cards in their hand
-        assertEquals(14, game.getCurrentPlayer().getHandSize());
+        //Player hand size
+        int handSize2 = game.gameLogic.getPlayer(playerID).getHandSize();
 
         //Trim hand for player in invoked
-        String playerID = game.getCurrentPlayer().getPlayerID();
-        game.determineIfPlayerNeedsToTrimHand(playerID);
-
-        //Test player has their hand trimmed
-        assertEquals(12, game.getCurrentPlayer().getHandSize());
+        //Test player has been trimmed down to 12 cards again
+        assertEquals(12, handSize2);
     }
 
     @Test

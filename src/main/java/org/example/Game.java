@@ -1,5 +1,6 @@
 package org.example;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Game {
 
@@ -9,6 +10,9 @@ public class Game {
     public Game(GameLogic gameLogic, GameDisplay gameDisplay) {
         this.gameLogic = gameLogic;
         this.gameDisplay = gameDisplay;
+    }
+    //Forcing Test Inputs
+    public void setInput(Scanner overrideInput) {
     }
     public void setDecks() {
         gameLogic.setAdventureDeck();
