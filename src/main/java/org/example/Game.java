@@ -67,6 +67,10 @@ public class Game {
         gameLogic.sortPlayerHand(getCurrentPlayer());
         gameDisplay.displayPlayerHand(getCurrentPlayer());
     }
+    public void displayPlayerHand(String playerID) {
+        gameLogic.sortPlayerHand(gameLogic.getPlayer(playerID));
+        gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
+    }
     public void playTurn() {
         //Logic for Current Player Turn
         //Display to user which Player's turn it is
@@ -90,6 +94,19 @@ public class Game {
             discardEventCard(playerID, cardDrawn);
             //Possibly Trims their hand
             determineIfPlayerNeedsToTrimHand(playerID);
+        }
+        //Prosperity Card Drawn
+        if(cardDrawn.getType().equals("Prosperity")) {
+            //All Players draw 2 Adventure Cards
+            for (Player player : getPlayers()) {
+                dealNumberOfAdventureCardsToPlayer(player.getPlayerID(), 2);
+            }
+            //Discard Event Card immediately before possibility of Trimming Hand occurs
+            discardEventCard(playerID, cardDrawn);
+            //Possibly Trims all players hands
+            for (Player player : getPlayers()) {
+                determineIfPlayerNeedsToTrimHand(player.getPlayerID());
+            }
         }
 
         //Next Player Logic
@@ -143,7 +160,7 @@ public class Game {
     }
     public void trimHand(String playerID, int n) {
         //Display current Player Hand
-        displayCurrentPlayerHand();
+        displayPlayerHand(playerID);
         int numberOfCardsToDiscard = n;
 
         //Begin Trimming loop
