@@ -397,7 +397,7 @@ class GameTest {
                 String currentPlayerID = game.getCurrentPlayer().getPlayerID();
                 assertEquals(expectedOrderOfPlayerIDs[i], currentPlayerID);
                 game.playTurn();
-                game.discardEventCard(currentPlayerID, game.getLastCardDrawn());
+                game.discardEventCard(currentPlayerID, game.getLastEventCardDrawn());
             }
         }
     }
@@ -488,7 +488,7 @@ class GameTest {
         String expectedOutput = "There are no winner(s).\nGame of Quest's continues...\n" +
                 "\nP1's Turn:\n\n" +
                 "Drawing Event Card..." +
-                "\nYou drew: " + game.getLastCardDrawn().displayCardName() + "\n\n";
+                "\nYou drew: " + game.getLastEventCardDrawn().displayCardName() + "\n\n";
 
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
@@ -516,7 +516,7 @@ class GameTest {
         game.playTurn();
 
         //Test last card drawn is an event card
-        Card lastCardDrawn = game.getLastCardDrawn();
+        Card lastCardDrawn = game.getLastEventCardDrawn();
         assertInstanceOf(EventCard.class, lastCardDrawn);
 
         //Test Last card drawn is the same card last added to the Player's hand
@@ -539,7 +539,7 @@ class GameTest {
         //Test Event Card drawn is displayed
         String expectedOutput = "\nP1's Turn:\n\n" +
                 "Drawing Event Card..." +
-                "\nYou drew: " + game.getLastCardDrawn().displayCardName() + "\n\n";
+                "\nYou drew: " + game.getLastEventCardDrawn().displayCardName() + "\n\n";
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
     }

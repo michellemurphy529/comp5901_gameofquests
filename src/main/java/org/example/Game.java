@@ -137,8 +137,8 @@ public class Game {
             displayWinnersAndTerminate(winners);
         }
     }
-    public Card getLastCardDrawn() {
-        return gameLogic.getLastCardDrawn();
+    public Card getLastEventCardDrawn() {
+        return gameLogic.getLastEventCardDrawn();
     }
     public int computeNumberOfCardsToDiscard(String playerID) {
         return gameLogic.getNumberOfCardsToDiscard(playerID);

@@ -9,7 +9,7 @@ public class GameLogic {
     protected ArrayList<Player> players;
     String[] playerIDs;
     private int currentPlayerIndex;
-    private Card lastCardDrawn;
+    private Card lastEventCardDrawn;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -76,7 +76,10 @@ public class GameLogic {
     public Card drawCard(String playerID, Deck deck) {
         //Draw card from Deck
         Card cardDrawn = deck.drawCard();
-        lastCardDrawn = cardDrawn;
+
+        if(cardDrawn instanceof EventCard) {
+            lastEventCardDrawn = cardDrawn;
+        }
 
         //Add Card drawn to Players hand
         Player player = getPlayer(playerID);
@@ -108,8 +111,8 @@ public class GameLogic {
         }
         return winners;
     }
-    public Card getLastCardDrawn() {
-        return lastCardDrawn;
+    public Card getLastEventCardDrawn() {
+        return lastEventCardDrawn;
     }
     public void carryOutPlagueAction() {
         getCurrentPlayer().removeShields(2);
