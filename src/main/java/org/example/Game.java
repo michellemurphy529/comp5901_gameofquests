@@ -166,6 +166,8 @@ public class Game {
         }
         displayTrimmedHand(playerID);
     }
+    public void stageIsValidAndDisplayCards(String playerID, int numberOfStages) {
+    }
 
     public static void main(String[] args) {
         //Initialize game

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -1406,5 +1407,60 @@ class GameTest {
     void RESP_013(){
         RESP_013_test_001();
         RESP_013_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-041-Test-001: System checks that if the sponsor enters ‘Quit’ and the stage is valid then it" +
+            " displays the cards that are used in the stages of the quest")
+    void RESP_041_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 4 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 4);
+
+        //Input quit
+        String userInput = "Quit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 4 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        int numberOfStages = questCard.getStages();
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        game.stageIsValidAndDisplayCards(playerID, numberOfStages);
+
+        String expectedOutput = "\nStage set up is completed...\n\n" +
+                "STAGE 1:\n" +
+                "Cards = F5\n" +
+                "Value = 5\n\n" +
+                "STAGE 2:\n" +
+                "Cards = F10\n" +
+                "Value = 10\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+
+    }
+
+    @Test
+    @DisplayName("RESP-041: System checks that if the sponsor enters ‘Quit’ and the stage is valid then it displays" +
+            " the cards that are used in the stages of the quest")
+    void RESP_041(){
+        RESP_041_test_001();
     }
 }
