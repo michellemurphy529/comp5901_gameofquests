@@ -521,8 +521,10 @@ class GameTest {
 
         //Test Last card drawn is the same card last added to the Player's hand
         //Changed to call specifically P1 as the next turn has already been invoked
-        Card cardInPlayerHand = game.gameLogic.getPlayer("P1").getHand().getLast();
-        assertEquals(lastCardDrawn, cardInPlayerHand);
+
+        //REFAC-013 : REMOVING THIS ASSERTION AS DOES NOT APPLY ANYMORE AS PLAYER HAND SHOULD NOT HAVE EVENT CARD KEPT IN IT
+//        Card cardInPlayerHand = game.gameLogic.getPlayer("P1").getHand().getLast();
+//        assertEquals(lastCardDrawn, cardInPlayerHand);
     }
 
     @Test

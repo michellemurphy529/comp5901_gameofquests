@@ -81,7 +81,10 @@ public class Game {
         Card cardDrawn = drawEventCard(playerID);
         //Display Card to user
         gameDisplay.displayCardDrawn(cardDrawn);
+        //Discard Event card from hand before carrying out the Event card actions
+        discardEventCard(playerID, cardDrawn);
 
+        //EVENT CARD ACTIONS
         //Plague Card Drawn
         if(cardDrawn.getType().equals("Plague")) {
             gameLogic.carryOutPlagueAction();
@@ -89,34 +92,22 @@ public class Game {
         //Queen's Favor Card Drawn
         if(cardDrawn.getType().equals("Queen's Favor")) {
             //Current player draws 2 Adventure Cards
-            dealNumberOfAdventureCardsToPlayer(playerID, 2);
-            //Discard Event Card immediately before possibility of Trimming Hand occurs
-            discardEventCard(playerID, cardDrawn);
-            //Possibly Trims their hand
-            determineIfPlayerNeedsToTrimHand(playerID);
+            gameLogic.dealNumberAdventureCards(playerID, 2);
         }
         //Prosperity Card Drawn
         if(cardDrawn.getType().equals("Prosperity")) {
             //All Players draw 2 Adventure Cards
-            for (Player player : getPlayers()) {
-                dealNumberOfAdventureCardsToPlayer(player.getPlayerID(), 2);
-            }
-            //Discard Event Card immediately before possibility of Trimming Hand occurs
-            discardEventCard(playerID, cardDrawn);
-            //Possibly Trims all players hands
-            for (Player player : getPlayers()) {
-                determineIfPlayerNeedsToTrimHand(player.getPlayerID());
-            }
+            gameLogic.dealAllPlayersAdventureCards(getPlayerIDs(), 2);
         }
+        //Possibly Trims Player Hand (Queen's favor) OR all Player's Hand (Prosperity)
+        trimHandAction(getPlayerIDs());
 
         //Next Player Logic
         //Next Turn invoked
         gameLogic.nextTurn();
     }
     public void dealNumberOfAdventureCardsToPlayer(String playerID, int numberOfCards) {
-        for (int i = 0; i < numberOfCards; i++) {
-            drawAdventureCard(playerID);
-        }
+        gameLogic.dealNumberAdventureCards(playerID, numberOfCards);
     }
     public ArrayList<Player> getWinners() {
         return gameLogic.determineWinners();
@@ -151,14 +142,16 @@ public class Game {
         //Display trimmed hand of player
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
-    public void determineIfPlayerNeedsToTrimHand(String playerID) {
-        int n = computeNumberOfCardsToDiscard(playerID);
-        //Trim player hand
-        if(n > 0) {
-            trimHand(playerID, n);
+    public void trimHandAction(String[] playerIDs) {
+        //All Players are checked for their hand to be trimmed
+        ArrayList<String> playerIDsToTrim = gameLogic.determineWhatPlayersTrimHand(playerIDs);
+        if(!playerIDsToTrim.isEmpty()) {
+            for (String playerID : playerIDsToTrim) {
+                trimHandPlayer(playerID, computeNumberOfCardsToDiscard(playerID));
+            }
         }
     }
-    public void trimHand(String playerID, int n) {
+    public void trimHandPlayer(String playerID, int n) {
         //Display current Player Hand
         displayPlayerHand(playerID);
         int numberOfCardsToDiscard = n;

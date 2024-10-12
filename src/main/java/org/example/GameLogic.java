@@ -138,4 +138,24 @@ public class GameLogic {
         }
         return cardFound;
     }
+    public void dealNumberAdventureCards(String playerID, int cardCount) {
+        for (int i = 0; i < cardCount; i++) {
+            drawCard(playerID, getAdventureDeck());
+        }
+    }
+    public void dealAllPlayersAdventureCards(String[] playerIDs, int cardCount) {
+        for (String playerID : playerIDs) {
+            dealNumberAdventureCards(playerID, cardCount);
+        }
+    }
+    public ArrayList<String> determineWhatPlayersTrimHand(String[] playerIDs) {
+        ArrayList<String> playersToTrim = new ArrayList<>();
+        for (String playerID : playerIDs) {
+            int n = getNumberOfCardsToDiscard(playerID);
+            if(n > 0) {
+                playersToTrim.add(playerID);
+            }
+        }
+        return playersToTrim;
+    }
 }
