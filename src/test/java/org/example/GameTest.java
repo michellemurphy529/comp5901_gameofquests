@@ -1466,7 +1466,7 @@ class GameTest {
                 "Value = 5\n\n" +
                 "STAGE 2:\n" +
                 "Cards = F10 H10\n" +
-                "Value = 10\n\n\n";
+                "Value = 20\n\n\n";
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
