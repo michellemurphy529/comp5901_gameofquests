@@ -3,10 +3,7 @@ package org.example;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -1441,20 +1438,39 @@ class GameTest {
         //Test these are the same cards
         assertEquals(questCard, card);
 
-        game.stageIsValidAndDisplayCards(playerID, numberOfStages);
+        //Add cards to players hand and to the quest being built
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new WeaponCard("H", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+
+        //Add to have Hashmap of questBuilt passed in to method
+        HashMap<Integer, ArrayList<Card>> questBuilt = new HashMap<Integer, ArrayList<Card>>();
+        ArrayList<Card> stage1 = new ArrayList<>();
+        stage1.add(card1);
+        ArrayList<Card> stage2 = new ArrayList<>();
+        stage2.add(card2);
+        stage2.add(card3);
+
+        //build hashmap
+        questBuilt.put(1, stage1);
+        questBuilt.put(2, stage2);
+
+        game.stageIsValidAndDisplayCards(questBuilt);
 
         String expectedOutput = "\nStage set up is completed...\n\n" +
                 "STAGE 1:\n" +
                 "Cards = F5\n" +
                 "Value = 5\n\n" +
                 "STAGE 2:\n" +
-                "Cards = F10\n" +
-                "Value = 10\n\n";
+                "Cards = F10 H10\n" +
+                "Value = 10\n\n\n";
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
-
     }
 
     @Test

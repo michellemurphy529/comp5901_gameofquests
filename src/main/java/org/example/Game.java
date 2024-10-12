@@ -1,5 +1,6 @@
 package org.example;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Game {
@@ -166,7 +167,7 @@ public class Game {
         }
         displayTrimmedHand(playerID);
     }
-    public void stageIsValidAndDisplayCards(String playerID, int numberOfStages) {
+    public void stageIsValidAndDisplayCards(HashMap<Integer, ArrayList<Card>> questBuilt) {
     }
 
     public static void main(String[] args) {
