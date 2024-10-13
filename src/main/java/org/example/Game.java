@@ -206,9 +206,12 @@ public class Game {
             String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
 
             //Deal with string received
-            //Quit is entered
-            if (inputReceived.equalsIgnoreCase("quit")) {
+            //Quit is entered and the stageCards is not empty
+            if (inputReceived.equalsIgnoreCase("quit") && !stageCards.isEmpty()) {
                 quitEntered = true;
+            }
+            else if (inputReceived.equalsIgnoreCase("quit") && stageCards.isEmpty()) {
+                gameDisplay.displayStageCannotBeEmptyMessage();
             }
             //Case where Foe has not been added to stage yet
             else if (inputReceived.contains("F") && !singleFoe) {

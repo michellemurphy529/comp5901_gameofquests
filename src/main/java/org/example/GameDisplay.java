@@ -143,6 +143,10 @@ public class GameDisplay {
         displayUpdatedStageCards.append("\n");
         display(displayUpdatedStageCards);
     }
+    public void displayStageCannotBeEmptyMessage() {
+        StringBuilder stageCannotBeEmptyMessage = new StringBuilder("A stage cannot be empty").append("\n");
+        display(stageCannotBeEmptyMessage);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
