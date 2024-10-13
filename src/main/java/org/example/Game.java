@@ -268,6 +268,8 @@ public class Game {
     }
     //Attack methods
     public void displaySetUpForAttackAndPlayerHand(String playerID) {
+        gameDisplay.displaySettingUpAttackForPlayer();
+        gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
 
     public static void main(String[] args) {

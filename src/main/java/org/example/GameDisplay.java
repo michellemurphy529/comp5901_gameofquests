@@ -151,6 +151,11 @@ public class GameDisplay {
         StringBuilder insufficientValueMessage = new StringBuilder("Insufficient value for this stage").append("\n");
         display(insufficientValueMessage);
     }
+    //Attack Output methods
+    public void displaySettingUpAttackForPlayer() {
+        StringBuilder settingUpAttackMessage = new StringBuilder("Setting up an Attack...").append("\n");
+        display(settingUpAttackMessage);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
