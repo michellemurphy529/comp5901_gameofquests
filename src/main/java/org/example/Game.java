@@ -271,6 +271,9 @@ public class Game {
         gameDisplay.displaySettingUpAttackForPlayer();
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
+    public ArrayList<Card> promptPlayerToSelectCardOrQuit(String playerID) {
+        return null;
+    }
 
     public static void main(String[] args) {
         //Initialize game

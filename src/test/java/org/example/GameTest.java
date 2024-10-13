@@ -11,7 +11,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-001-Test-001: Set up Adventure Deck with proper number of cards and their types + values")
-    void RESP_001_test_001(){
+    void RESP_001_test_001() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck adventureDeck = game.getAdventureDeck();
@@ -19,45 +19,45 @@ class GameTest {
         int foeCounter = 0, f5 = 0, f10 = 0, f15 = 0, f20 = 0, f25 = 0, f30 = 0, f35 = 0, f40 = 0, f50 = 0, f70 = 0;
         int weaponCounter = 0, d5 = 0, h10 = 0, s10 = 0, b15 = 0, l20 = 0, e30 = 0;
 
-        for (Card c : adventureDeck.getDeck()){
-            if (c instanceof FoeCard f){
+        for (Card c : adventureDeck.getDeck()) {
+            if (c instanceof FoeCard f) {
                 foeCounter++;
 
-                if (f.getValue() == 5){
+                if (f.getValue() == 5) {
                     f5++;
-                }else if (f.getValue() == 10){
+                } else if (f.getValue() == 10) {
                     f10++;
-                }else if (f.getValue() == 15){
+                } else if (f.getValue() == 15) {
                     f15++;
-                }else if (f.getValue() == 20){
+                } else if (f.getValue() == 20) {
                     f20++;
-                }else if (f.getValue() == 25){
+                } else if (f.getValue() == 25) {
                     f25++;
-                }else if (f.getValue() == 30){
+                } else if (f.getValue() == 30) {
                     f30++;
-                }else if (f.getValue() == 35){
+                } else if (f.getValue() == 35) {
                     f35++;
-                }else if (f.getValue() == 40){
+                } else if (f.getValue() == 40) {
                     f40++;
-                }else if (f.getValue() == 50){
+                } else if (f.getValue() == 50) {
                     f50++;
-                }else if (f.getValue() == 70){
+                } else if (f.getValue() == 70) {
                     f70++;
                 }
-            }else if (c instanceof WeaponCard w) {
+            } else if (c instanceof WeaponCard w) {
                 weaponCounter++;
 
-                if (w.getValue() == 5){
+                if (w.getValue() == 5) {
                     d5++;
-                }else if (w.getValue() == 10 && w.getType().contains("S")){
+                } else if (w.getValue() == 10 && w.getType().contains("S")) {
                     s10++;
-                }else if (w.getValue() == 10 && w.getType().contains("H")){
+                } else if (w.getValue() == 10 && w.getType().contains("H")) {
                     h10++;
-                }else if (w.getValue() == 15){
+                } else if (w.getValue() == 15) {
                     b15++;
-                }else if (w.getValue() == 20){
+                } else if (w.getValue() == 20) {
                     l20++;
-                }else if (w.getValue() == 30){
+                } else if (w.getValue() == 30) {
                     e30++;
                 }
             }
@@ -97,7 +97,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-001-Test-002: Set up Event Deck with proper number of cards and their types + values")
-    void RESP_001_test_002(){
+    void RESP_001_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck eventDeck = game.getEventDeck();
@@ -105,26 +105,26 @@ class GameTest {
         int questCounter = 0, q2 = 0, q3 = 0, q4 = 0, q5 = 0;
         int eventCounter = 0, plague = 0, queenFavor = 0, prosperity = 0;
 
-        for (Card c : eventDeck.getDeck()){
-            if (c instanceof QuestCard q){
+        for (Card c : eventDeck.getDeck()) {
+            if (c instanceof QuestCard q) {
                 questCounter++;
 
-                if (q.getStages() == 2){
+                if (q.getStages() == 2) {
                     q2++;
-                }else if (q.getStages() == 3){
+                } else if (q.getStages() == 3) {
                     q3++;
-                }else if (q.getStages() == 4){
+                } else if (q.getStages() == 4) {
                     q4++;
-                }else if (q.getStages() == 5){
+                } else if (q.getStages() == 5) {
                     q5++;
                 }
-            }else if (c instanceof PlagueCard){
+            } else if (c instanceof PlagueCard) {
                 eventCounter++;
                 plague++;
-            }else if (c instanceof QueensFavorCard){
+            } else if (c instanceof QueensFavorCard) {
                 eventCounter++;
                 queenFavor++;
-            }else if (c instanceof ProsperityCard){
+            } else if (c instanceof ProsperityCard) {
                 eventCounter++;
                 prosperity++;
             }
@@ -155,14 +155,14 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-001: System properly sets up adventure and event decks")
-    void RESP_001(){
+    void RESP_001() {
         RESP_001_test_001();
         RESP_001_test_002();
     }
 
     @Test
     @DisplayName("RESP-002-Test-001: Properly shuffle Adventure Deck")
-    void RESP_002_test_001(){
+    void RESP_002_test_001() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck adventureDeck = game.getAdventureDeck();
@@ -182,7 +182,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-002-Test-002: Properly shuffle Event Deck")
-    void RESP_002_test_002(){
+    void RESP_002_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck eventDeck = game.getEventDeck();
@@ -197,7 +197,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-002: System properly shuffles decks (event and adventure), before distribution")
-    void RESP_002(){
+    void RESP_002() {
         RESP_002_test_001();
         RESP_002_test_002();
     }
@@ -205,7 +205,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-004-Test-001: The system ensures the game always has exactly 4 players (with the 4 unique ID’s as " +
             "follows, ‘P1’, ‘P2’, ‘P3’ and ‘P4’)")
-    void RESP_004_test_001(){
+    void RESP_004_test_001() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setPlayers();
 
@@ -222,13 +222,13 @@ class GameTest {
     @Test
     @DisplayName("RESP-004: The system ensures the game always has exactly 4 players (with the 4 unique ID’s as " +
             "follows, ‘P1’, ‘P2’, ‘P3’ and ‘P4’)")
-    void RESP_004(){
+    void RESP_004() {
         RESP_004_test_001();
     }
 
     @Test
     @DisplayName("RESP-005-Test-001: System distributes 12 cards from the adventure deck to each player")
-    void RESP_005_test_001(){
+    void RESP_005_test_001() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         game.setPlayers();
@@ -247,7 +247,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-005-Test-002: System updates deck after distribution of 12 cards")
-    void RESP_005_test_002(){
+    void RESP_005_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         game.setPlayers();
@@ -260,7 +260,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-005: System distributes 12 cards from the adventure deck to each player, updating the deck")
-    void RESP_005(){
+    void RESP_005() {
         RESP_005_test_001();
         RESP_005_test_002();
     }
@@ -268,7 +268,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-003-Test-001: When the adventure deck runs out, the system reshuffles the adventure discard pile " +
             "and reuses it as the new adventure deck")
-    void RESP_003_test_001(){
+    void RESP_003_test_001() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck adventureDeck = game.getAdventureDeck();
@@ -311,7 +311,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-003-Test-002: When the event deck runs out, the system reshuffles the event discard pile " +
             "and reuses it as the new event deck")
-    void RESP_003_test_002(){
+    void RESP_003_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
         Deck eventDeck = game.getEventDeck();
@@ -353,7 +353,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-003: When a deck runs out, the system reshuffles the discard pile and reuses it as the new deck")
-    void RESP_003(){
+    void RESP_003() {
         RESP_003_test_001();
         RESP_003_test_002();
     }
@@ -402,7 +402,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-006: The system follows the fixed order of play P1, then P2, then P3, then P4, then repeats with P1")
-    void RESP_006(){
+    void RESP_006() {
         RESP_006_test_001();
         RESP_006_test_002();
     }
@@ -458,7 +458,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-007: System determines if one or more players have 7 shields, and System displays " +
             "the ID of each winner and then terminates")
-    void RESP_007(){
+    void RESP_007() {
         RESP_007_test_001();
         RESP_007_test_002();
     }
@@ -494,7 +494,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-008: System properly processes when there are no winners and continues with next players turn")
-    void RESP_008(){
+    void RESP_008() {
         RESP_008_test_001();
     }
 
@@ -546,7 +546,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-009: When the next player’s turn is triggered, the system draws an event card and displays it")
-    void RESP_009(){
+    void RESP_009() {
         RESP_009_test_001();
         RESP_009_test_002();
     }
@@ -582,7 +582,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-010: System carries out Event card action for Plague (current player loses 2 shields)")
-    void RESP_010(){
+    void RESP_010() {
         RESP_010_test_001();
     }
 
@@ -662,7 +662,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-011: The system ensures that players cannot have a shield count of less than 0")
-    void RESP_011(){
+    void RESP_011() {
         RESP_011_test_001();
         RESP_011_test_002();
         RESP_011_test_003();
@@ -807,7 +807,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-015: System displays the hand of the current player")
-    void RESP_015(){
+    void RESP_015() {
         RESP_015_test_001();
         RESP_015_test_002();
         RESP_015_test_003();
@@ -865,7 +865,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-016: System displays the players hand with foes listed first in increasing order, followed " +
             "by weapons in increasing order, with swords before horses.")
-    void RESP_016(){
+    void RESP_016() {
         RESP_016_test_001();
     }
 
@@ -965,7 +965,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-017: System computes the number of cards to discard (n)")
-    void RESP_017(){
+    void RESP_017() {
         RESP_017_test_001();
         RESP_017_test_002();
         RESP_017_test_003();
@@ -1036,7 +1036,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-018: System displays player’s hand and prompts the player to discard card(s) to trim hand")
-    void RESP_018(){
+    void RESP_018() {
         RESP_018_test_001();
     }
 
@@ -1142,7 +1142,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-019: System removes card from the hand and discards it in the correct discard pile")
-    void RESP_019(){
+    void RESP_019() {
         RESP_019_test_001();
         RESP_019_test_002();
     }
@@ -1204,7 +1204,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-020: System displays the trimmed hand")
-    void RESP_020(){
+    void RESP_020() {
         RESP_020_test_001();
     }
 
@@ -1295,7 +1295,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-012: System carries out Event card action for Queen’s Favor (current player draws 2 adventure " +
             "cards and possibly trims hand)")
-    void RESP_012(){
+    void RESP_012() {
         RESP_012_test_001();
         RESP_012_test_002();
     }
@@ -1405,7 +1405,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-013: System carries out Event card action for Prosperity (all players draw 2 adventure cards " +
             "and possibly trim hand)")
-    void RESP_013(){
+    void RESP_013() {
         RESP_013_test_001();
         RESP_013_test_002();
     }
@@ -1480,7 +1480,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-041: System checks that if the sponsor enters ‘Quit’ and the stage is valid then it displays" +
             " the cards that are used in the stages of the quest")
-    void RESP_041(){
+    void RESP_041() {
         RESP_041_test_001();
     }
 
@@ -1586,7 +1586,7 @@ class GameTest {
     @DisplayName("RESP-035: System displays sponsor’s hand and prompts the sponsor to select a card position or " +
             "enter ‘Quit’ to end a stage setup. System must ensure that the sponsor selected card is a valid one " +
             "(a single Foe card and zero or more non-repeated weapon cards)")
-    void RESP_035(){
+    void RESP_035() {
         RESP_035_test_001();
     }
 
@@ -1677,7 +1677,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-036: System must ensure that when sponsor’s select an invalid card its reasoning is " +
             "explained to the user and re-prompted")
-    void RESP_036(){
+    void RESP_036() {
         RESP_036_test_001();
     }
 
@@ -1756,7 +1756,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-037: System must add the selected valid card to the current stage and display the " +
             "updated set of cards")
-    void RESP_037(){
+    void RESP_037() {
         RESP_037_test_001();
     }
 
@@ -1837,7 +1837,7 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-038: System displays ‘A stage cannot be empty’ message when sponsor enters ‘Quit’ with no cards in the stage ")
-    void RESP_038(){
+    void RESP_038() {
         RESP_038_test_001();
     }
 
@@ -1901,7 +1901,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-039: System compares the value of the current stage with the previous stage (if any) " +
             "and validate that the value is equal or greater")
-    void RESP_039(){
+    void RESP_039() {
         RESP_039_test_001();
         RESP_039_test_002();
         RESP_039_test_003();
@@ -1986,7 +1986,7 @@ class GameTest {
     @Test
     @DisplayName("RESP-040: System displays ‘Insufficient value for this stage’ message when sponsor enters " +
             "‘Quit’ and the stage value is insufficient")
-    void RESP_040(){
+    void RESP_040() {
         RESP_040_test_001();
     }
 
@@ -2204,10 +2204,93 @@ class GameTest {
 
     @Test
     @DisplayName("RESP-042: System displays participants hand of cards when setting up a valid attack")
-    void RESP_042(){
+    void RESP_042() {
         RESP_042_test_001();
         RESP_042_test_002();
         RESP_042_test_003();
         RESP_042_test_004();
+    }
+
+    @Test
+    @DisplayName("RESP-043-Test-001: System prompts the participant to select a card or enter ‘Quit’ to end a valid attack." +
+            "Enter Quit right away no card entered.")
+    void RESP_043_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 4 to set up attack
+        helper.forcePlayerTurn(game, 4);
+
+        //Input quit
+        String userInput = "Quit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Player 4 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.promptPlayerToSelectCardOrQuit(playerID);
+        assertEquals("Quit", game.gameDisplay.lastInput);
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-043-Test-002: System prompts the participant to select a card or enter ‘Quit’ to end a valid attack." +
+            "Enter card and then quit.")
+    void RESP_043_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 4 to set up attack
+        helper.forcePlayerTurn(game, 4);
+
+        //Input quit
+        String userInput = "E30\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new WeaponCard("E", 30);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card1);
+
+        //Player 4 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.promptPlayerToSelectCardOrQuit(playerID);
+        assertEquals("Quit", game.gameDisplay.lastInput);
+        assertEquals(card1, attackCards.getFirst());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-043: System prompts the participant to select a card or enter ‘Quit’ to end a valid attack")
+    void RESP_043() {
+        RESP_043_test_001();
+        RESP_043_test_002();
     }
 }
