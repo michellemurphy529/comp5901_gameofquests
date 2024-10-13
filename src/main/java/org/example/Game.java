@@ -168,6 +168,10 @@ public class Game {
         displayTrimmedHand(playerID);
     }
     public void stageIsValidAndDisplayCards(HashMap<Integer, ArrayList<Card>> questBuilt) {
+        boolean stageIsValid = gameDisplay.getUserInputBuildStage(input);
+        if(stageIsValid) {
+            gameDisplay.displayBuiltQuest(questBuilt);
+        }
     }
 
     public static void main(String[] args) {

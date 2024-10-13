@@ -3,6 +3,7 @@ package org.example;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class GameDisplay {
@@ -68,6 +69,34 @@ public class GameDisplay {
         output.println(message);
         consoleOutput.println(message);
     }
+    //Quest output methods
+    public void displayBuiltQuest(HashMap<Integer, ArrayList<Card>> questBuilt) {
+        StringBuilder questBuiltMessage = new StringBuilder("\nStage set up is completed...\n\n");
+
+        for (HashMap.Entry<Integer, ArrayList<Card>> stage : questBuilt.entrySet()) {
+            //Get Stage number from Key in hashmap
+            int stageNumber = stage.getKey();
+            //Get cards to of Stage from Value arraylist of cards
+            ArrayList<Card> cards = stage.getValue();
+
+            questBuiltMessage.append("STAGE ").append(stageNumber).append(":\n");
+
+            //Loop through to get the cards and the value for each stage
+            StringBuilder cardsString = new StringBuilder();
+            int stageValue = 0;
+            for (Card card : cards) {
+                AdventureCard adventureCard = (AdventureCard) card;
+                //Add to stage value running total
+                stageValue += adventureCard.getValue();
+                cardsString.append(adventureCard.displayCardName()).append(" ");
+            }
+
+            //Appending all strings together
+            questBuiltMessage.append("Cards = ").append(cardsString.toString().trim()).append("\n")
+                    .append("Value = ").append(stageValue).append("\n\n");
+        }
+        display(questBuiltMessage);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
@@ -81,5 +110,17 @@ public class GameDisplay {
         String input = userInput.nextLine();
         lastInput = input;
         return input;
+    }
+    //Quest input methods
+    public boolean getUserInputBuildStage(Scanner userInput) {
+        boolean quitEntered = false;
+
+        while(!quitEntered) {
+            String input = userInput.nextLine();
+            if(input.equalsIgnoreCase("quit")) {
+                quitEntered = true;
+            }
+        }
+        return quitEntered;
     }
 }
