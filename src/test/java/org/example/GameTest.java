@@ -1822,4 +1822,70 @@ class GameTest {
     void RESP_038(){
         RESP_038_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-039-Test-001: System compares the value of the current stage with the previous stage " +
+            "(if any) and validate that the value is greater. Valid Case greater than last (prev = 5, current = 20)")
+    void RESP_039_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        ArrayList<String> stageCards = new ArrayList<>();
+        stageCards.add("F5");
+        stageCards.add("D5");
+        stageCards.add("H10");
+
+        boolean isGreater = game.gameLogic.compareCurrentStageValueIsGreaterThanPrevious(stageCards, 5);
+        assertEquals(isGreater, true);
+    }
+
+    @Test
+    @DisplayName("RESP-039-Test-002: System compares the value of the current stage with the previous stage " +
+            "(if any) and validate that the value is greater. valid case (prev = 0, current = 10)")
+    void RESP_039_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        ArrayList<String> stageCards = new ArrayList<>();
+        stageCards.add("F5");
+        stageCards.add("D5");
+
+        boolean isGreater = game.gameLogic.compareCurrentStageValueIsGreaterThanPrevious(stageCards, 0);
+        assertEquals(isGreater, true);
+    }
+
+    @Test
+    @DisplayName("RESP-039-Test-003: System compares the value of the current stage with the previous stage " +
+            "(if any) and validate that the value is equal. valid case (prev = 40, current = 40). Stage = 5")
+    void RESP_039_test_003() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        ArrayList<String> stageCards = new ArrayList<>();
+        stageCards.add("F40");
+
+        boolean isGreater = game.gameLogic.compareCurrentStageValueIsGreaterThanPrevious(stageCards, 40);
+        assertEquals(isGreater, true);
+    }
+
+    @Test
+    @DisplayName("RESP-039: System compares the value of the current stage with the previous stage (if any) " +
+            "and validate that the value is equal or greater")
+    void RESP_039(){
+        RESP_039_test_001();
+        RESP_039_test_002();
+        RESP_039_test_003();
+    }
 }

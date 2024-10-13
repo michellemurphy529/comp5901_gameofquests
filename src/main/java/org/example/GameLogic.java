@@ -187,4 +187,7 @@ public class GameLogic {
         String weaponTypeString = cardString.substring(0, 1);
         return weaponCards.get(weaponTypeString) == 1;
     }
+    public boolean compareCurrentStageValueIsGreaterThanPrevious(ArrayList<String> stageCards, int previousStageValue) {
+        return false;
+    }
 }
