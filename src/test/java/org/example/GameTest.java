@@ -1888,4 +1888,87 @@ class GameTest {
         RESP_039_test_002();
         RESP_039_test_003();
     }
+
+    @Test
+    @DisplayName("RESP-040-Test-001: System displays ‘Insufficient value for this stage’ message when sponsor " +
+            "enters ‘Quit’ and the stage value is insufficient")
+    void RESP_040_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 4 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 4);
+
+        //Input quit
+        String userInput = "F15\nQuit\nF5\nQuit\nB15\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 4 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(15);
+        Card card2 = new FoeCard(5);
+        Card card3 = new WeaponCard("B", 15);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "Building a Quest with 2 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F15 added to Stage...\n" +
+                "Stage 1 Card(s): F15\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 2 Card(s): F5\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Insufficient value for this stage\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "B15 added to Stage...\n" +
+                "Stage 2 Card(s): F5 B15\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-040: System displays ‘Insufficient value for this stage’ message when sponsor enters " +
+            "‘Quit’ and the stage value is insufficient")
+    void RESP_040(){
+        RESP_040_test_001();
+    }
 }
