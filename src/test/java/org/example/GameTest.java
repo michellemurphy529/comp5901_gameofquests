@@ -1579,7 +1579,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("RESP-035-Test-001: RESP-036: System must ensure that when sponsor’s select an invalid card its" +
+    @DisplayName("RESP-036-Test-001: System must ensure that when sponsor’s select an invalid card its" +
             " reasoning is explained to the user and re-prompted. 2 Foe's & Repeating weapon cards")
     void RESP_036_test_001() {
         //Test helpers
@@ -1661,5 +1661,84 @@ class GameTest {
             "explained to the user and re-prompted")
     void RESP_036(){
         RESP_036_test_001();
+    }
+
+    @Test
+    @DisplayName("RESP-037-Test-001: System must add the selected valid card to the current stage and display " +
+            "the updated set of cards")
+    void RESP_037_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 1 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "F5\nQuit\nF10\nH10\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new WeaponCard("H", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "Building a Quest with 2 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 1 Card(s): F5\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F10 added to Stage...\n" +
+                "Stage 2 Card(s): F10\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "H10 added to Stage...\n" +
+                "Stage 2 Card(s): F10 H10\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-037: System must add the selected valid card to the current stage and display the " +
+            "updated set of cards")
+    void RESP_037(){
+        RESP_037_test_001();
     }
 }
