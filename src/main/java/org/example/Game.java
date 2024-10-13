@@ -174,6 +174,44 @@ public class Game {
         }
     }
     public void displaySponsorHandAndSetUpStages(String playerID, int stages) {
+        //Display building Quest with stage number
+        gameDisplay.displayBuildingQuestMessage(stages);
+
+        //make sure current stage equals the number of stages to break loop
+        int currentStage = 0;
+        while (currentStage != stages) {
+            //Display current Stage
+            gameDisplay.displayBuildingStageMessage(currentStage + 1);
+
+            //Get cards from user for stage selection
+            getCardsForStage(playerID);
+            currentStage++;
+        }
+    }
+    public void getCardsForStage(String playerID) {
+        //check weapons are non repeating
+        HashMap<String, Integer> weaponCards = gameLogic.setUpWeaponCards();
+
+        //Input loop
+        //quit entered and a single foe entered to leave loop
+        boolean quitEntered = false, singleFoe = false;
+
+        while (!(quitEntered && gameLogic.isValidStage(singleFoe, weaponCards))) {
+            //Display Sponsor hand
+            displayPlayerHand(playerID);
+            //Prompt Sponsor to select card or 'Quit'
+            gameDisplay.displayPromptForSelectingStageCards();
+            String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
+
+            //Deal with string received
+            if (inputReceived.equalsIgnoreCase("quit")) {
+                quitEntered = true;
+            } else if (inputReceived.contains("F") && !singleFoe) {
+                singleFoe = true;
+            } else {
+                gameLogic.addToWeaponCards(inputReceived, weaponCards);
+            }
+        }
     }
 
     public static void main(String[] args) {

@@ -102,6 +102,22 @@ public class GameDisplay {
         }
         display(questBuiltMessage);
     }
+    public void displayBuildingQuestMessage(int numberOfStages) {
+        StringBuilder buildingQuestMessage = new StringBuilder("Building a Quest with ").append(numberOfStages).
+                append(" Stages...").append("\n");
+        display(buildingQuestMessage);
+    }
+    public void displayBuildingStageMessage(int stageNumber) {
+        StringBuilder currentStageMessage = new StringBuilder("Building Stage ").append(stageNumber).
+                append(":").append("\n");
+        display(currentStageMessage);
+    }
+    public void displayPromptForSelectingStageCards() {
+        StringBuilder selectStagesCards = new StringBuilder("Select 1 Foe card and 0 or more non-repeating Weapon " +
+                "cards from your hand to build this stage.").append("\n").append
+                ("Enter 'Quit' to end this stage setup.").append("\n");
+        display(selectStagesCards);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
@@ -127,5 +143,10 @@ public class GameDisplay {
             }
         }
         return quitEntered;
+    }
+    public String displayPromptSelectCardForStage(Scanner userInput) {
+        String input = userInput.nextLine();
+        lastInput = input;
+        return input.trim();
     }
 }

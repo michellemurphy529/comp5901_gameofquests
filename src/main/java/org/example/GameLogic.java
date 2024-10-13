@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameLogic {
 
@@ -157,5 +158,29 @@ public class GameLogic {
             }
         }
         return playersToTrim;
+    }
+    public HashMap<String, Integer> setUpWeaponCards() {
+        HashMap<String, Integer> weapons = new HashMap<>();
+        weapons.put("D", 0);
+        weapons.put("S", 0);
+        weapons.put("H", 0);
+        weapons.put("B", 0);
+        weapons.put("L", 0);
+        weapons.put("E", 0);
+        return weapons;
+    }
+    public void addToWeaponCards(String cardString, HashMap<String, Integer> weaponCards) {
+        String weaponTypeString = cardString.substring(0, 1);
+        int incrementWeapon = weaponCards.get(weaponTypeString);
+        incrementWeapon++;
+        weaponCards.put(weaponTypeString, incrementWeapon);
+    }
+    public boolean isValidStage(boolean singleFoe, HashMap<String, Integer> weaponCards) {
+        for (Integer weaponCardNum : weaponCards.values()) {
+            if(weaponCardNum > 1) {
+                return false;
+            }
+        }
+        return singleFoe;
     }
 }
