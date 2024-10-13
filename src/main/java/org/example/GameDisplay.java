@@ -128,6 +128,21 @@ public class GameDisplay {
                 .append("\n");
         display(repeatedWeaponCard);
     }
+    public void addedCardToStageMessage(String cardString) {
+        StringBuilder addedToStageMessage = new StringBuilder(cardString).append(" added to Stage...");
+        display(addedToStageMessage);
+    }
+    public void displayStageCards(ArrayList<String> stageCards, int stage) {
+        StringBuilder displayUpdatedStageCards = new StringBuilder("Stage ").append(stage).append(" Card(s): ");
+        for (int i = 0; i < stageCards.size(); i++) {
+            displayUpdatedStageCards.append(stageCards.get(i));
+            if (i < stageCards.size() - 1) {
+                displayUpdatedStageCards.append(" ");
+            }
+        }
+        displayUpdatedStageCards.append("\n");
+        display(displayUpdatedStageCards);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

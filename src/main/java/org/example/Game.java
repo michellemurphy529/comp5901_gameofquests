@@ -184,13 +184,15 @@ public class Game {
             gameDisplay.displayBuildingStageMessage(currentStage + 1);
 
             //Get cards from user for stage selection
-            getCardsForStage(playerID);
+            ArrayList<String> stageCards = getCardsForStage(playerID, currentStage + 1);
             currentStage++;
         }
     }
-    public void getCardsForStage(String playerID) {
+    public ArrayList<String> getCardsForStage(String playerID, int currentStage) {
         //check weapons are non repeating
         HashMap<String, Integer> weaponCards = gameLogic.setUpWeaponCards();
+        //ArrayList to return the stage
+        ArrayList<String> stageCards = new ArrayList<>();
 
         //Input loop
         //quit entered and a single foe entered to leave loop
@@ -210,7 +212,13 @@ public class Game {
             }
             //Case where Foe has not been added to stage yet
             else if (inputReceived.contains("F") && !singleFoe) {
+                //single Foe added and flag turned to true so no more Foe's are added
                 singleFoe = true;
+
+                //Add card to stage and display to user
+                stageCards.addLast(inputReceived);
+                gameDisplay.addedCardToStageMessage(inputReceived);
+                gameDisplay.displayStageCards(stageCards, currentStage);
             }
             //Case where Single Foe is already in stage
             else if (inputReceived.contains("F") && singleFoe) {
@@ -218,13 +226,20 @@ public class Game {
             }
             //Case where weapon card is checked to see if it's already in stage
             else if(!gameLogic.hasRepeatingWeapon(inputReceived, weaponCards)) {
+                //Add weaponcard to make sure not repeating in future
                 gameLogic.addToWeaponCards(inputReceived, weaponCards);
+
+                //Add card to stage and display to user
+                stageCards.addLast(inputReceived);
+                gameDisplay.addedCardToStageMessage(inputReceived);
+                gameDisplay.displayStageCards(stageCards, currentStage);
             }
             //Case where it is a repeated weapon card
             else {
                 gameDisplay.displayRepeatedWeaponCardMessage();
             }
         }
+        return stageCards;
     }
 
     public static void main(String[] args) {
