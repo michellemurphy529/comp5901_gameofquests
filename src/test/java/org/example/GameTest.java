@@ -537,9 +537,9 @@ class GameTest {
         game.playTurn();
 
         //Test Event Card drawn is displayed
-        String expectedOutput = "\nP1's Turn:\n\n" +
-                "Drawing Event Card..." +
-                "\nYou drew: " + game.getLastEventCardDrawn().displayCardName() + "\n\n";
+        String expectedOutput = "P1's Turn:\n\n" +
+                "Drawing Event Card...\n" +
+                "You drew: " + game.getLastEventCardDrawn().displayCardName() + "\n\n";
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
     }
@@ -686,13 +686,14 @@ class GameTest {
 
         //Test player 1 hand is displayed
         ArrayList<Card> p1Hand = game.getCurrentPlayer().getHand();
-        StringBuilder expectedOutput = new StringBuilder("\nP1 hand: ");
+        StringBuilder expectedOutput = new StringBuilder("P1 hand: ");
         for (int i = 0; i < p1Hand.size(); i++) {
             expectedOutput.append(p1Hand.get(i).displayCardName());
             if (i < p1Hand.size() - 1) {
                 expectedOutput.append(" ");
             }
         }
+        expectedOutput.append("\n");
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
@@ -719,13 +720,14 @@ class GameTest {
 
         //Test player 2 hand is displayed
         ArrayList<Card> p2Hand = game.getCurrentPlayer().getHand();
-        StringBuilder expectedOutput = new StringBuilder("\nP2 hand: ");
+        StringBuilder expectedOutput = new StringBuilder("P2 hand: ");
         for (int i = 0; i < p2Hand.size(); i++) {
             expectedOutput.append(p2Hand.get(i).displayCardName());
             if (i < p2Hand.size() - 1) {
                 expectedOutput.append(" ");
             }
         }
+        expectedOutput.append("\n");
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
@@ -753,13 +755,14 @@ class GameTest {
 
         //Test player 3 hand is displayed
         ArrayList<Card> p3Hand = game.getCurrentPlayer().getHand();
-        StringBuilder expectedOutput = new StringBuilder("\nP3 hand: ");
+        StringBuilder expectedOutput = new StringBuilder("P3 hand: ");
         for (int i = 0; i < p3Hand.size(); i++) {
             expectedOutput.append(p3Hand.get(i).displayCardName());
             if (i < p3Hand.size() - 1) {
                 expectedOutput.append(" ");
             }
         }
+        expectedOutput.append("\n");
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
@@ -788,13 +791,14 @@ class GameTest {
 
         //Test player 4 hand is displayed
         ArrayList<Card> p4Hand = game.getCurrentPlayer().getHand();
-        StringBuilder expectedOutput = new StringBuilder("\nP4 hand: ");
+        StringBuilder expectedOutput = new StringBuilder("P4 hand: ");
         for (int i = 0; i < p4Hand.size(); i++) {
             expectedOutput.append(p4Hand.get(i).displayCardName());
             if (i < p4Hand.size() - 1) {
                 expectedOutput.append(" ");
             }
         }
+        expectedOutput.append("\n");
         expectedOutput.append("\n");
 
         String output = game.gameDisplay.getOutput();
@@ -853,7 +857,7 @@ class GameTest {
         game.displayCurrentPlayerHand();
 
         //Test player 4 hand is displayed in the right order
-        String expectedOutput = "\nP4 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 S10 H10 B15 L20 E30\n";
+        String expectedOutput = "P4 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 S10 H10 B15 L20 E30\n\n";
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
     }
@@ -1019,11 +1023,11 @@ class GameTest {
         String cardsToDiscard3 = game.gameDisplay.getDiscardInput(new Scanner(userInput3));
         assertEquals(cardsToDiscard3, game.gameDisplay.lastInput);
 
-        String expectedOutput = "\nP1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F50 F70 D5 D5 H10 L20\n" +
-                "\nDiscard 3 cards\n\n" +
+        String expectedOutput = "P1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F50 F70 D5 D5 H10 L20\n\n" +
+                "Discard 3 cards\n\n" +
                 "Type out cards in the format as it appears in your hand\n" +
                 "For Example: 'F5' (WITHOUT '' around the card name)\n" +
-                "then press the <return> key:\n";
+                "then press the <return> key:\n\n";
 
         //Test display hand and prompts discard
         String output = game.gameDisplay.getOutput();
@@ -1190,8 +1194,8 @@ class GameTest {
         //Display Trimmed Hand
         game.displayTrimmedHand(playerID);
 
-        String expectedOutput = "\nTrimming Complete... Here is your new hand!\n\n" +   //Had to add an extra newline char
-                "P1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 H10\n";
+        String expectedOutput = "Trimming Complete... Here is your new hand!\n\n" +   //Had to add an extra newline char
+                "P1 hand: F5 F10 F15 F20 F25 F30 F35 F40 F50 F70 D5 H10\n\n";
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
@@ -1460,7 +1464,7 @@ class GameTest {
 
         game.stageIsValidAndDisplayCards(questBuilt);
 
-        String expectedOutput = "\nStage set up is completed...\n\n" +
+        String expectedOutput = "Stage set up is completed...\n\n" +
                 "STAGE 1:\n" +
                 "Cards = F5\n" +
                 "Value = 5\n\n" +

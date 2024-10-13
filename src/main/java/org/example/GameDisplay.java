@@ -28,6 +28,7 @@ public class GameDisplay {
                 message.append(", ");
             }
         }
+        message.append("\n");
         display(message);
     }
     public void displayTerminationMessage() {
@@ -35,11 +36,12 @@ public class GameDisplay {
         display(terminationMessage);
     }
     public void displayNoWinners() {
-        StringBuilder noWinnersMessage = new StringBuilder("There are no winner(s).\nGame of Quest's continues...");
+        StringBuilder noWinnersMessage = new StringBuilder("There are no winner(s).").append("\n")
+                .append("Game of Quest's continues...").append("\n");
         display(noWinnersMessage);
     }
     public void displayTurn(String playerID) {
-        StringBuilder noWinnersMessage = new StringBuilder("\n" + playerID + "'s Turn:\n");
+        StringBuilder noWinnersMessage = new StringBuilder(playerID).append("'s Turn:").append("\n");
         display(noWinnersMessage);
     }
     public void drawingEventCardMessage() {
@@ -47,11 +49,11 @@ public class GameDisplay {
         display(drawingEventCardMessage);
     }
     public void displayCardDrawn(Card card) {
-        StringBuilder drawnCardMessage = new StringBuilder("You drew: " + card.displayCardName() + "\n");
+        StringBuilder drawnCardMessage = new StringBuilder("You drew: ").append(card.displayCardName()).append("\n");
         display(drawnCardMessage);
     }
     public void displayPlayerHand(Player player) {
-        StringBuilder displayPlayerHand = new StringBuilder("\n" + player.getPlayerID() + " hand: ");
+        StringBuilder displayPlayerHand = new StringBuilder(player.getPlayerID()).append(" hand: ");
         ArrayList<Card> playerHand = player.getHand();
         for (int i = 0; i < playerHand.size(); i++) {
             displayPlayerHand.append(playerHand.get(i).displayCardName());
@@ -59,10 +61,12 @@ public class GameDisplay {
                 displayPlayerHand.append(" ");
             }
         }
+        displayPlayerHand.append("\n");
         display(displayPlayerHand);
     }
     public void displayTrimmedHandMessage() {
-        StringBuilder trimmedHandMessage = new StringBuilder("\nTrimming Complete... Here is your new hand!");
+        StringBuilder trimmedHandMessage = new StringBuilder("Trimming Complete... Here is your new hand!")
+                .append("\n");
         display(trimmedHandMessage);
     }
     public void display(StringBuilder message) {
@@ -71,7 +75,8 @@ public class GameDisplay {
     }
     //Quest output methods
     public void displayBuiltQuest(HashMap<Integer, ArrayList<Card>> questBuilt) {
-        StringBuilder questBuiltMessage = new StringBuilder("\nStage set up is completed...\n\n");
+        StringBuilder questBuiltMessage = new StringBuilder("Stage set up is completed...").append("\n")
+                .append("\n");
 
         for (HashMap.Entry<Integer, ArrayList<Card>> stage : questBuilt.entrySet()) {
             //Get Stage number from Key in hashmap
@@ -93,17 +98,17 @@ public class GameDisplay {
 
             //Appending all strings together
             questBuiltMessage.append("Cards = ").append(cardsString.toString().trim()).append("\n")
-                    .append("Value = ").append(stageValue).append("\n\n");
+                    .append("Value = ").append(stageValue).append("\n").append("\n");
         }
         display(questBuiltMessage);
     }
 
     //Input methods
     public void promptForDiscardCards(int n) {
-        StringBuilder promptDiscard = new StringBuilder("\nDiscard " + n + " cards\n\n" +
-                "Type out cards in the format as it appears in your hand\n" +
-                "For Example: 'F5' (WITHOUT '' around the card name)\n" +
-                "then press the <return> key:");
+        StringBuilder promptDiscard = new StringBuilder("Discard ").append(n).append(" cards")
+                .append("\n\n").append("Type out cards in the format as it appears in your hand").append("\n")
+                .append("For Example: 'F5' (WITHOUT '' around the card name)").append("\n")
+                .append("then press the <return> key:").append("\n");
         display(promptDiscard);
     }
     public String getDiscardInput(Scanner userInput) {
