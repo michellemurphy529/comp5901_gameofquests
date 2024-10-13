@@ -173,6 +173,8 @@ public class Game {
             gameDisplay.displayBuiltQuest(questBuilt);
         }
     }
+    public void displaySponsorHandAndSetUpStages(String playerID, int stages) {
+    }
 
     public static void main(String[] args) {
         //Initialize game

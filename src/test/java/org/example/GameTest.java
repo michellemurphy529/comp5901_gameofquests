@@ -1483,4 +1483,98 @@ class GameTest {
     void RESP_041(){
         RESP_041_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-035-Test-001: System displays sponsor’s hand and prompts the sponsor to select a card " +
+            "or enter ‘Quit’ to end a stage setup. System must ensure that the sponsor selected card is a valid one " +
+            "(a single Foe card and zero or more non-repeated weapon cards)")
+    void RESP_035_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 2 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 2);
+
+        //Input quit
+        String userInput = "F5\nD5\nQuit\nF10\nH10\nQuit\nF15\nS10\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(3);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 2 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new WeaponCard("D", 5);
+        Card card3 = new FoeCard(10);
+        Card card4 = new WeaponCard("H", 10);
+        Card card5 = new FoeCard(15);
+        Card card6 = new WeaponCard("S", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+        game.getCurrentPlayer().addCardToHand(card6);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "Building a Quest with 3 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 3:\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-035: System displays sponsor’s hand and prompts the sponsor to select a card position or " +
+            "enter ‘Quit’ to end a stage setup. System must ensure that the sponsor selected card is a valid one " +
+            "(a single Foe card and zero or more non-repeated weapon cards)")
+    void RESP_035(){
+        RESP_035_test_001();
+    }
 }
