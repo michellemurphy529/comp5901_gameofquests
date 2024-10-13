@@ -183,4 +183,8 @@ public class GameLogic {
         }
         return singleFoe;
     }
+    public boolean hasRepeatingWeapon(String cardString, HashMap<String, Integer> weaponCards) {
+        String weaponTypeString = cardString.substring(0, 1);
+        return weaponCards.get(weaponTypeString) == 1;
+    }
 }

@@ -118,6 +118,16 @@ public class GameDisplay {
                 ("Enter 'Quit' to end this stage setup.").append("\n");
         display(selectStagesCards);
     }
+    public void displayFoeAlreadyInStageMessage() {
+        StringBuilder foeInStageMessage = new StringBuilder("There is already a Foe card in this stage. Try Again.")
+                .append("\n");
+        display(foeInStageMessage);
+    }
+    public void displayRepeatedWeaponCardMessage() {
+        StringBuilder repeatedWeaponCard = new StringBuilder("There is already that same Weapon card in this stage. Try Again.")
+                .append("\n");
+        display(repeatedWeaponCard);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

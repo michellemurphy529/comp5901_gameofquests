@@ -204,12 +204,25 @@ public class Game {
             String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
 
             //Deal with string received
+            //Quit is entered
             if (inputReceived.equalsIgnoreCase("quit")) {
                 quitEntered = true;
-            } else if (inputReceived.contains("F") && !singleFoe) {
+            }
+            //Case where Foe has not been added to stage yet
+            else if (inputReceived.contains("F") && !singleFoe) {
                 singleFoe = true;
-            } else {
+            }
+            //Case where Single Foe is already in stage
+            else if (inputReceived.contains("F") && singleFoe) {
+                gameDisplay.displayFoeAlreadyInStageMessage();
+            }
+            //Case where weapon card is checked to see if it's already in stage
+            else if(!gameLogic.hasRepeatingWeapon(inputReceived, weaponCards)) {
                 gameLogic.addToWeaponCards(inputReceived, weaponCards);
+            }
+            //Case where it is a repeated weapon card
+            else {
+                gameDisplay.displayRepeatedWeaponCardMessage();
             }
         }
     }
