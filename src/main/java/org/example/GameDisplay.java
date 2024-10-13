@@ -147,6 +147,10 @@ public class GameDisplay {
         StringBuilder stageCannotBeEmptyMessage = new StringBuilder("A stage cannot be empty").append("\n");
         display(stageCannotBeEmptyMessage);
     }
+    public void displayInsufficientValueMessage() {
+        StringBuilder insufficientValueMessage = new StringBuilder("Insufficient value for this stage").append("\n");
+        display(insufficientValueMessage);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

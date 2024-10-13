@@ -174,21 +174,36 @@ public class Game {
         }
     }
     public void displaySponsorHandAndSetUpStages(String playerID, int stages) {
+        //Building Quest from stageCards
+        HashMap<Integer, ArrayList<Card>> questBuilt = new HashMap<>(stages);
         //Display building Quest with stage number
         gameDisplay.displayBuildingQuestMessage(stages);
 
         //make sure current stage equals the number of stages to break loop
         int currentStage = 0;
+        //Previous stage value
+        int previousStageValue = 0;
+
         while (currentStage != stages) {
             //Display current Stage
             gameDisplay.displayBuildingStageMessage(currentStage + 1);
 
             //Get cards from user for stage selection
-            ArrayList<String> stageCards = getCardsForStage(playerID, currentStage + 1);
+            ArrayList<String> stageStringCards = getCardsForStage(playerID, currentStage + 1, previousStageValue);
+            //Get actual cards from sponsor hand
+            ArrayList<Card> stageCardsFromSponsorHand = gameLogic.getStageCardsFromSponsor(playerID, stageStringCards);
+            //sort stage cards before adding to quest hashmap
+            gameLogic.sortStageCards(stageCardsFromSponsorHand);
+
+            //Get cards from sponsor hand
+            questBuilt.put(currentStage + 1, stageCardsFromSponsorHand);
+            //Update Stage value to have it updated after we get the cards from sponsor
+            previousStageValue = gameLogic.getStageValue(currentStage + 1, questBuilt);
+
             currentStage++;
         }
     }
-    public ArrayList<String> getCardsForStage(String playerID, int currentStage) {
+    public ArrayList<String> getCardsForStage(String playerID, int currentStage, int previousStageValue) {
         //check weapons are non repeating
         HashMap<String, Integer> weaponCards = gameLogic.setUpWeaponCards();
         //ArrayList to return the stage
@@ -205,13 +220,20 @@ public class Game {
             gameDisplay.displayPromptForSelectingStageCards();
             String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
 
+            //Determining if Stage has sufficient value
+            boolean sufficientValue = gameLogic.compareCurrentStageValueIsGreaterThanPrevious(stageCards, previousStageValue);
+
             //Deal with string received
-            //Quit is entered and the stageCards is not empty
-            if (inputReceived.equalsIgnoreCase("quit") && !stageCards.isEmpty()) {
+            //Quit is entered and the stage is not empty and there is sufficient value for this stage
+            if (inputReceived.equalsIgnoreCase("quit") && !stageCards.isEmpty() && sufficientValue) {
                 quitEntered = true;
             }
             else if (inputReceived.equalsIgnoreCase("quit") && stageCards.isEmpty()) {
                 gameDisplay.displayStageCannotBeEmptyMessage();
+            }
+            //Case where there is not a sufficient value between stages
+            else if (inputReceived.equalsIgnoreCase("quit") && !sufficientValue) {
+                gameDisplay.displayInsufficientValueMessage();
             }
             //Case where Foe has not been added to stage yet
             else if (inputReceived.contains("F") && !singleFoe) {

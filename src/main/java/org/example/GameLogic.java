@@ -199,4 +199,30 @@ public class GameLogic {
         }
         return (currentValue >= previousStageValue);
     }
+    public ArrayList<Card> getStageCardsFromSponsor(String sponsorID, ArrayList<String> stageStringCards) {
+        ArrayList<Card> stageCards = new ArrayList<>();
+        for (String cardString : stageStringCards) {
+            String cardTypeString = cardString.substring(0,1);
+            Card card = getCardFromHand(cardTypeString, sponsorID);
+            stageCards.addLast(card);
+        }
+        return stageCards;
+    }
+    public void sortStageCards(ArrayList<Card> stageCardsFromSponsorHand) {
+        stageCardsFromSponsorHand.sort(new SortHand());
+    }
+    public int getValuesOfCards(ArrayList<Card> cards) {
+        int stageValue = 0;
+        for (Card card : cards) {
+            AdventureCard adventureCard = (AdventureCard) card;
+            //Add to stage value running total
+            stageValue += adventureCard.getValue();
+        }
+        return stageValue;
+    }
+    public int getStageValue(int stage, HashMap<Integer, ArrayList<Card>> questBuilt) {
+        ArrayList<Card> cards = questBuilt.get(stage);
+        //get values of the cards in stage
+        return getValuesOfCards(cards);
+    }
 }
