@@ -1538,9 +1538,13 @@ class GameTest {
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 1 Card(s): F5\n\n" +
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "D5 added to Stage...\n" +
+                "Stage 1 Card(s): F5 D5\n\n" +
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
@@ -1548,9 +1552,13 @@ class GameTest {
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "F10 added to Stage...\n" +
+                "Stage 2 Card(s): F10\n\n" +
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "H10 added to Stage...\n" +
+                "Stage 2 Card(s): F10 H10\n\n" +
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
@@ -1558,9 +1566,13 @@ class GameTest {
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "F15 added to Stage...\n" +
+                "Stage 3 Card(s): F15\n\n" +
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "S10 added to Stage...\n" +
+                "Stage 3 Card(s): F15 S10\n\n" +
                 "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n";
@@ -1629,6 +1641,8 @@ class GameTest {
                 "P3 hand: F5 F5 F10 H10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 1 Card(s): F5\n\n" +
                 "P3 hand: F5 F5 F10 H10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
@@ -1640,9 +1654,13 @@ class GameTest {
                 "P3 hand: F5 F5 F10 H10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "F10 added to Stage...\n" +
+                "Stage 2 Card(s): F10\n\n" +
                 "P3 hand: F5 F5 F10 H10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
+                "H10 added to Stage...\n" +
+                "Stage 2 Card(s): F10 H10\n\n" +
                 "P3 hand: F5 F5 F10 H10 H10\n\n" +
                 "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
                 "Enter 'Quit' to end this stage setup.\n\n" +
