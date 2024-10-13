@@ -272,7 +272,21 @@ public class Game {
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
     public ArrayList<Card> promptPlayerToSelectCardOrQuit(String playerID) {
-        return null;
+        ArrayList<Card> attackCards = new ArrayList<>();
+
+        boolean quitEntered = false;
+        while(!quitEntered){
+            //Prompt participant to select card or 'quit' to end valid attack
+            gameDisplay.displayPromptAttackSelectCards();
+            String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
+            if(inputReceived.equalsIgnoreCase("quit")) {
+                quitEntered = true;
+            }else {
+                Card cardFromParticipant = gameLogic.getCardFromHand(inputReceived.substring(0,1), playerID);
+                attackCards.addLast(cardFromParticipant);
+            }
+        }
+        return attackCards;
     }
 
     public static void main(String[] args) {

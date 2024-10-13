@@ -156,6 +156,12 @@ public class GameDisplay {
         StringBuilder settingUpAttackMessage = new StringBuilder("Setting up an Attack...").append("\n");
         display(settingUpAttackMessage);
     }
+    public void displayPromptAttackSelectCards() {
+        StringBuilder selectAttackCards = new StringBuilder("Select 0 or more non-repeating Weapon cards from " +
+                "your hand to build this attack.").append("\n").append
+                ("Enter 'Quit' to end the attack setup.").append("\n");
+        display(selectAttackCards);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
