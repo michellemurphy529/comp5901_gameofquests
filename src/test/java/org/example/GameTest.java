@@ -1989,4 +1989,225 @@ class GameTest {
     void RESP_040(){
         RESP_040_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-042-Test-001: System displays participants hand of cards when setting up a valid attack. Player 1")
+    void RESP_042_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 1 to set up attack
+        helper.forcePlayerTurn(game, 1);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new FoeCard(10);
+        Card card4 = new FoeCard(15);
+        Card card5 = new FoeCard(15);
+        Card card6 = new WeaponCard("D", 5);
+        Card card7 = new WeaponCard("D", 5);
+        Card card8 = new WeaponCard("S", 10);
+        Card card9 = new WeaponCard("S", 10);
+        Card card10 = new WeaponCard("H", 10);
+        Card card11 = new WeaponCard("H", 10);
+        Card card12 = new WeaponCard("B", 15);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+        game.getCurrentPlayer().addCardToHand(card6);
+        game.getCurrentPlayer().addCardToHand(card7);
+        game.getCurrentPlayer().addCardToHand(card8);
+        game.getCurrentPlayer().addCardToHand(card9);
+        game.getCurrentPlayer().addCardToHand(card10);
+        game.getCurrentPlayer().addCardToHand(card11);
+        game.getCurrentPlayer().addCardToHand(card12);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display hand of participant setting up a Attack
+        game.displaySetUpForAttackAndPlayerHand(playerID);
+
+        String expectedOutput = "Setting up an Attack...\n\n" +
+                "P1 hand: F5 F10 F10 F15 F15 D5 D5 S10 S10 H10 H10 B15\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-042-Test-002: System displays participants hand of cards when setting up a valid attack. Player 2")
+    void RESP_042_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 2 to set up attack
+        helper.forcePlayerTurn(game, 2);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new FoeCard(10);
+        Card card4 = new FoeCard(15);
+        Card card5 = new FoeCard(15);
+        Card card6 = new WeaponCard("D", 5);
+        Card card7 = new WeaponCard("D", 5);
+        Card card8 = new WeaponCard("S", 10);
+        Card card9 = new WeaponCard("S", 10);
+        Card card10 = new WeaponCard("H", 10);
+        Card card11 = new WeaponCard("H", 10);
+        Card card12 = new WeaponCard("B", 15);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+        game.getCurrentPlayer().addCardToHand(card6);
+        game.getCurrentPlayer().addCardToHand(card7);
+        game.getCurrentPlayer().addCardToHand(card8);
+        game.getCurrentPlayer().addCardToHand(card9);
+        game.getCurrentPlayer().addCardToHand(card10);
+        game.getCurrentPlayer().addCardToHand(card11);
+        game.getCurrentPlayer().addCardToHand(card12);
+
+        //Player 2 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display hand of participant setting up a Attack
+        game.displaySetUpForAttackAndPlayerHand(playerID);
+
+        String expectedOutput = "Setting up an Attack...\n\n" +
+                "P2 hand: F5 F10 F10 F15 F15 D5 D5 S10 S10 H10 H10 B15\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-042-Test-003: System displays participants hand of cards when setting up a valid attack. Player 3")
+    void RESP_042_test_003() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 3 to set up attack
+        helper.forcePlayerTurn(game, 3);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new FoeCard(10);
+        Card card4 = new FoeCard(15);
+        Card card5 = new FoeCard(15);
+        Card card6 = new WeaponCard("D", 5);
+        Card card7 = new WeaponCard("D", 5);
+        Card card8 = new WeaponCard("S", 10);
+        Card card9 = new WeaponCard("S", 10);
+        Card card10 = new WeaponCard("H", 10);
+        Card card11 = new WeaponCard("H", 10);
+        Card card12 = new WeaponCard("B", 15);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+        game.getCurrentPlayer().addCardToHand(card6);
+        game.getCurrentPlayer().addCardToHand(card7);
+        game.getCurrentPlayer().addCardToHand(card8);
+        game.getCurrentPlayer().addCardToHand(card9);
+        game.getCurrentPlayer().addCardToHand(card10);
+        game.getCurrentPlayer().addCardToHand(card11);
+        game.getCurrentPlayer().addCardToHand(card12);
+
+        //Player 3 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display hand of participant setting up a Attack
+        game.displaySetUpForAttackAndPlayerHand(playerID);
+
+        String expectedOutput = "Setting up an Attack...\n\n" +
+                "P3 hand: F5 F10 F10 F15 F15 D5 D5 S10 S10 H10 H10 B15\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-042-Test-004: System displays participants hand of cards when setting up a valid attack. Player 4")
+    void RESP_042_test_004() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 4 to set up attack
+        helper.forcePlayerTurn(game, 4);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new FoeCard(10);
+        Card card4 = new FoeCard(15);
+        Card card5 = new FoeCard(15);
+        Card card6 = new WeaponCard("D", 5);
+        Card card7 = new WeaponCard("D", 5);
+        Card card8 = new WeaponCard("S", 10);
+        Card card9 = new WeaponCard("S", 10);
+        Card card10 = new WeaponCard("H", 10);
+        Card card11 = new WeaponCard("H", 10);
+        Card card12 = new WeaponCard("B", 15);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+        game.getCurrentPlayer().addCardToHand(card6);
+        game.getCurrentPlayer().addCardToHand(card7);
+        game.getCurrentPlayer().addCardToHand(card8);
+        game.getCurrentPlayer().addCardToHand(card9);
+        game.getCurrentPlayer().addCardToHand(card10);
+        game.getCurrentPlayer().addCardToHand(card11);
+        game.getCurrentPlayer().addCardToHand(card12);
+
+        //Player 3 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display hand of participant setting up a Attack
+        game.displaySetUpForAttackAndPlayerHand(playerID);
+
+        String expectedOutput = "Setting up an Attack...\n\n" +
+                "P4 hand: F5 F10 F10 F15 F15 D5 D5 S10 S10 H10 H10 B15\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-042: System displays participants hand of cards when setting up a valid attack")
+    void RESP_042(){
+        RESP_042_test_001();
+        RESP_042_test_002();
+        RESP_042_test_003();
+        RESP_042_test_004();
+    }
 }

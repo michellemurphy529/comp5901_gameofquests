@@ -266,6 +266,9 @@ public class Game {
         }
         return stageCards;
     }
+    //Attack methods
+    public void displaySetUpForAttackAndPlayerHand(String playerID) {
+    }
 
     public static void main(String[] args) {
         //Initialize game
