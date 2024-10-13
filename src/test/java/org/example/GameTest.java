@@ -2293,4 +2293,105 @@ class GameTest {
         RESP_043_test_001();
         RESP_043_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-044-Test-001: RESP-044-Test-002: System must ensure that the participant selected a card " +
+            "for an attack is a valid one and display the updated set of card(s). One card in attack")
+    void RESP_044_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 2 to set up attack
+        helper.forcePlayerTurn(game, 2);
+
+        //Input quit
+        String userInput = "D5\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new WeaponCard("D", 5);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card1);
+
+        //Player 2 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.promptPlayerToSelectCardOrQuit(playerID);
+        assertEquals(card1, attackCards.getFirst());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-044-Test-002: System must ensure that the participant selected a card for an attack is a valid " +
+            "one and display the updated set of card(s). Two cards non-repeating weapon.")
+    void RESP_044_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 1 to set up attack
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "D5\nL20\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("L", 20);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card1);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card2);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.promptPlayerToSelectCardOrQuit(playerID);
+        assertEquals(card1, attackCards.getFirst());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "L20 added to Attack...\n" +
+                "Attack Card(s): D5 L20\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-044: System must ensure that the participant selected a card for an attack is a valid one " +
+            "(i.e. possibly empty set of non-repeated weapon card) and must add the selected valid card for an attack " +
+            "and display the updated set of card(s)")
+    void RESP_044() {
+        RESP_044_test_001();
+        RESP_044_test_002();
+    }
 }
