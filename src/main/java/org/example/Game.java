@@ -333,6 +333,8 @@ public class Game {
     public String getSponsorPlayerID() {
         return gameLogic.getSponsorID();
     }
+    public void promptOtherPlayersToSponsor() {
+    }
 
     public static void main(String[] args) {
         //Initialize game
