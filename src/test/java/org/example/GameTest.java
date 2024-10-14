@@ -2458,4 +2458,150 @@ class GameTest {
     void RESP_045() {
         RESP_045_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-046-Test-001: System checks that if the participant setting up an attack enters " +
+            "‘Quit’ that the cards (if any) are displayed. no cards displayed for this attack")
+    void RESP_046_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 1 to set up attack
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "Quit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //participant enters 'quit' and display attack set up
+        ArrayList<Card> attackCards = game.getAttackCardsAndDisplayToUser(playerID);
+        assertEquals(0, attackCards.size());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Attack set up is completed...\n" +
+                "Your Attack: No attack\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-046-Test-002: System checks that if the participant setting up an attack enters " +
+            "‘Quit’ that the cards (if any) are displayed. one card added to attack")
+    void RESP_046_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 1 to set up attack
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "D5\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new WeaponCard("D", 5);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card1);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.getAttackCardsAndDisplayToUser(playerID);
+        //Test the attack cards do not contain another D5 card
+        assertEquals(1, attackCards.size());
+        assertEquals(card1.getType(), attackCards.get(0).getType());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Attack set up is completed...\n" +
+                "Your Attack: D5\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-046-Test-003: System checks that if the participant setting up an attack enters " +
+            "‘Quit’ that the cards (if any) are displayed. two cards added to attack")
+    void RESP_046_test_003() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 1 to set up attack
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "D5\nL20\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new WeaponCard("D", 5);
+        Card card3 = new WeaponCard("L", 20);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card1);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card3);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.getAttackCardsAndDisplayToUser(playerID);
+        //Test the attack cards do not contain another D5 card
+        assertEquals(2, attackCards.size());
+        assertEquals(card1.getType(), attackCards.get(0).getType());
+        assertEquals(card3.getType(), attackCards.get(1).getType());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "L20 added to Attack...\n" +
+                "Attack Card(s): D5 L20\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Attack set up is completed...\n" +
+                "Your Attack: D5 L20\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-046: System checks that if the participant setting up an attack enters ‘Quit’ that the cards " +
+            "(if any) are displayed")
+    void RESP_046() {
+        RESP_046_test_001();
+        RESP_046_test_002();
+        RESP_046_test_003();
+    }
 }

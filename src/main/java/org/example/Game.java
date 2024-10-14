@@ -304,6 +304,9 @@ public class Game {
         }
         return attackCards;
     }
+    public ArrayList<Card> getAttackCardsAndDisplayToUser(String playerID) {
+        return new ArrayList<>();
+    }
 
     public static void main(String[] args) {
         //Initialize game
