@@ -2691,4 +2691,74 @@ class GameTest {
         RESP_027_test_001();
         RESP_027_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-021-Test-001: System draws a Quest card and the current player sponsors.")
+    void RESP_021_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 4);
+        //user input
+        String userInput = "Yes\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //current player ID
+        game.promptCurrentPlayerToSponsor();
+
+        //Test current player is the Sponsor
+        assertEquals(game.getCurrentPlayer().getPlayerID(), game.getSponsorPlayerID());
+
+        String expectedOutput = "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have accepted to be the Sponsor!\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-021-Test-002: System draws a Quest card and the current player declines sponsorship.")
+    void RESP_021_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 4);
+        //user input
+        String userInput = "no\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //current player ID
+        game.promptCurrentPlayerToSponsor();
+
+        //Test current player is not the Sponsor
+        assertNotEquals(game.getCurrentPlayer().getPlayerID(), game.getSponsorPlayerID());
+
+        String expectedOutput = "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-021: System draws a Quest card and the current player can either sponsor the quest or decline.")
+    void RESP_021() {
+        RESP_021_test_001();
+        RESP_021_test_002();
+    }
 }

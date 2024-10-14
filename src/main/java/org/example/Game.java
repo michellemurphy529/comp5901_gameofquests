@@ -319,6 +319,11 @@ public class Game {
         dealNumberOfAdventureCardsToPlayer(participantID, 1);
         trimHandPlayer(participantID, computeNumberOfCardsToDiscard(participantID));
     }
+    public void promptCurrentPlayerToSponsor() {
+    }
+    public String getSponsorPlayerID() {
+        return null;
+    }
 
     public static void main(String[] args) {
         //Initialize game
