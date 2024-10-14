@@ -294,4 +294,28 @@ public class GameLogic {
     public HashMap<String, ArrayList<Card>> getAttackHands() {
         return attackHands;
     }
+    public void setAttackValues() {
+        attackValues = new ArrayList<>();
+    }
+    public void setAttackHands() {
+        attackHands = new HashMap<>();
+        for (String participantID : getEligiblePlayers()) {
+            attackHands.put(participantID, new ArrayList<>());
+        }
+    }
+    public void addAttackCards(String participantID, ArrayList<Card> attackCards) {
+        ArrayList<Card> participantAttack = attackHands.get(participantID);
+        participantAttack.addAll(attackCards);
+    }
+    public int getAttackValue(ArrayList<Card> attackCards) {
+        int attackSum = 0;
+        for (Card card : attackCards) {
+            AdventureCard adventureCard = (AdventureCard) card;
+            attackSum += adventureCard.getValue();
+        }
+        return attackSum;
+    }
+    public void addAttackValue(int positionInArray, int attackValue) {
+        attackValues.add(positionInArray, attackValue);
+    }
 }

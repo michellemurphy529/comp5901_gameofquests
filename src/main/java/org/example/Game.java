@@ -390,6 +390,23 @@ public class Game {
         return gameLogic.checkForParticipants();
     }
     public void participantsSetUpAttacks() {
+        //Set up HashMap and arrayList to hold attack cards and attack values
+        gameLogic.setAttackHands();
+        gameLogic.setAttackValues();
+        //Each participant prepares an attack with one or more non-repeated weapon cards
+        for(int i = 0; i < gameLogic.getEligiblePlayers().size(); i++) {
+            String participantID = gameLogic.getEligiblePlayers().get(i);
+            //Display to participant who's turn it is
+            displaySetUpForAttackAndPlayerHand(participantID);
+            //Prompt for attack cards
+            ArrayList<Card> attackCards = getAttackCardsAndDisplayToUser(participantID);
+            //Add attack cards to array list that holds the same index as the place in the eligible participant list
+            gameLogic.addAttackCards(participantID, attackCards);
+            //Get the sum of the attack
+            int attackValue = gameLogic.getAttackValue(attackCards);
+            //Add to the attack value list in the right position
+            gameLogic.addAttackValue(i, attackValue);
+        }
     }
     //Clear display methods
     public void promptToLeaveHotSeat() {
