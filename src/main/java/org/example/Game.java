@@ -334,6 +334,28 @@ public class Game {
         return gameLogic.getSponsorID();
     }
     public void promptOtherPlayersToSponsor() {
+        String[] askingOrder = gameLogic.getOtherPlayerSponsorshipAskingOrder();
+        for (String playerID : askingOrder) {
+            //If player does not have enough foe cards for the number of stages they are skipped
+            if(!gameLogic.isAbleToBuildQuest(gameLogic.getPlayer(playerID))) {
+                gameDisplay.skippingForSponsorship(playerID);
+            }
+            else {
+                //prompt next player for sponsorship
+                gameDisplay.askingPlayerToSponsor(playerID);
+                gameDisplay.promptForSponsorship();
+                //get input from player
+                String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
+                if(inputReceived.equalsIgnoreCase("yes")) {
+                    //set sponsor as player that accepted
+                    gameLogic.setSponsorID(playerID);
+                    gameDisplay.displaySponsorshipAccepted();
+                    break;
+                }else if(inputReceived.equalsIgnoreCase("no")){
+                    gameDisplay.displaySponsorshipNotAccepted();
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {

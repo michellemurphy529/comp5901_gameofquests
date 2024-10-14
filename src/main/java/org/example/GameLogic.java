@@ -245,4 +245,30 @@ public class GameLogic {
         }
         return true;
     }
+    public String[] getOtherPlayerSponsorshipAskingOrder() {
+
+        String[] currentOrder = getPlayerIDs();
+        String[] sponsorOrder = new String[3];
+        //new ordering that starts at next position in order
+        int sponsorOrderIndex = currentPlayerIndex + 1;
+
+        for (int i = 0; i < sponsorOrder.length; i++) {
+            sponsorOrder[i] = currentOrder[sponsorOrderIndex % currentOrder.length];
+            sponsorOrderIndex++;
+        }
+        return sponsorOrder;
+    }
+    public boolean isAbleToBuildQuest(Player player) {
+        int numOfFoes = 0;
+        for (Card card : player.getHand()) {
+            if(card instanceof FoeCard foe) {
+                numOfFoes++;
+            }
+        }
+        QuestCard questCard = (QuestCard) lastEventCardDrawn;
+        if(numOfFoes < questCard.getStages()) {
+            return false;
+        }
+        return true;
+    }
 }

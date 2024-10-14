@@ -211,6 +211,15 @@ public class GameDisplay {
                 .append("Now asking other players...").append("\n");
         display(notSponsorMessage);
     }
+    public void skippingForSponsorship(String playerID) {
+        StringBuilder cannotSponsor = new StringBuilder(playerID).append(" you cannot build a valid Quest.").append("\n")
+                .append("You are being skipped.").append("\n");
+        display(cannotSponsor);
+    }
+    public void askingPlayerToSponsor(String playerID) {
+        StringBuilder askingToSponsor = new StringBuilder("Asking ").append(playerID).append(":");
+        display(askingToSponsor);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
