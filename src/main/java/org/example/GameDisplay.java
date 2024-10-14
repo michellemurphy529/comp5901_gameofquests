@@ -177,6 +177,25 @@ public class GameDisplay {
         displayAttackCards.append("\n");
         display(displayAttackCards);
     }
+    public void displayAttackSetUpCompleted() {
+        StringBuilder attackCompletedMessage = new StringBuilder("Attack set up is completed...");
+        display(attackCompletedMessage);
+    }
+    public void displayParticipantAttack(ArrayList<Card> participantAttack) {
+        StringBuilder participantAttackCompleteAndDisplayed = new StringBuilder("Your Attack: ");
+        if(!participantAttack.isEmpty()) {
+            for (int i = 0; i < participantAttack.size(); i++) {
+                participantAttackCompleteAndDisplayed.append(participantAttack.get(i).displayCardName());
+                if (i < participantAttack.size() - 1) {
+                    participantAttackCompleteAndDisplayed.append(" ");
+                }
+            }
+        }else {
+            participantAttackCompleteAndDisplayed.append("No attack");
+        }
+        participantAttackCompleteAndDisplayed.append("\n");
+        display(participantAttackCompleteAndDisplayed);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

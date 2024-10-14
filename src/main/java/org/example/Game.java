@@ -304,8 +304,14 @@ public class Game {
         }
         return attackCards;
     }
-    public ArrayList<Card> getAttackCardsAndDisplayToUser(String playerID) {
-        return new ArrayList<>();
+    public ArrayList<Card> getAttackCardsAndDisplayToUser(String participantID) {
+        //Get the participants attack
+        ArrayList<Card> participantAttack = promptPlayerToSelectCardOrQuit(participantID);
+        //display attack is complete
+        gameDisplay.displayAttackSetUpCompleted();
+        gameDisplay.displayParticipantAttack(participantAttack);
+
+        return participantAttack;
     }
 
     public static void main(String[] args) {
