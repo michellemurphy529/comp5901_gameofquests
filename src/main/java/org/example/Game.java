@@ -391,10 +391,14 @@ public class Game {
     }
     //Clear display methods
     public void promptToLeaveHotSeat() {
+        gameDisplay.promptToLeaveHotSeat();
+        String inputRecevied = gameDisplay.getLeaveHotseatInput(input);
     }
     public void flushDisplay() {
+        gameDisplay.flushDisplay();
     }
     public void displayPlayerInHotSeat() {
+        gameDisplay.displayPlayerIDInHotSeat(getCurrentPlayer().getPlayerID());
     }
 
     public static void main(String[] args) {

@@ -255,6 +255,26 @@ public class GameDisplay {
         StringBuilder noParticipants = new StringBuilder("No Participants for Current Stage...");
         display(noParticipants);
     }
+    //Hotseat methods
+    public void promptToLeaveHotSeat() {
+        StringBuilder leaveHotseatMessage = new StringBuilder("Your turn is now over...").append("\n").
+                append("Press the <RETURN> key to leave the hotseat:").append("\n");
+        display(leaveHotseatMessage);
+    }
+    public String getLeaveHotseatInput(Scanner userInput) {
+        return userInput.nextLine();
+    }
+    public void flushDisplay() {
+        for (int i = 0; i < 50; i++) {
+            output.println();
+            consoleOutput.println();
+        }
+    }
+    public void displayPlayerIDInHotSeat(String playerID) {
+        StringBuilder playerIDForTurnInHotseat = new StringBuilder(playerID).append(" is now in the hotseat.")
+                .append("\n");
+        display(playerIDForTurnInHotseat);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
