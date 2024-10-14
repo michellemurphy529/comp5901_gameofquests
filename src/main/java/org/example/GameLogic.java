@@ -330,4 +330,15 @@ public class GameLogic {
     public HashMap<Integer, ArrayList<Card>> getQuestInfo() {
         return questBuilt;
     }
+    public void setQuestInfo(int stages) {
+        questBuilt = new HashMap<>();
+        for (int i = 0; i < stages; i++) {
+            Integer stageNumber = i + 1;
+            questBuilt.put(stageNumber, new ArrayList<>());
+        }
+    }
+    public void addCardstoQuestInfo(int stage, ArrayList<Card> cards) {
+        Integer stageKey = stage;
+        questBuilt.get(stageKey).addAll(cards);
+    }
 }

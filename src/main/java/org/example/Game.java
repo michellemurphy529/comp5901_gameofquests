@@ -175,7 +175,8 @@ public class Game {
     }
     public void displaySponsorHandAndSetUpStages(String playerID, int stages) {
         //Building Quest from stageCards
-        HashMap<Integer, ArrayList<Card>> questBuilt = new HashMap<>(stages);
+        //Initialize questBuilt
+        gameLogic.setQuestInfo(stages);
         //Display building Quest with stage number
         gameDisplay.displayBuildingQuestMessage(stages);
 
@@ -196,9 +197,9 @@ public class Game {
             gameLogic.sortStageCards(stageCardsFromSponsorHand);
 
             //Get cards from sponsor hand
-            questBuilt.put(currentStage + 1, stageCardsFromSponsorHand);
+            gameLogic.addCardstoQuestInfo(currentStage + 1, stageCardsFromSponsorHand);
             //Update Stage value to have it updated after we get the cards from sponsor
-            previousStageValue = gameLogic.getStageValue(currentStage + 1, questBuilt);
+            previousStageValue = gameLogic.getStageValue(currentStage + 1, gameLogic.getQuestInfo());
 
             currentStage++;
         }
