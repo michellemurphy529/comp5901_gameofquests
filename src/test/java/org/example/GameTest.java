@@ -2884,4 +2884,69 @@ class GameTest {
         RESP_022_test_001();
         RESP_022_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-023-Test-001: System ends quest and the current player’s turn if all players decline sponsorship")
+    void RESP_023_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 1);
+        //user input
+        String userInput = "No\nno\nno\nno\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //draw Quest card
+        Card questCard = new QuestCard(4);
+        ArrayList<Card> eventDeck = game.getEventDeck().getDeck();
+        eventDeck.addFirst(questCard);
+        Card card = game.drawEventCard(game.getCurrentPlayer().getPlayerID());
+
+        assertEquals(questCard, game.getLastEventCardDrawn());
+
+        //P1 declines to Sponsor
+        game.promptCurrentPlayerToSponsor();
+        //all others player decline sponsorship
+        game.promptOtherPlayersToSponsor();
+
+        //Test current player 3 is the Sponsor
+        assertNull(game.getSponsorPlayerID());
+
+        String expectedOutput = "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P2:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P3:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P4:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "No sponsor for Quest\n" +
+                "Quest has ended.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-023: System ends quest and the current player’s turn if all players decline sponsorship")
+    void RESP_023() {
+        RESP_023_test_001();
+    }
 }
