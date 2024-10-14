@@ -389,6 +389,13 @@ public class Game {
     public boolean noParticipantsFound() {
         return gameLogic.checkForParticipants();
     }
+    //Clear display methods
+    public void promptToLeaveHotSeat() {
+    }
+    public void flushDisplay() {
+    }
+    public void displayPlayerInHotSeat() {
+    }
 
     public static void main(String[] args) {
         //Initialize game

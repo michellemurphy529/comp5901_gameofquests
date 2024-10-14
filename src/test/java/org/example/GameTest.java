@@ -3192,4 +3192,79 @@ class GameTest {
         RESP_028_test_001();
         RESP_028_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-014-Test-001: System prompts player to hit <return> key to leave 'hotseat'.")
+    void RESP_014_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        String userInput = "\n";
+        Scanner overrideInput = new Scanner(userInput);
+        game.setInput(overrideInput);
+
+        game.promptToLeaveHotSeat();
+
+        String expectedOutput = "Your turn is now over...\n" +
+                "Press the <RETURN> key to leave the hotseat:\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-014-Test-002: System flushes display for the next player")
+    void RESP_014_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        game.flushDisplay();
+
+        //Test the output contains 50 newlines to simulate clearing the display
+        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-014-Test-003: System flushes display for the next player and displays the ID of the " +
+            "next player now in the 'hotseat'")
+    void RESP_014_test_003() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 1);
+
+        game.gameLogic.nextTurn();
+
+        game.displayPlayerInHotSeat();
+
+        String expectedOutput = "P2 is now in the hotseat.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-014: System prompts player to hit <return> key to leave 'hotseat'." +
+            "System flushes display for the next player and displays the ID of the next player now in the 'hotseat'")
+    void RESP_014() {
+        RESP_014_test_001();
+        RESP_014_test_002();
+        RESP_014_test_003();
+    }
 }
