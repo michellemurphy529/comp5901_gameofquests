@@ -369,6 +369,8 @@ public class Game {
         gameDisplay.displayQuestBegins();
         gameDisplay.displayEligiblePlayers(eligiblePlayers, stageNumber);
     }
+    public void promptToParticipateInCurrentStage() {
+    }
 
     public static void main(String[] args) {
         //Initialize game

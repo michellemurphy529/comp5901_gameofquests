@@ -2981,4 +2981,49 @@ class GameTest {
     void RESP_024() {
         RESP_024_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-025-Test-001: System prompts players to participate or withdraw the current quest stage. " +
+            "Players 1, 3 accept and 4 declines")
+    void RESP_025_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "yes\nyes\nno\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //prompt players to participate
+        game.promptToParticipateInCurrentStage();
+
+        String expectedOutput = "Asking P1:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P3:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P4:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-025: System prompts players to participate or withdraw the current quest stage")
+    void RESP_025() {
+        RESP_025_test_001();
+    }
 }
