@@ -370,12 +370,17 @@ public class Game {
         gameDisplay.displayEligiblePlayers(eligiblePlayers, stageNumber);
     }
     public void promptToParticipateInCurrentStage() {
+        ArrayList<String> playersToRemove = new ArrayList<>();
         //get list of eligbile players
         ArrayList<String> eligiblePlayers = gameLogic.getEligiblePlayers();
         for (String playerID : eligiblePlayers) {
             gameDisplay.promptPlayersToParticipateInStage(playerID);
             String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
+            if(inputReceived.equalsIgnoreCase("no")) {
+                playersToRemove.add(playerID);
+            }
         }
+        gameLogic.removePlayerFromSubsequentStages(playersToRemove);
     }
 
     public static void main(String[] args) {

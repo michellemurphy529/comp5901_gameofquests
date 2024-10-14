@@ -280,4 +280,7 @@ public class GameLogic {
     public ArrayList<String> getEligiblePlayers() {
         return eligiblePlayers;
     }
+    public void removePlayerFromSubsequentStages(ArrayList<String> playersToRemove) {
+        eligiblePlayers.removeAll(playersToRemove);
+    }
 }
