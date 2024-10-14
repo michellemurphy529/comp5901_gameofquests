@@ -220,6 +220,15 @@ public class GameDisplay {
         StringBuilder askingToSponsor = new StringBuilder("Asking ").append(playerID).append(":");
         display(askingToSponsor);
     }
+    public void displayNoSponsor() {
+        StringBuilder noSponsor = new StringBuilder("No sponsor for Quest");
+        display(noSponsor);
+    }
+    public void displayQuestEnded() {
+        StringBuilder questEnded = new StringBuilder("Quest has ended.").append("\n");
+        display(questEnded);
+
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

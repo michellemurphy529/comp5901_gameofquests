@@ -335,6 +335,7 @@ public class Game {
     }
     public void promptOtherPlayersToSponsor() {
         String[] askingOrder = gameLogic.getOtherPlayerSponsorshipAskingOrder();
+        int playersDeclined = 0;
         for (String playerID : askingOrder) {
             //If player does not have enough foe cards for the number of stages they are skipped
             if(!gameLogic.isAbleToBuildQuest(gameLogic.getPlayer(playerID))) {
@@ -353,7 +354,12 @@ public class Game {
                     break;
                 }else if(inputReceived.equalsIgnoreCase("no")){
                     gameDisplay.displaySponsorshipNotAccepted();
+                    playersDeclined++;
                 }
+            }
+            if(playersDeclined == 3) {
+                gameDisplay.displayNoSponsor();
+                gameDisplay.displayQuestEnded();
             }
         }
     }
