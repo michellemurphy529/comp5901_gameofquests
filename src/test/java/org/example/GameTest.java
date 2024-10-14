@@ -2785,6 +2785,14 @@ class GameTest {
         eventDeck.addFirst(questCard);
         Card card = game.drawEventCard(game.getCurrentPlayer().getPlayerID());
 
+        //Force 4 Foe cards in each player hand to not encounter issue of not having enough cards in output
+        for (String playerID : game.gameLogic.getPlayerIDs()) {
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+        }
+
         //P3 declines to Sponsor
         game.promptCurrentPlayerToSponsor();
         //should have order -> P4, P1, P2
@@ -2850,6 +2858,12 @@ class GameTest {
         p2.addCardToHand(new FoeCard(5));
         p2.addCardToHand(new FoeCard(5));
 
+        //Force 4 Foe cards player 3 hand
+        game.gameLogic.getPlayer("P3").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P3").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P3").addCardToHand(new FoeCard(5));
+        game.gameLogic.getPlayer("P3").addCardToHand(new FoeCard(5));
+
         //P1 declines to Sponsor
         game.promptCurrentPlayerToSponsor();
         //should have order -> P2 does not have enough foe cards they are not offered sponsorship
@@ -2908,6 +2922,14 @@ class GameTest {
         Card card = game.drawEventCard(game.getCurrentPlayer().getPlayerID());
 
         assertEquals(questCard, game.getLastEventCardDrawn());
+
+        //Force 4 Foe cards in each player hand to not encounter issue of not having enough cards in output
+        for (String playerID : game.gameLogic.getPlayerIDs()) {
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+        }
 
         //P1 declines to Sponsor
         game.promptCurrentPlayerToSponsor();
