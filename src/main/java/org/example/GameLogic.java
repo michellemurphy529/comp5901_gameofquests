@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class GameLogic {
@@ -12,6 +13,7 @@ public class GameLogic {
     private int currentPlayerIndex;
     private Card lastEventCardDrawn;
     private String sponsorsPlayerID;
+    private ArrayList<String> eligiblePlayers;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -272,5 +274,10 @@ public class GameLogic {
         return true;
     }
     public void setEligiblePlayers(String[] players) {
+        eligiblePlayers = new ArrayList<>();
+        eligiblePlayers.addAll(Arrays.asList(players));
+    }
+    public ArrayList<String> getEligiblePlayers() {
+        return eligiblePlayers;
     }
 }

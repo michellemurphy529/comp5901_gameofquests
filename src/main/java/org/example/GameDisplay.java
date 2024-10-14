@@ -229,6 +229,22 @@ public class GameDisplay {
         display(questEnded);
 
     }
+    public void displayQuestBegins() {
+        StringBuilder questBegins = new StringBuilder("The Quest Begins!");
+        display(questBegins);
+    }
+    public void displayEligiblePlayers(ArrayList<String> eligiblePlayers, int stageNumber) {
+        StringBuilder displayPlayers = new StringBuilder("Eligible Players for Stage ").append(stageNumber)
+                .append(": ");
+        for (int i = 0; i < eligiblePlayers.size(); i++) {
+            displayPlayers.append(eligiblePlayers.get(i));
+            if (i < eligiblePlayers.size() - 1) {
+                displayPlayers.append(" ");
+            }
+        }
+        displayPlayers.append("\n");
+        display(displayPlayers);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

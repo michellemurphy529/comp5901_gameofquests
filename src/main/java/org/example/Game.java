@@ -364,6 +364,10 @@ public class Game {
         }
     }
     public void showEligiblePlayersForStage(int stageNumber) {
+        //get list of eligbile players
+        ArrayList<String> eligiblePlayers = gameLogic.getEligiblePlayers();
+        gameDisplay.displayQuestBegins();
+        gameDisplay.displayEligiblePlayers(eligiblePlayers, stageNumber);
     }
 
     public static void main(String[] args) {
