@@ -508,7 +508,9 @@ class GameTest {
         adventureDeck.shuffle();
         eventDeck.shuffle();
         game.setPlayers();
-        game.dealInitial12AdventureCards();
+        //REFAC-019: Need to remove option of having Prosperity Card follow through with trimming of hand
+        //removing cards from players hand to remove option of trimming
+//        game.dealInitial12AdventureCards();
 
         //Trigger next player's turn
         game.playTurn();
@@ -531,6 +533,11 @@ class GameTest {
     void RESP_009_test_002() {
         Game game = new Game(new GameLogic(), new GameDisplay());
         game.setDecks();
+        //REFAC-019: Updating that the event deck is shuffled before drawing card
+        Deck adventureDeck = game.getAdventureDeck();
+        Deck eventDeck = game.getEventDeck();
+        adventureDeck.shuffle();
+        eventDeck.shuffle();
         game.setPlayers();
 
         //Trigger next player's turn
