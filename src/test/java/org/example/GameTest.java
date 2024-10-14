@@ -1759,13 +1759,13 @@ class GameTest {
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
     }
-
-    @Test
-    @DisplayName("RESP-037: System must add the selected valid card to the current stage and display the " +
-            "updated set of cards")
-    void RESP_037() {
-        RESP_037_test_001();
-    }
+//Moved this to the bottom of the file for an additional test
+//    @Test
+//    @DisplayName("RESP-037: System must add the selected valid card to the current stage and display the " +
+//            "updated set of cards")
+//    void RESP_037() {
+//        RESP_037_test_001();
+//    }
 
     @Test
     @DisplayName("RESP-038-Test-001: System displays ‘A stage cannot be empty’ message when sponsor" +
@@ -3551,5 +3551,58 @@ class GameTest {
     void RESP_032() {
         RESP_032_test_001();
         RESP_032_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-037-Test-002: System must add the selected valid card to the current stage and display " +
+            "the updated set of cards. testing that questBuilt is set and can get the quest info via getter and size")
+    void RESP_037_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 1 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "F5\nQuit\nF10\nH10\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new WeaponCard("H", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+
+        //Test questBuilt is null
+        HashMap<Integer, ArrayList<Card>> questBuilt = game.gameLogic.getQuestInfo();
+        assertNull(questBuilt);
+
+        game.displaySponsorHandAndSetUpStages("P1", questCard.getStages());
+
+        //Test not null and the size
+        questBuilt = game.gameLogic.getQuestInfo();
+        assertNotNull(questBuilt);
+        assertEquals(2, questBuilt.size());
+    }
+
+    @Test
+    @DisplayName("RESP-037: System must add the selected valid card to the current stage and display the " +
+            "updated set of cards")
+    void RESP_037() {
+        RESP_037_test_001();
+        RESP_037_test_002();
     }
 }

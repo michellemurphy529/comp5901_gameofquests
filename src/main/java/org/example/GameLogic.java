@@ -16,6 +16,7 @@ public class GameLogic {
     private ArrayList<String> eligiblePlayers;
     private ArrayList<Integer> attackValues;
     private HashMap<String,ArrayList<Card>> attackHands;
+    private HashMap<Integer, ArrayList<Card>> questBuilt;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -325,5 +326,8 @@ public class GameLogic {
     }
     public void clearAttackHand(String key) {
         attackHands.get(key).clear();
+    }
+    public HashMap<Integer, ArrayList<Card>> getQuestInfo() {
+        return questBuilt;
     }
 }
