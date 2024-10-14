@@ -313,6 +313,9 @@ public class Game {
 
         return participantAttack;
     }
+    //Quest methods
+    public void draw1AdventureCardForParticipantAndTrim(String participantID) {
+    }
 
     public static void main(String[] args) {
         //Initialize game

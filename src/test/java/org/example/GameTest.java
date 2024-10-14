@@ -2613,4 +2613,82 @@ class GameTest {
         RESP_046_test_002();
         RESP_046_test_003();
     }
+
+    @Test
+    @DisplayName("RESP-027-Test-001: System draws 1 adventure card to add to a participant’s hand and does not trim hand")
+    void RESP_027_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 2);
+
+        //Remove 3 cards from participant hand to not trigger trimming
+        String participantID = game.getCurrentPlayer().getPlayerID();
+        Card card1 = game.gameLogic.getPlayerHand(participantID).getFirst();
+        game.discardAdventureCard(participantID, card1);
+        Card card2 = game.gameLogic.getPlayerHand(participantID).getFirst();
+        game.discardAdventureCard(participantID, card2);
+        Card card3 = game.gameLogic.getPlayerHand(participantID).getFirst();
+        game.discardAdventureCard(participantID, card3);
+
+        //Test the size is what we expect after discarding
+        assertEquals(9, game.gameLogic.getPlayerHand(participantID).size());
+
+        //Call method that draws 1 adventure card to add to a participant’s hand and possibly trims hand
+        game.draw1AdventureCardForParticipantAndTrim(participantID);
+
+        //Test the size is what we expect after drawing 1 card
+        assertEquals(10, game.gameLogic.getPlayerHand(participantID).size());
+    }
+
+    @Test
+    @DisplayName("RESP-027-Test-002: System draws 1 adventure card to add to a participant’s hand and does trim hand")
+    void RESP_027_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 3);
+        //Get participant and their ID
+        String participantID = game.getCurrentPlayer().getPlayerID();
+        Player participant = game.gameLogic.getPlayer(participantID);
+        //Remove 1 card and add one to ensure trim hand works as expected
+        Card card1 = game.gameLogic.getPlayerHand(participantID).getFirst();
+        game.discardAdventureCard(participantID, card1);
+        Card card2 = new FoeCard(50);
+        participant.addCardToHand(card2);
+
+        //Input F50 for trimming
+        String userInput = "F50\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Test the size is what we expect after discarding and adding
+        assertEquals(12, participant.getHandSize());
+        //Test the size of discard pile
+        assertEquals(1, game.getAdventureDeck().getDiscardPileSize());
+
+        //Call method that draws 1 adventure card to add to a participant’s hand and possibly trims hand
+        game.draw1AdventureCardForParticipantAndTrim(participantID);
+
+        //Test the size is what we expect after trimming
+        assertEquals(12, participant.getHandSize());
+        //Test the size of discard pile
+        assertEquals(2, game.getAdventureDeck().getDiscardPileSize());
+        //Discard pile has Foe card at the top
+        assertEquals(card2, game.getAdventureDeck().getDiscardPile().getLast());
+    }
+
+    @Test
+    @DisplayName("RESP-027: System draws 1 adventure card to add to a participant’s hand and possibly trims hand")
+    void RESP_027() {
+        RESP_027_test_001();
+        RESP_027_test_002();
+    }
 }
