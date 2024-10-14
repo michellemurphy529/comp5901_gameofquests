@@ -389,6 +389,8 @@ public class Game {
     public boolean noParticipantsFound() {
         return gameLogic.checkForParticipants();
     }
+    public void participantsSetUpAttacks() {
+    }
     //Clear display methods
     public void promptToLeaveHotSeat() {
         gameDisplay.promptToLeaveHotSeat();

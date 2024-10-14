@@ -14,6 +14,8 @@ public class GameLogic {
     private Card lastEventCardDrawn;
     private String sponsorsPlayerID;
     private ArrayList<String> eligiblePlayers;
+    private ArrayList<Integer> attackValues;
+    private HashMap<String,ArrayList<Card>> attackHands;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -285,5 +287,11 @@ public class GameLogic {
     }
     public boolean checkForParticipants() {
         return getEligiblePlayers().isEmpty();
+    }
+    public ArrayList<Integer> getAttackValues() {
+        return attackValues;
+    }
+    public HashMap<String, ArrayList<Card>> getAttackHands() {
+        return attackHands;
     }
 }

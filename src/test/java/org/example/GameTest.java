@@ -3267,4 +3267,161 @@ class GameTest {
         RESP_014_test_002();
         RESP_014_test_003();
     }
+
+    @Test
+    @DisplayName("RESP-029-Test-001: Each participant prepares an attack with one or more non-repeated weapon cards, " +
+            "and the system calculates the attack value as the sum of the weapon values. Testing sizes.")
+    void RESP_029_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "D5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //Set up the ArrayList<int> for the attack values
+        ArrayList<Integer> attackValues = game.gameLogic.getAttackValues();
+
+        //set up the HashMap<PlayerId, Attack cards> for the attack
+        HashMap<String,ArrayList<Card>> attackHands = game.gameLogic.getAttackHands();
+
+        //Test attack values and the attackhands are null
+        assertNull(attackValues);
+        assertNull(attackHands);
+
+        //players prepare an attack and the attack values are calculated
+        game.participantsSetUpAttacks();
+
+        //Get the list and hashmap after setupAttack
+        attackValues = game.gameLogic.getAttackValues();
+        attackHands = game.gameLogic.getAttackHands();
+
+        //Test attack values are of correct expected size
+        assertEquals(3, attackValues.size());
+        //Test attack hashmap has attacks in it
+        assertEquals(3, attackHands.size());
+        assertEquals(1, attackHands.get("P1").size());
+        assertEquals(2, attackHands.get("P3").size());
+        assertEquals(1, attackHands.get("P4").size());
+    }
+
+    @Test
+    @DisplayName("RESP-029-Test-002: Each participant prepares an attack with one or more non-repeated weapon cards, " +
+            "and the system calculates the attack value as the sum of the weapon values. Testing attack values.")
+    void RESP_029_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "D5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //players prepare an attack and the attack values are calculated
+        game.participantsSetUpAttacks();
+
+        //get attack values after initalized
+        ArrayList<Integer> attackValues = game.gameLogic.getAttackValues();
+
+        //Test attack values are 5, 15, 15
+        assertEquals(5, attackValues.get(0));
+        assertEquals(15, attackValues.get(1));
+        assertEquals(15, attackValues.get(2));
+    }
+
+    @Test
+    @DisplayName("RESP-029-Test-003: Each participant prepares an attack with one or more non-repeated weapon cards, " +
+            "and the system calculates the attack value as the sum of the weapon values. Testing attack hands.")
+    void RESP_029_test_003() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "D5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //players prepare an attack and the attack values are calculated
+        game.participantsSetUpAttacks();
+
+        //Get attackHands after initalized
+        HashMap<String,ArrayList<Card>> attackHands = game.gameLogic.getAttackHands();
+
+        //Test attack hashmap has attacks cards in it
+        ArrayList<Card> attackHand1 = attackHands.get("P1");
+        ArrayList<Card> attackHand2 = attackHands.get("P3");
+        ArrayList<Card> attackHand3 = attackHands.get("P4");
+
+        assertEquals(card1, attackHand1.getFirst());
+        assertEquals(card2, attackHand2.get(0));
+        assertEquals(card3, attackHand2.get(1));
+        assertEquals(card4, attackHand3.getFirst());
+    }
+
+    @Test
+    @DisplayName("RESP-029: Each participant prepares an attack with one or more non-repeated weapon cards, " +
+            "and the system calculates the attack value as the sum of the weapon values")
+    void RESP_029() {
+        RESP_029_test_001();
+        RESP_029_test_002();
+        RESP_029_test_003();
+    }
 }
