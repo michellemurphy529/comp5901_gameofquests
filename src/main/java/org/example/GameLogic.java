@@ -225,4 +225,15 @@ public class GameLogic {
         //get values of the cards in stage
         return getValuesOfCards(cards);
     }
+    public boolean isValidAttack(ArrayList<Card> attackCards, HashMap<String, Integer> weaponCards) {
+        if(attackCards.isEmpty()) {
+            return true;
+        }
+        for (Integer weaponCardNum : weaponCards.values()) {
+            if(weaponCardNum > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -272,18 +272,30 @@ public class Game {
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
     public ArrayList<Card> promptPlayerToSelectCardOrQuit(String playerID) {
+        //check weapons are non repeating
+        HashMap<String, Integer> weaponCards = gameLogic.setUpWeaponCards();
         ArrayList<Card> attackCards = new ArrayList<>();
 
         boolean quitEntered = false;
-        while(!quitEntered){
+        while(!quitEntered) {
+
             //Prompt participant to select card or 'quit' to end valid attack
             gameDisplay.displayPromptAttackSelectCards();
             String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
-            if(inputReceived.equalsIgnoreCase("quit")) {
+
+            if(inputReceived.equalsIgnoreCase("quit") && gameLogic.isValidAttack(attackCards, weaponCards)) {
                 quitEntered = true;
-            }else {
+            }
+            //Case where weapon card is checked to see if it's already in attack
+            else if(!gameLogic.hasRepeatingWeapon(inputReceived, weaponCards)) {
+                //Add weaponcard to make sure not repeating in future
+                gameLogic.addToWeaponCards(inputReceived, weaponCards);
+
+                //Add card to attack and display to user
                 Card cardFromParticipant = gameLogic.getCardFromHand(inputReceived.substring(0,1), playerID);
                 attackCards.addLast(cardFromParticipant);
+                gameDisplay.addedCardToAttackMessage(inputReceived);
+                gameDisplay.displayAttackCards(attackCards);
             }
         }
         return attackCards;

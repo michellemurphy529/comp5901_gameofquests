@@ -162,6 +162,21 @@ public class GameDisplay {
                 ("Enter 'Quit' to end the attack setup.").append("\n");
         display(selectAttackCards);
     }
+    public void addedCardToAttackMessage(String cardString) {
+        StringBuilder addedToAttackMessage = new StringBuilder(cardString).append(" added to Attack...");
+        display(addedToAttackMessage);
+    }
+    public void displayAttackCards(ArrayList<Card> attackCards) {
+        StringBuilder displayAttackCards = new StringBuilder("Attack Card(s): ");
+        for (int i = 0; i < attackCards.size(); i++) {
+            displayAttackCards.append(attackCards.get(i).displayCardName());
+            if (i < attackCards.size() - 1) {
+                displayAttackCards.append(" ");
+            }
+        }
+        displayAttackCards.append("\n");
+        display(displayAttackCards);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
