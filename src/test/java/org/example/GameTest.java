@@ -2295,7 +2295,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("RESP-044-Test-001: RESP-044-Test-002: System must ensure that the participant selected a card " +
+    @DisplayName("RESP-044-Test-001: System must ensure that the participant selected a card " +
             "for an attack is a valid one and display the updated set of card(s). One card in attack")
     void RESP_044_test_001() {
         //Test helpers
@@ -2393,5 +2393,69 @@ class GameTest {
     void RESP_044() {
         RESP_044_test_001();
         RESP_044_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-045-Test-001: System must ensure the invalid card selected by participant for attack is " +
+            "explained to the user and re-prompted. Repeated weapon card")
+    void RESP_045_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-06 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsSettingUpAttack(game);
+
+        //Force Player 1 to set up attack
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "D5\nD5\nL20\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("D", 5);
+        Card card3 = new WeaponCard("L", 20);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card1);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card2);
+        game.gameLogic.getCurrentPlayer().addCardToHand(card3);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Display prompt the participant to select card or enter 'Quit' to end valid attack
+        ArrayList<Card> attackCards = game.promptPlayerToSelectCardOrQuit(playerID);
+        //Test the attack cards do not contain another D5 card
+        assertEquals(2, attackCards.size());
+        assertEquals(card1.getType(), attackCards.get(0).getType());
+        assertEquals(card3.getType(), attackCards.get(1).getType());
+
+        String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "There is already that same Weapon card in this stage. Try Again.\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "L20 added to Attack...\n" +
+                "Attack Card(s): D5 L20\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-045: System must ensure the invalid card selected by participant for attack is explained " +
+            "to the user and re-prompted")
+    void RESP_045() {
+        RESP_045_test_001();
     }
 }
