@@ -3026,4 +3026,99 @@ class GameTest {
     void RESP_025() {
         RESP_025_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-026-Test-001: System ensures eligible player who withdraws becomes ineligible to " +
+            "participate in subsequent stages of quest. Players 1 and 3 decline, Player 2 and 4 accept, then all decline")
+    void RESP_026_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "no\nyes\nno\nyes\nno\nno\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Test that before the method is called the size is 4
+        assertEquals(4, game.gameLogic.getEligiblePlayers().size());
+
+        //prompt players to participate
+        game.promptToParticipateInCurrentStage();
+
+        //Test that after the method is called the size is 2
+        assertEquals(2, game.gameLogic.getEligiblePlayers().size());
+
+        //prompt players to participate again
+        game.promptToParticipateInCurrentStage();
+
+        //Test that after the method is called again the size is 0
+        assertEquals(0, game.gameLogic.getEligiblePlayers().size());
+    }
+
+    @Test
+    @DisplayName("RESP-026-Test-002: System ensures eligible player who withdraws becomes ineligible to " +
+            "participate in subsequent stages of quest. Players 1 and 3 decline, Player 2 and 4 accept, then all decline.")
+    void RESP_026_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "no\nyes\nno\nyes\nno\nno\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //prompt players to participate
+        game.promptToParticipateInCurrentStage();
+        //prompt players to participate again
+        game.promptToParticipateInCurrentStage();
+
+        String expectedOutput = "Asking P1:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P2:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P3:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P4:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P2:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P4:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-026: System ensures eligible player who withdraws becomes ineligible to participate in " +
+            "subsequent stages of quest")
+    void RESP_026() {
+        RESP_026_test_001();
+        RESP_026_test_002();
+    }
 }
