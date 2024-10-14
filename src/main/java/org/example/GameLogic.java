@@ -11,6 +11,7 @@ public class GameLogic {
     String[] playerIDs;
     private int currentPlayerIndex;
     private Card lastEventCardDrawn;
+    private String sponsorsPlayerID;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -63,6 +64,14 @@ public class GameLogic {
             }
         }
         return null;
+    }
+    //Get Sponsor PlayerID
+    public String getSponsorID() {
+        return sponsorsPlayerID;
+    }
+    //Set Sponsor PlayerID
+    public void setSponsorID(String playerID) {
+        sponsorsPlayerID = playerID;
     }
     //Deal 12 Cards at start
     public void distribute12AdventureCards() {

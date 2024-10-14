@@ -196,6 +196,21 @@ public class GameDisplay {
         participantAttackCompleteAndDisplayed.append("\n");
         display(participantAttackCompleteAndDisplayed);
     }
+    //Quest Output Methods
+    public void promptForSponsorship() {
+        StringBuilder sponsorshipPromptMessage = new StringBuilder("Would you like to sponsor this Quest?").append("\n")
+                .append("Type 'yes' or 'no':").append("\n");
+        display(sponsorshipPromptMessage);
+    }
+    public void displaySponsorshipAccepted() {
+        StringBuilder sponsorMessage = new StringBuilder("You have accepted to be the Sponsor!").append("\n");
+        display(sponsorMessage);
+    }
+    public void displaySponsorshipNotAccepted() {
+        StringBuilder notSponsorMessage = new StringBuilder("You have declined Sponsorship").append("\n")
+                .append("Now asking other players...").append("\n");
+        display(notSponsorMessage);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

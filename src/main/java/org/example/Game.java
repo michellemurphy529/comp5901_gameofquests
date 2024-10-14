@@ -320,9 +320,18 @@ public class Game {
         trimHandPlayer(participantID, computeNumberOfCardsToDiscard(participantID));
     }
     public void promptCurrentPlayerToSponsor() {
+        //prompt current player for sponsorship
+        gameDisplay.promptForSponsorship();
+        String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
+        if(inputReceived.equalsIgnoreCase("yes")) {
+            gameLogic.setSponsorID(getCurrentPlayer().getPlayerID());
+            gameDisplay.displaySponsorshipAccepted();
+        }else if(inputReceived.equalsIgnoreCase("no")){
+            gameDisplay.displaySponsorshipNotAccepted();
+        }
     }
     public String getSponsorPlayerID() {
-        return null;
+        return gameLogic.getSponsorID();
     }
 
     public static void main(String[] args) {
