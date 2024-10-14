@@ -370,6 +370,12 @@ public class Game {
         gameDisplay.displayEligiblePlayers(eligiblePlayers, stageNumber);
     }
     public void promptToParticipateInCurrentStage() {
+        //get list of eligbile players
+        ArrayList<String> eligiblePlayers = gameLogic.getEligiblePlayers();
+        for (String playerID : eligiblePlayers) {
+            gameDisplay.promptPlayersToParticipateInStage(playerID);
+            String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
+        }
     }
 
     public static void main(String[] args) {

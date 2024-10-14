@@ -245,6 +245,12 @@ public class GameDisplay {
         displayPlayers.append("\n");
         display(displayPlayers);
     }
+    public void promptPlayersToParticipateInStage(String playerID) {
+        StringBuilder promptParticipate = new StringBuilder("Asking ").append(playerID).append(":")
+                .append("\n").append("Would you like to participate in the current stage?").append("\n")
+                .append("Type 'yes' or 'no':").append("\n");
+        display(promptParticipate);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {
