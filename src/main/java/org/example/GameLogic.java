@@ -271,4 +271,6 @@ public class GameLogic {
         }
         return true;
     }
+    public void setEligiblePlayers(String[] players) {
+    }
 }

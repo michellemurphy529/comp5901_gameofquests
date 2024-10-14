@@ -363,6 +363,8 @@ public class Game {
             }
         }
     }
+    public void showEligiblePlayersForStage(int stageNumber) {
+    }
 
     public static void main(String[] args) {
         //Initialize game

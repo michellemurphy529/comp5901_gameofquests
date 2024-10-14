@@ -2949,4 +2949,36 @@ class GameTest {
     void RESP_023() {
         RESP_023_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-024-Test-001: System displays set of eligible players for each quest stage")
+    void RESP_024_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 1);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //List of eligible players is displayed at the start of each stage
+        game.showEligiblePlayersForStage(2);
+
+        String expectedOutput = "The Quest Begins!\n" +
+                "Eligible Players for Stage 2: P1 P2 P3 P4\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-024: System displays set of eligible players for each quest stage")
+    void RESP_024() {
+        RESP_024_test_001();
+    }
 }
