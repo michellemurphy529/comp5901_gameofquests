@@ -2279,6 +2279,8 @@ class GameTest {
 
         String expectedOutput = "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
                 "Enter 'Quit' to end the attack setup.\n\n" +
+                "E30 added to Attack...\n" +
+                "Attack Card(s): E30\n\n" +
                 "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
                 "Enter 'Quit' to end the attack setup.\n\n";
 
