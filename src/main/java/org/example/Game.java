@@ -382,6 +382,9 @@ public class Game {
         }
         gameLogic.removePlayerFromSubsequentStages(playersToRemove);
     }
+    public boolean noParticipantsFound() {
+        return false;
+    }
 
     public static void main(String[] args) {
         //Initialize game

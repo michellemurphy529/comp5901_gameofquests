@@ -3121,4 +3121,75 @@ class GameTest {
         RESP_026_test_001();
         RESP_026_test_002();
     }
+
+    @Test
+    @DisplayName("RESP-028-Test-001: System ends quest stage, if there are no participants")
+    void RESP_028_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "no\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Test there are participants
+        assertEquals(false, game.noParticipantsFound());
+
+        //prompt players to participate
+        game.promptToParticipateInCurrentStage();
+
+        //Test that now there are no participants found
+        assertEquals(true, game.noParticipantsFound());
+    }
+
+    @Test
+    @DisplayName("RESP-028-Test-002: System ends quest stage, if there are no participants after asking")
+    void RESP_028_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "no\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //prompt players to participate
+        game.promptToParticipateInCurrentStage();
+
+        String expectedOutput = "Asking P1:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "No Participants for Current Stage...\n" +
+                "Quest has ended.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    @DisplayName("RESP-028: System ends quest stage, if there are no participants")
+    void RESP_028() {
+        RESP_028_test_001();
+        RESP_028_test_002();
+    }
 }
