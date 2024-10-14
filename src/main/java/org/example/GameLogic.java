@@ -318,4 +318,12 @@ public class GameLogic {
     public void addAttackValue(int positionInArray, int attackValue) {
         attackValues.add(positionInArray, attackValue);
     }
+    public void discardAttackCards(ArrayList<Card> cards) {
+        for (Card card : cards) {
+            adventureDeck.discardCard(card);
+        }
+    }
+    public void clearAttackHand(String key) {
+        attackHands.get(key).clear();
+    }
 }

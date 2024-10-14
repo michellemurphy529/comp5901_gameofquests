@@ -409,6 +409,10 @@ public class Game {
         }
     }
     public void discardParticipantsCards() {
+        for (String participantID : gameLogic.getAttackHands().keySet()) {
+            gameLogic.discardAttackCards(gameLogic.getAttackHands().get(participantID));
+            gameLogic.clearAttackHand(participantID);
+        }
     }
     //Clear display methods
     public void promptToLeaveHotSeat() {
