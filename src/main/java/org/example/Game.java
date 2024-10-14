@@ -315,6 +315,9 @@ public class Game {
     }
     //Quest methods
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
+        //System draws 1 adventure card to add to a participant’s hand and possibly trims hand
+        dealNumberOfAdventureCardsToPlayer(participantID, 1);
+        trimHandPlayer(participantID, computeNumberOfCardsToDiscard(participantID));
     }
 
     public static void main(String[] args) {
