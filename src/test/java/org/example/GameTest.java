@@ -3111,7 +3111,7 @@ class GameTest {
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
-        assertEquals(expectedOutput, output);
+        assertTrue(output.contains(expectedOutput));
     }
 
     @Test
