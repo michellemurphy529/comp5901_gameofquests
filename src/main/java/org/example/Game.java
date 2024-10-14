@@ -408,6 +408,8 @@ public class Game {
             gameLogic.addAttackValue(i, attackValue);
         }
     }
+    public void discardParticipantsCards() {
+    }
     //Clear display methods
     public void promptToLeaveHotSeat() {
         gameDisplay.promptToLeaveHotSeat();

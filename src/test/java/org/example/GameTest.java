@@ -3424,4 +3424,110 @@ class GameTest {
         RESP_029_test_002();
         RESP_029_test_003();
     }
+
+    @Test
+    @DisplayName("RESP-032-Test-001: System discards all cards used by participants for a stage, once resolved. Testing " +
+            "size of attackHands hashmap before and after.")
+    void RESP_032_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "D5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //players prepare an attack and the attack values are calculated
+        game.participantsSetUpAttacks();
+
+        //Test attackHands before discarding occurs
+        HashMap<String,ArrayList<Card>> attackHands = game.gameLogic.getAttackHands();
+        assertEquals(1, attackHands.get("P1").size());
+        assertEquals(2, attackHands.get("P3").size());
+        assertEquals(1, attackHands.get("P4").size());
+
+        //Discard once Stage is resolved
+        game.discardParticipantsCards();
+
+        //Test attackHands after discarding occurs
+        attackHands = game.gameLogic.getAttackHands();
+        assertEquals(0, attackHands.get("P1").size());
+        assertEquals(0, attackHands.get("P3").size());
+        assertEquals(0, attackHands.get("P4").size());
+    }
+
+    @Test
+    @DisplayName("RESP-032-Test-002: System discards all cards used by participants for a stage, once resolved. Testing " +
+            "discard pile")
+    void RESP_032_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "D5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //players prepare an attack and the attack values are calculated
+        game.participantsSetUpAttacks();
+
+        //Test discardPile before discarding
+        assertEquals(0, game.getAdventureDeck().getDiscardPileSize());
+
+        //Discard once Stage is resolved
+        game.discardParticipantsCards();
+
+        //Test discardPile after discarding
+        assertEquals(4, game.getAdventureDeck().getDiscardPileSize());
+        //Test each card is the same
+        assertEquals(card1, game.getAdventureDeck().getDiscardPile().get(0));
+        assertEquals(card2, game.getAdventureDeck().getDiscardPile().get(1));
+        assertEquals(card3, game.getAdventureDeck().getDiscardPile().get(2));
+        assertEquals(card4, game.getAdventureDeck().getDiscardPile().get(3));
+    }
+
+    @Test
+    @DisplayName("RESP-032: System discards all cards used by participants for a stage, once resolved")
+    void RESP_032() {
+        RESP_032_test_001();
+        RESP_032_test_002();
+    }
 }
