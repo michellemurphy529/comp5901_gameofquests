@@ -297,6 +297,10 @@ public class Game {
                 gameDisplay.addedCardToAttackMessage(inputReceived);
                 gameDisplay.displayAttackCards(attackCards);
             }
+            //Case where weapon cards are repeated
+            else if(gameLogic.hasRepeatingWeapon(inputReceived, weaponCards)) {
+                gameDisplay.displayRepeatedWeaponCardMessage();
+            }
         }
         return attackCards;
     }
