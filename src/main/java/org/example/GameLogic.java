@@ -283,4 +283,7 @@ public class GameLogic {
     public void removePlayerFromSubsequentStages(ArrayList<String> playersToRemove) {
         eligiblePlayers.removeAll(playersToRemove);
     }
+    public boolean checkForParticipants() {
+        return getEligiblePlayers().isEmpty();
+    }
 }

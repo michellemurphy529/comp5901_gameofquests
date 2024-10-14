@@ -251,6 +251,10 @@ public class GameDisplay {
                 .append("Type 'yes' or 'no':").append("\n");
         display(promptParticipate);
     }
+    public void displayNoParticipants() {
+        StringBuilder noParticipants = new StringBuilder("No Participants for Current Stage...");
+        display(noParticipants);
+    }
 
     //Input methods
     public void promptForDiscardCards(int n) {

@@ -381,9 +381,13 @@ public class Game {
             }
         }
         gameLogic.removePlayerFromSubsequentStages(playersToRemove);
+        if(noParticipantsFound()) {
+            gameDisplay.displayNoParticipants();
+            gameDisplay.displayQuestEnded();
+        }
     }
     public boolean noParticipantsFound() {
-        return false;
+        return gameLogic.checkForParticipants();
     }
 
     public static void main(String[] args) {
