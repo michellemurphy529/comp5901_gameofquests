@@ -344,6 +344,7 @@ public class Game {
             //participants set up attack
             participantsSetUpAttacks();
             resolveAttacks();
+            discardParticipantsCards();
         }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
