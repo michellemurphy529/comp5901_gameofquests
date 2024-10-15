@@ -2972,6 +2972,7 @@ class GameTest {
     @DisplayName("RESP-023: System ends quest and the current player’s turn if all players decline sponsorship")
     void RESP_023() {
         RESP_023_test_001();
+        RESP_023_test_002();
     }
 
     @Test
@@ -3808,5 +3809,68 @@ class GameTest {
         //Test expected output
         String output = game.gameDisplay.getOutput();
         assertTrue(output.contains(expectedOutput));
+    }
+    @Test
+    @DisplayName("RESP-023-Test-002: System ends quest and the current player’s turn if all players decline sponsorship")
+    void RESP_023_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 1);
+        //user input
+        String userInput = "No\nno\nno\nno\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //draw Quest card
+        Card questCard = new QuestCard(4);
+        game.getEventDeck().getDeck().addFirst(questCard);
+
+        //Force 4 Foe cards in each player hand to not encounter issue of not having enough cards in output
+        for (String playerID : game.gameLogic.getPlayerIDs()) {
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+            game.gameLogic.getPlayer(playerID).addCardToHand(new FoeCard(5));
+        }
+
+        //P1 declines to Sponsor
+        game.playTurn();
+
+        //Test current player 3 is the Sponsor
+        assertNull(game.getSponsorPlayerID());
+
+        String expectedOutput = "P1's Turn:\n\n"+
+                "Drawing Event Card...\n" +
+                "You drew: Q4\n\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P2:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P3:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P4:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "No sponsor for Quest\n" +
+                "Quest has ended.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
     }
 }
