@@ -343,6 +343,7 @@ public class Game {
             promptToParticipateInCurrentStage();
             //participants set up attack
             participantsSetUpAttacks();
+            resolveAttacks();
         }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
