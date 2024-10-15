@@ -3066,6 +3066,7 @@ class GameTest {
     @DisplayName("RESP-025: System prompts players to participate or withdraw the current quest stage")
     void RESP_025() {
         RESP_025_test_001();
+        RESP_025_test_002();
     }
 
     @Test
@@ -3923,6 +3924,55 @@ class GameTest {
                 "Eligible Players for Stage 2: P2 P3 P4\n\n" +
                 "Eligible Players for Stage 3: P2 P3 P4\n\n" +
                 "Eligible Players for Stage 4: P2 P3 P4\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains(expectedOutput));
+    }
+
+    @Test
+    @DisplayName("RESP-025-Test-002: System prompts players to participate or withdraw the current quest stage")
+    void RESP_025_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "yes\nyes\nno\nyes\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+        //Set eligible players without sponsor
+        game.gameLogic.setEligiblePlayersWithoutSponsor();
+
+        //Draw quest card to enter while loop
+        Card card1 = new QuestCard(2);
+        game.getEventDeck().getDeck().addFirst(card1);
+
+        //prompt players to participate
+        game.beginQuest();
+
+        String expectedOutput = "The Quest Begins!\n" +
+                "Eligible Players for Stage 1: P1 P2 P3 P4\n\n" +
+                "Asking P1:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P2:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P3:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P4:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n";
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
