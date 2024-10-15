@@ -2898,6 +2898,7 @@ class GameTest {
     void RESP_022() {
         RESP_022_test_001();
         RESP_022_test_002();
+        RESP_022_test_003();
     }
 
     @Test
@@ -3785,7 +3786,7 @@ class GameTest {
         game.gameLogic.getEventDeck().cards.addFirst(questCard);
 
         //user input
-        String userInput = "yes\n";
+        String userInput = "no\nyes\n";
         Scanner overrideInput = new Scanner(userInput);
         //Forcing overriding of input
         game.setInput(overrideInput);
@@ -3799,7 +3800,7 @@ class GameTest {
                 "Type 'yes' or 'no':\n\n" +
                 "You have declined Sponsorship\n" +
                 "Now asking other players...\n\n" +
-                "Asking P4:\n" +
+                "Asking P2:\n" +
                 "Would you like to sponsor this Quest?\n" +
                 "Type 'yes' or 'no':\n\n" +
                 "You have accepted to be the Sponsor!\n\n";
