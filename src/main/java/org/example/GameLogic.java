@@ -344,4 +344,14 @@ public class GameLogic {
         Integer stageKey = stage;
         questBuilt.get(stageKey).addAll(cards);
     }
+    public void setCurrentStageValue(int stageValue) {
+    }
+    public int getCurrentStageValue() {
+        return -1;
+    }
+    public ArrayList<String> getStageLosers() {
+        return null;
+    }
+    public void setCurrentStageNumber(int stage) {
+    }
 }

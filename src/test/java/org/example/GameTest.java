@@ -3657,4 +3657,79 @@ class GameTest {
         RESP_019_test_002();
         RESP_019_test_003();
     }
+
+    @Test
+    @DisplayName("RESP-030-Test-001: The system decides ineligibility for the next Stage by comparing each " +
+            "participant’s attack value with the current stage value. testing stage values and losers of stage")
+    void RESP_030_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2"};
+        game.gameLogic.setEligiblePlayers(players);
+        //set currentStageNumber
+        game.gameLogic.setCurrentStageNumber(1);
+
+        //set current stage value
+        game.gameLogic.setCurrentStageValue(10);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(10, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,10);
+
+        //Test losers arrray is null
+        assertNull(game.gameLogic.getStageLosers());
+
+        game.resolveAttacks();
+
+        //Test there are 1 loser of this stage
+        assertEquals(1, game.gameLogic.getStageLosers().size());
+    }
+
+    @Test
+    @DisplayName("RESP-030-Test-002: If the participant’s attack is less than the value of the current stage, " +
+            "they lose and become ineligible to further participate in this quest.")
+    void RESP_030_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //set current stage value
+        game.gameLogic.setCurrentStageValue(10);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(10, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,10);
+
+        //Test 2 eligble players
+        assertEquals(2, game.gameLogic.getEligiblePlayers().size());
+
+        game.resolveAttacks();
+
+        //Test there are 1 eligble
+        assertEquals(1, game.gameLogic.getEligiblePlayers().size());
+    }
+
+    @Test
+    @DisplayName("RESP-030: The system decides ineligibility for the next Stage by comparing each participant’s " +
+            "attack value with the current stage value. If the participant’s attack is less than the value of the " +
+            "current stage, they lose and become ineligible to further participate in this quest.")
+    void RESP_030() {
+        RESP_030_test_001();
+        RESP_030_test_002();
+    }
 }

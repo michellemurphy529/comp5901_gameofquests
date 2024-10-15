@@ -428,6 +428,8 @@ public class Game {
     public void displayPlayerInHotSeat() {
         gameDisplay.displayPlayerIDInHotSeat(getCurrentPlayer().getPlayerID());
     }
+    public void resolveAttacks() {
+    }
 
     public static void main(String[] args) {
         //Initialize game
