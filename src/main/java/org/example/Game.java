@@ -346,7 +346,10 @@ public class Game {
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
         //System draws 1 adventure card to add to a participant’s hand and possibly trims hand
         dealNumberOfAdventureCardsToPlayer(participantID, 1);
-        trimHandPlayer(participantID, computeNumberOfCardsToDiscard(participantID));
+        int n = computeNumberOfCardsToDiscard(participantID);
+        if(n > 0) {
+            trimHandPlayer(participantID, n);
+        }
     }
     public void promptCurrentPlayerToSponsor() {
         //prompt current player for sponsorship
@@ -407,6 +410,9 @@ public class Game {
             String inputReceived = gameDisplay.displayPromptSelectCardForStage(input);
             if(inputReceived.equalsIgnoreCase("no")) {
                 playersToRemove.add(playerID);
+            }
+            if(inputReceived.equalsIgnoreCase("yes")) {
+                draw1AdventureCardForParticipantAndTrim(playerID);
             }
         }
         gameLogic.removePlayerFromSubsequentStages(playersToRemove);
