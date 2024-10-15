@@ -338,6 +338,7 @@ public class Game {
             gameDisplay.displaySponsorshipAccepted();
         }else if(inputReceived.equalsIgnoreCase("no")){
             gameDisplay.displaySponsorshipNotAccepted();
+            promptOtherPlayersToSponsor();
         }
     }
     public String getSponsorPlayerID() {
