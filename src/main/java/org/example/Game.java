@@ -94,17 +94,18 @@ public class Game {
         if(cardDrawn.getType().equals("Queen's Favor")) {
             //Current player draws 2 Adventure Cards
             gameLogic.dealNumberAdventureCards(playerID, 2);
+            //Possibly Trims Player Hand (Queen's favor)
         }
         //Prosperity Card Drawn
         if(cardDrawn.getType().equals("Prosperity")) {
             //All Players draw 2 Adventure Cards
             gameLogic.dealAllPlayersAdventureCards(getPlayerIDs(), 2);
+            //Possibly trim all Player's Hand (Prosperity)
+            trimHandAction(getPlayerIDs());
         }
         if(cardDrawn.getType().equals("Q")) {
             carryOutQuestAction();
         }
-        //Possibly Trims Player Hand (Queen's favor) OR all Player's Hand (Prosperity)
-        trimHandAction(getPlayerIDs());
 
         //Next Player Logic
         //Next Turn invoked
@@ -323,6 +324,9 @@ public class Game {
     public void carryOutQuestAction() {
         //Current player can either sponsor or decline
         promptCurrentPlayerToSponsor();
+        if(getSponsorPlayerID() != null) {
+
+        }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
         //System draws 1 adventure card to add to a participant’s hand and possibly trims hand
