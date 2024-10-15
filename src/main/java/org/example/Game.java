@@ -341,6 +341,8 @@ public class Game {
             gameLogic.incrementStageNumber();
             showEligiblePlayersForStage(gameLogic.getCurrentStageNumber());
             promptToParticipateInCurrentStage();
+            //participants set up attack
+            participantsSetUpAttacks();
         }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
