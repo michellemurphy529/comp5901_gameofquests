@@ -467,10 +467,14 @@ public class Game {
     public void resolveAttacks() {
         //Set stage losers array list
         gameLogic.setStageLosers();
+        //Set stage winners array list
+        gameLogic.setStageWinners();
         for(int i = 0; i < gameLogic.getEligiblePlayers().size(); i++) {
             boolean isLoser = gameLogic.compareStageValueToCurrentStageValue(gameLogic.getAttackValues().get(i));
             if(isLoser) {
                 gameLogic.addToLosers(gameLogic.getEligiblePlayers().get(i));
+            }else {
+                gameLogic.addToWinners(gameLogic.getEligiblePlayers().get(i));
             }
         }
         gameLogic.removePlayerFromSubsequentStages(gameLogic.getStageLosers());

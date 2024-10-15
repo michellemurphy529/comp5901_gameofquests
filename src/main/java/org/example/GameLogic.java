@@ -395,6 +395,12 @@ public class GameLogic {
         setEligiblePlayers(eligiblePlayers.toArray(new String[0]));
     }
     public ArrayList<String> getStageWinners() {
-        return null;
+        return stageWinners;
+    }
+    public void setStageWinners() {
+        stageWinners = new ArrayList<>();
+    }
+    public void addToWinners(String participantID) {
+        stageWinners.add(participantID);
     }
 }
