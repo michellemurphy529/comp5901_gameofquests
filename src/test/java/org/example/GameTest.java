@@ -1146,13 +1146,13 @@ class GameTest {
         //Test discard pile size is 2
         assertEquals(2, game.gameLogic.getAdventureDeck().getDiscardPileSize());
     }
-
-    @Test
-    @DisplayName("RESP-019: System removes card from the hand and discards it in the correct discard pile")
-    void RESP_019() {
-        RESP_019_test_001();
-        RESP_019_test_002();
-    }
+//Moved to below most recent RESP-019 test
+//    @Test
+//    @DisplayName("RESP-019: System removes card from the hand and discards it in the correct discard pile")
+//    void RESP_019() {
+//        RESP_019_test_001();
+//        RESP_019_test_002();
+//    }
 
     @Test
     @DisplayName("RESP-020-Test-001: System displays the trimmed hand")
@@ -3604,5 +3604,57 @@ class GameTest {
     void RESP_037() {
         RESP_037_test_001();
         RESP_037_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-019-Test-003: System removes card from the hand and discards it. " +
+            "Testing that it get the right foe value")
+    void RESP_019_test_003() {
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        game.setDecks();
+        Deck adventureDeck = game.getAdventureDeck();
+        adventureDeck.shuffle();
+        game.setPlayers();
+
+        //Add 3 cards to Player 1 hand
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        ArrayList<Card> playerHand = game.getCurrentPlayer().getHand();
+        //Add 12 cards
+        playerHand.clear();
+        playerHand.add(new FoeCard(5));
+        playerHand.add(new FoeCard(10));
+        playerHand.add(new FoeCard(15));
+        playerHand.add(new FoeCard(20));
+        playerHand.add(new FoeCard(25));
+        playerHand.add(new FoeCard(30));
+        playerHand.add(new FoeCard(35));
+        playerHand.add(new FoeCard(40));
+        playerHand.add(new FoeCard(50));
+        playerHand.add(new FoeCard(70));
+
+        //Get input from user for 1 card
+        String userInput = "F50\n";
+        String cardsToDiscard = game.gameDisplay.getDiscardInput(new Scanner(userInput));
+
+        //Test player hand has 10 cards in it
+        Player player = game.getCurrentPlayer();
+        assertEquals(10, player.getHandSize());
+
+        //Remove cards and discard
+        game.gameLogic.removeCardsAndDiscard(cardsToDiscard, playerID);
+
+        //Test player hand has 9 cards in it
+        assertEquals(9, player.getHandSize());
+        //Test Same Foe card
+        FoeCard foe =  (FoeCard) game.getAdventureDeck().getDiscardPile().getLast();
+        assertEquals(50, foe.getValue());
+    }
+
+    @Test
+    @DisplayName("RESP-019: System removes card from the hand and discards it in the correct discard pile")
+    void RESP_019() {
+        RESP_019_test_001();
+        RESP_019_test_002();
+        RESP_019_test_003();
     }
 }
