@@ -4014,4 +4014,56 @@ class GameTest {
         //Test the size is what we expect after drawing card
         assertEquals(12, participant.getHandSize());
     }
+
+    @Test
+    @DisplayName("RESP-029-Test-004: Each participant prepares an attack with one or more non-repeated weapon cards, " +
+            "and the system calculates the attack value as the sum of the weapon values. Testing attack values.")
+    void RESP_029_test_004() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        //Clear cards from player hand and then add the cards
+        game.gameLogic.getPlayer("P1").getHand().clear();
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").getHand().clear();
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").getHand().clear();
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //players prepare an attack and the attack values are calculated
+        game.beginQuest();
+
+        //get attack values after initalized
+        ArrayList<Integer> attackValues = game.gameLogic.getAttackValues();
+
+        //Test attack values are 5, 15, 15
+        assertEquals(5, attackValues.get(0));
+        assertEquals(15, attackValues.get(1));
+        assertEquals(15, attackValues.get(2));
+    }
 }
