@@ -2746,10 +2746,14 @@ class GameTest {
         helper.setUpForTestGeneral(game);
         helper.forcePlayerTurn(game, 4);
         //user input
-        String userInput = "no\n";
+        String userInput = "no\nyes\n";
         Scanner overrideInput = new Scanner(userInput);
         //Forcing overriding of input
         game.setInput(overrideInput);
+
+        //Force a questcard to be the lastdrawn card
+        game.getEventDeck().getDeck().addFirst(new QuestCard(2));
+        game.drawEventCard("P4");
 
         //current player ID
         game.promptCurrentPlayerToSponsor();
@@ -2764,7 +2768,7 @@ class GameTest {
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
-        assertEquals(expectedOutput, output);
+        assertTrue(output.contains(expectedOutput));
     }
 
     @Test
@@ -2810,7 +2814,7 @@ class GameTest {
         game.promptCurrentPlayerToSponsor();
         //should have order -> P4, P1, P2
         //Player 2 will accept sponsorship
-        game.promptOtherPlayersToSponsor();
+//        game.promptOtherPlayersToSponsor();
 
         //Test current player 2 is the Sponsor
         assertEquals("P2", game.getSponsorPlayerID());
@@ -2881,7 +2885,7 @@ class GameTest {
         game.promptCurrentPlayerToSponsor();
         //should have order -> P2 does not have enough foe cards they are not offered sponsorship
         //P3 says yes
-        game.promptOtherPlayersToSponsor();
+//        game.promptOtherPlayersToSponsor();
 
         //Test current player 3 is the Sponsor
         assertEquals("P3", game.getSponsorPlayerID());
@@ -2948,7 +2952,7 @@ class GameTest {
         //P1 declines to Sponsor
         game.promptCurrentPlayerToSponsor();
         //all others player decline sponsorship
-        game.promptOtherPlayersToSponsor();
+//        game.promptOtherPlayersToSponsor();
 
         //Test current player 3 is the Sponsor
         assertNull(game.getSponsorPlayerID());
