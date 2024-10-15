@@ -340,6 +340,7 @@ public class Game {
         while(gameLogic.getCurrentStageNumber() != gameLogic.getMaxStages()) {
             gameLogic.incrementStageNumber();
             showEligiblePlayersForStage(gameLogic.getCurrentStageNumber());
+            promptToParticipateInCurrentStage();
         }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
