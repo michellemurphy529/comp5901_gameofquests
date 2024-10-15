@@ -4222,4 +4222,48 @@ class GameTest {
         assertEquals(0, attackHands.get("P3").size());
         assertEquals(0, attackHands.get("P4").size());
     }
+
+    @Test
+    @DisplayName("RESP-031-Test-001: The system decides eligibility for the next Stage by comparing each " +
+            "participant’s attack value with the current stage value.  If a participant’s attack value is equal " +
+            "to or greater than the value of the current stage, they are eligible for the next stage (if any).")
+    void RESP_031_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2"};
+        game.gameLogic.setEligiblePlayers(players);
+        //set currentStageNumber
+        game.gameLogic.setCurrentStageNumber(1);
+
+        //set current stage value
+        game.gameLogic.setCurrentStageValue(10);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(10, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,10);
+
+        //Test winners arrray is null
+        assertNull(game.gameLogic.getStageWinners());
+
+        game.resolveAttacks();
+
+        //Test there are 1 winner of this stage
+        assertEquals(1, game.gameLogic.getStageWinners().size());
+        //Test there are 1 eligble
+        assertEquals(1, game.gameLogic.getEligiblePlayers().size());
+    }
+
+    @Test
+    @DisplayName("RESP-031:  If a participant’s attack value is equal to or greater than the value of the current " +
+            "stage, they are eligible for the next stage (if any).")
+    void RESP_031() {
+        RESP_031_test_001();
+    }
 }

@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class GameLogic {
@@ -19,6 +20,7 @@ public class GameLogic {
     private HashMap<Integer, ArrayList<Card>> questBuilt;
     private int currentStageValue;
     private ArrayList<String> stageLosers;
+    private ArrayList<String> stageWinners;
     private int currentStageNumber;
     private int maxStages;
 
@@ -391,5 +393,8 @@ public class GameLogic {
             }
         }
         setEligiblePlayers(eligiblePlayers.toArray(new String[0]));
+    }
+    public ArrayList<String> getStageWinners() {
+        return null;
     }
 }
