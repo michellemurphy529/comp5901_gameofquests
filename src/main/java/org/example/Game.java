@@ -325,8 +325,10 @@ public class Game {
         //Current player can either sponsor or decline
         promptCurrentPlayerToSponsor();
         if(getSponsorPlayerID() != null) {
-
+            beginQuest();
         }
+    }
+    public void beginQuest() {
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
         //System draws 1 adventure card to add to a participant’s hand and possibly trims hand

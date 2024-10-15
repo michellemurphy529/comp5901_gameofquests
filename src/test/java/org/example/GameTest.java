@@ -3005,6 +3005,7 @@ class GameTest {
     @DisplayName("RESP-024: System displays set of eligible players for each quest stage")
     void RESP_024() {
         RESP_024_test_001();
+        RESP_024_test_002();
     }
 
     @Test
@@ -3872,5 +3873,44 @@ class GameTest {
         //Test expected output
         String output = game.gameDisplay.getOutput();
         assertEquals(expectedOutput, output);
+    }
+    @Test
+    @DisplayName("RESP-024-Test-002: System displays set of eligible players for each quest stage")
+    void RESP_024_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 1);
+
+        //draw Quest card
+        Card questCard = new QuestCard(4);
+        game.getEventDeck().getDeck().addFirst(questCard);
+
+        //user input
+        String userInput = "yes\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        game.playTurn();
+
+        String expectedOutput = "P1's Turn:\n\n"+
+                "Drawing Event Card...\n" +
+                "You drew: Q4\n\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have accepted to be the Sponsor!\n\n" +
+                "The Quest Begins!\n" +
+                "Eligible Players for Stage 1: P2 P3 P4\n\n" +
+                "Eligible Players for Stage 2: P2 P3 P4\n\n" +
+                "Eligible Players for Stage 3: P2 P3 P4\n\n" +
+                "Eligible Players for Stage 4: P2 P3 P4\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains(expectedOutput));
     }
 }
