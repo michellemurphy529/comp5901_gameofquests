@@ -95,6 +95,7 @@ public class Game {
             //Current player draws 2 Adventure Cards
             gameLogic.dealNumberAdventureCards(playerID, 2);
             //Possibly Trims Player Hand (Queen's favor)
+            trimHandPlayer(playerID, computeNumberOfCardsToDiscard(playerID));
         }
         //Prosperity Card Drawn
         if(cardDrawn.getType().equals("Prosperity")) {

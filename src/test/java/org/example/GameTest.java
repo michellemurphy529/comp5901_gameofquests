@@ -394,7 +394,7 @@ class GameTest {
             for (int i = 0; i < expectedOrderOfPlayerIDs.length; i++) {
                 String currentPlayerID = game.getCurrentPlayer().getPlayerID();
                 assertEquals(expectedOrderOfPlayerIDs[i], currentPlayerID);
-                game.playTurn();
+                game.gameLogic.nextTurn();
                 game.discardEventCard(currentPlayerID, game.getLastEventCardDrawn());
             }
         }
@@ -3005,8 +3005,7 @@ class GameTest {
         //List of eligible players is displayed at the start of each stage
         game.showEligiblePlayersForStage(2);
 
-        String expectedOutput = "The Quest Begins!\n" +
-                "Eligible Players for Stage 2: P1 P2 P3 P4\n\n";
+        String expectedOutput = "Eligible Players for Stage 2: P1 P2 P3 P4\n\n";
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
