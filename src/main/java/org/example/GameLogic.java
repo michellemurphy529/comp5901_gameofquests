@@ -141,13 +141,15 @@ public class GameLogic {
     }
     public void removeCardsAndDiscard(String cardStringToDiscard, String playerID) {
         String cardType = cardStringToDiscard.substring(0, 1);
-        Card cardToDiscard = getCardFromHand(cardType, playerID);
+        int cardValue = Integer.parseInt(cardStringToDiscard.substring(1));
+        Card cardToDiscard = getCardFromHand(cardType, cardValue, playerID);
         discardCard(playerID, getAdventureDeck(), cardToDiscard);
     }
-    public Card getCardFromHand(String cardTypeToFind, String playerID) {
+    public Card getCardFromHand(String cardTypeToFind, int cardValueToFind, String playerID) {
         Card cardFound = null;
         for (Card card : getPlayerHand(playerID)) {
-            if(card.getType().equals(cardTypeToFind)) {
+            AdventureCard adventureCard = (AdventureCard) card;
+            if(adventureCard.getType().equals(cardTypeToFind) && adventureCard.getValue() == cardValueToFind) {
                 cardFound = card;
             }
         }
@@ -217,7 +219,8 @@ public class GameLogic {
         ArrayList<Card> stageCards = new ArrayList<>();
         for (String cardString : stageStringCards) {
             String cardTypeString = cardString.substring(0,1);
-            Card card = getCardFromHand(cardTypeString, sponsorID);
+            int cardValue = Integer.parseInt(cardString.substring(1));
+            Card card = getCardFromHand(cardTypeString, cardValue, sponsorID);
             stageCards.addLast(card);
         }
         return stageCards;

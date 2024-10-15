@@ -293,7 +293,9 @@ public class Game {
                 gameLogic.addToWeaponCards(inputReceived, weaponCards);
 
                 //Add card to attack and display to user
-                Card cardFromParticipant = gameLogic.getCardFromHand(inputReceived.substring(0,1), playerID);
+                String cardType = inputReceived.substring(0,1);
+                int cardValue = Integer.parseInt(inputReceived.substring(1));
+                Card cardFromParticipant = gameLogic.getCardFromHand(cardType, cardValue, playerID);
                 attackCards.addLast(cardFromParticipant);
                 gameDisplay.addedCardToAttackMessage(inputReceived);
                 gameDisplay.displayAttackCards(attackCards);
