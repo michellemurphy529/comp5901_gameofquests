@@ -100,6 +100,9 @@ public class Game {
             //All Players draw 2 Adventure Cards
             gameLogic.dealAllPlayersAdventureCards(getPlayerIDs(), 2);
         }
+        if(cardDrawn.getType().equals("Q")) {
+            carryOutQuestAction();
+        }
         //Possibly Trims Player Hand (Queen's favor) OR all Player's Hand (Prosperity)
         trimHandAction(getPlayerIDs());
 
@@ -317,6 +320,10 @@ public class Game {
         return participantAttack;
     }
     //Quest methods
+    public void carryOutQuestAction() {
+        //Current player can either sponsor or decline
+        promptCurrentPlayerToSponsor();
+    }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
         //System draws 1 adventure card to add to a participant’s hand and possibly trims hand
         dealNumberOfAdventureCardsToPlayer(participantID, 1);
