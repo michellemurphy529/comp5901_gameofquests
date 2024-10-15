@@ -3592,6 +3592,7 @@ class GameTest {
     void RESP_032() {
         RESP_032_test_001();
         RESP_032_test_002();
+        RESP_032_test_003();
     }
 
     @Test
@@ -4159,5 +4160,66 @@ class GameTest {
 
         //Test there are 1 eligble
         assertEquals(2, game.gameLogic.getEligiblePlayers().size());
+    }
+
+    @Test
+    @DisplayName("RESP-032-Test-003: System discards all cards used by participants for a stage, once resolved")
+    void RESP_032_test_003() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //user input
+        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        //Clear cards from player hand and then add the cards
+        game.gameLogic.getPlayer("P1").getHand().clear();
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").getHand().clear();
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").getHand().clear();
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //set current stage value
+        game.gameLogic.setCurrentStageValue(10);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(10, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,15);
+        game.gameLogic.addAttackValue(2,15);
+
+        //Set attack hands
+        game.gameLogic.setAttackHands();
+        HashMap<String,ArrayList<Card>> attackHands;
+
+        game.beginQuest();
+
+        //Test attackHands after discarding occurs
+        attackHands = game.gameLogic.getAttackHands();
+        assertEquals(0, attackHands.get("P1").size());
+        assertEquals(0, attackHands.get("P3").size());
+        assertEquals(0, attackHands.get("P4").size());
     }
 }
