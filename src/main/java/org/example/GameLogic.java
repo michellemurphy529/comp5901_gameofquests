@@ -17,6 +17,9 @@ public class GameLogic {
     private ArrayList<Integer> attackValues;
     private HashMap<String,ArrayList<Card>> attackHands;
     private HashMap<Integer, ArrayList<Card>> questBuilt;
+    private int currentStageValue;
+    private ArrayList<String> stageLosers;
+    private int currentStageNumber;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -345,13 +348,24 @@ public class GameLogic {
         questBuilt.get(stageKey).addAll(cards);
     }
     public void setCurrentStageValue(int stageValue) {
+        currentStageValue = stageValue;
     }
     public int getCurrentStageValue() {
-        return -1;
+        return currentStageValue;
+    }
+    public void setStageLosers() {
+        stageLosers = new ArrayList<>();
     }
     public ArrayList<String> getStageLosers() {
-        return null;
+        return stageLosers;
     }
-    public void setCurrentStageNumber(int stage) {
+    public void setCurrentStageNumber(int currentStage) {
+        currentStageNumber = currentStage;
+    }
+    public boolean compareStageValueToCurrentStageValue(int attackValue) {
+        return attackValue < getCurrentStageValue();
+    }
+    public void addToLosers(String participantID) {
+        stageLosers.add(participantID);
     }
 }

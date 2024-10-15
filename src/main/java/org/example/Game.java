@@ -429,6 +429,15 @@ public class Game {
         gameDisplay.displayPlayerIDInHotSeat(getCurrentPlayer().getPlayerID());
     }
     public void resolveAttacks() {
+        //Set stage losers array list
+        gameLogic.setStageLosers();
+        for(int i = 0; i < gameLogic.getEligiblePlayers().size(); i++) {
+            boolean isLoser = gameLogic.compareStageValueToCurrentStageValue(gameLogic.getAttackValues().get(i));
+            if(isLoser) {
+                gameLogic.addToLosers(gameLogic.getEligiblePlayers().get(i));
+            }
+        }
+        gameLogic.removePlayerFromSubsequentStages(gameLogic.getStageLosers());
     }
 
     public static void main(String[] args) {
