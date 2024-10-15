@@ -3978,4 +3978,40 @@ class GameTest {
         String output = game.gameDisplay.getOutput();
         assertTrue(output.contains(expectedOutput));
     }
+
+    @Test
+    @DisplayName("RESP-027-Test-003: System draws 1 adventure card to add to a participant’s hand and possibly trims " +
+            "hand when they accept the current stage")
+    void RESP_027_test_003() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 3);
+
+        //Get participant and their ID
+        Player participant = game.gameLogic.getPlayer("P2");
+        participant.getHand().removeFirst();
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //input
+        String userInput = "no\nyes\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Test before it is hand size of 11
+        assertEquals(11, participant.getHandSize());
+
+        //Call method prompts the prticipants if they say yes they get a adventure card
+        game.promptToParticipateInCurrentStage();
+
+        //Test the size is what we expect after drawing card
+        assertEquals(12, participant.getHandSize());
+    }
 }
