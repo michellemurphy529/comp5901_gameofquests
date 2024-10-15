@@ -3044,6 +3044,11 @@ class GameTest {
         String[] players = new String[] {"P1", "P3", "P4"};
         game.gameLogic.setEligiblePlayers(players);
 
+        //force game not to trim hands when receiving adventure card by removing a card
+        game.gameLogic.getPlayer("P1").getHand().removeFirst();
+        game.gameLogic.getPlayer("P3").getHand().removeFirst();
+        game.gameLogic.getPlayer("P4").getHand().removeFirst();
+
         //prompt players to participate
         game.promptToParticipateInCurrentStage();
 
@@ -3090,6 +3095,16 @@ class GameTest {
         String[] players = new String[] {"P1", "P2", "P3", "P4"};
         game.gameLogic.setEligiblePlayers(players);
 
+        //force game not to trim hands when receiving adventure card by removing a card
+        game.gameLogic.getPlayer("P1").getHand().removeFirst();
+        game.gameLogic.getPlayer("P2").getHand().removeFirst();
+        game.gameLogic.getPlayer("P3").getHand().removeFirst();
+        game.gameLogic.getPlayer("P4").getHand().removeFirst();
+        game.gameLogic.getPlayer("P1").getHand().removeFirst();
+        game.gameLogic.getPlayer("P2").getHand().removeFirst();
+        game.gameLogic.getPlayer("P3").getHand().removeFirst();
+        game.gameLogic.getPlayer("P4").getHand().removeFirst();
+
         //Test that before the method is called the size is 4
         assertEquals(4, game.gameLogic.getEligiblePlayers().size());
 
@@ -3126,6 +3141,12 @@ class GameTest {
         //set up players that would be eligible
         String[] players = new String[] {"P1", "P2", "P3", "P4"};
         game.gameLogic.setEligiblePlayers(players);
+
+        //force game not to trim hands when receiving adventure card by removing a card
+        game.gameLogic.getPlayer("P1").getHand().removeFirst();
+        game.gameLogic.getPlayer("P2").getHand().removeFirst();
+        game.gameLogic.getPlayer("P3").getHand().removeFirst();
+        game.gameLogic.getPlayer("P4").getHand().removeFirst();
 
         //prompt players to participate
         game.promptToParticipateInCurrentStage();
@@ -3768,7 +3789,8 @@ class GameTest {
         game.gameLogic.getEventDeck().cards.addFirst(questCard);
 
         //user input
-        String userInput = "yes\n";
+        //Added all players say no to end quest
+        String userInput = "yes\nno\nno\nno\nno\n";
         Scanner overrideInput = new Scanner(userInput);
         //Forcing overriding of input
         game.setInput(overrideInput);
@@ -3803,13 +3825,16 @@ class GameTest {
         QuestCard questCard = new QuestCard(2);
         game.gameLogic.getEventDeck().cards.addFirst(questCard);
 
+        //Added the rest of the participants decline the quest
         //user input
-        String userInput = "no\nyes\n";
+        String userInput = "no\nyes\nno\nno\nno\n";
         Scanner overrideInput = new Scanner(userInput);
         //Forcing overriding of input
         game.setInput(overrideInput);
 
         game.playTurn();
+
+        assertNotNull(game.getSponsorPlayerID());
 
         String expectedOutput = "P1's Turn:\n\n" +
                 "Drawing Event Card...\n" +
@@ -3902,28 +3927,39 @@ class GameTest {
         helper.forcePlayerTurn(game, 1);
 
         //draw Quest card
-        Card questCard = new QuestCard(4);
+        //forcing to end after 2 stages
+        Card questCard = new QuestCard(2);
         game.getEventDeck().getDeck().addFirst(questCard);
 
         //user input
-        String userInput = "yes\n";
+        //forcing no eligbile participants
+        String userInput = "yes\nno\nno\nno\nno\n";
         Scanner overrideInput = new Scanner(userInput);
         //Forcing overriding of input
         game.setInput(overrideInput);
 
         game.playTurn();
 
+        //updating expected output to be what is expected in the updated functionality
         String expectedOutput = "P1's Turn:\n\n"+
                 "Drawing Event Card...\n" +
-                "You drew: Q4\n\n" +
+                "You drew: Q2\n\n" +
                 "Would you like to sponsor this Quest?\n" +
                 "Type 'yes' or 'no':\n\n" +
                 "You have accepted to be the Sponsor!\n\n" +
                 "The Quest Begins!\n" +
                 "Eligible Players for Stage 1: P2 P3 P4\n\n" +
-                "Eligible Players for Stage 2: P2 P3 P4\n\n" +
-                "Eligible Players for Stage 3: P2 P3 P4\n\n" +
-                "Eligible Players for Stage 4: P2 P3 P4\n\n";
+                "Asking P2:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P3:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P4:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "No Participants for Current Stage...\n" +
+                "Quest has ended.\n\n";
 
         //Test expected output
         String output = game.gameDisplay.getOutput();
