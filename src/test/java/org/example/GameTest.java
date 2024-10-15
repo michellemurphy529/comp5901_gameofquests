@@ -3767,4 +3767,45 @@ class GameTest {
         String output = game.gameDisplay.getOutput();
         assertTrue(output.contains(expectedOutput));
     }
+
+    @Test
+    @DisplayName("RESP-022-Test-003: If player that draws Quest card declines to sponsor, the system continues" +
+            " to offer the quest to the next player in the order until a sponsor has been found.")
+    void RESP_022_test_003() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 1);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //user input
+        String userInput = "yes\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        game.playTurn();
+
+        String expectedOutput = "P1's Turn:\n\n" +
+                "Drawing Event Card...\n" +
+                "You drew: Q2\n\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have declined Sponsorship\n" +
+                "Now asking other players...\n\n" +
+                "Asking P4:\n" +
+                "Would you like to sponsor this Quest?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "You have accepted to be the Sponsor!\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains(expectedOutput));
+    }
 }
