@@ -325,10 +325,21 @@ public class Game {
         //Current player can either sponsor or decline
         promptCurrentPlayerToSponsor();
         if(getSponsorPlayerID() != null) {
+            gameLogic.setCurrentStageNumber(0);
+            QuestCard questCard = (QuestCard) getLastEventCardDrawn();
+            //Set max stages
+            gameLogic.setMaxStages(questCard.getStages());
+            //Set eligible players without sponsor
+            gameLogic.setEligiblePlayersWithoutSponsor();
             beginQuest();
         }
     }
     public void beginQuest() {
+        gameDisplay.displayQuestBegins();
+        while(gameLogic.getCurrentStageNumber() != gameLogic.getMaxStages()) {
+            gameLogic.incrementStageNumber();
+            showEligiblePlayersForStage(gameLogic.getCurrentStageNumber());
+        }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
         //System draws 1 adventure card to add to a participant’s hand and possibly trims hand
@@ -383,7 +394,6 @@ public class Game {
     public void showEligiblePlayersForStage(int stageNumber) {
         //get list of eligbile players
         ArrayList<String> eligiblePlayers = gameLogic.getEligiblePlayers();
-        gameDisplay.displayQuestBegins();
         gameDisplay.displayEligiblePlayers(eligiblePlayers, stageNumber);
     }
     public void promptToParticipateInCurrentStage() {

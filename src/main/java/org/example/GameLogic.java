@@ -20,6 +20,7 @@ public class GameLogic {
     private int currentStageValue;
     private ArrayList<String> stageLosers;
     private int currentStageNumber;
+    private int maxStages;
 
     public GameLogic() {
         this.adventureDeck = new AdventureDeck();
@@ -367,5 +368,28 @@ public class GameLogic {
     }
     public void addToLosers(String participantID) {
         stageLosers.add(participantID);
+    }
+    public void incrementStageNumber() {
+        currentStageNumber++;
+    }
+    public void setMaxStages(int stages) {
+        maxStages = stages;
+    }
+    public int getMaxStages() {
+        return maxStages;
+    }
+    public int getCurrentStageNumber() {
+        return currentStageNumber;
+    }
+    public void setEligiblePlayersWithoutSponsor() {
+        ArrayList<String> eligiblePlayers = new ArrayList<>();
+        String[] playerIDs = getPlayerIDs();
+
+        for (String playerID : playerIDs) {
+            if (!playerID.equals(getSponsorID())) {
+                eligiblePlayers.add(playerID);
+            }
+        }
+        setEligiblePlayers(eligiblePlayers.toArray(new String[0]));
     }
 }
