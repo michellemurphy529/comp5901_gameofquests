@@ -365,6 +365,21 @@ public class Game {
                 }
             }
         }
+        if(getWinners().isEmpty() && gameLogic.getQuestInfo() != null) {
+            discardSponsorHandAndDrawCards();
+        }
+    }
+    public void discardSponsorHandAndDrawCards() {
+        //get number of cards used in quest and discard them
+        int numberOfCardsDiscarded = gameLogic.getNumberofCardsUsedInQuestAndDiscard();
+        //number of cards to draw is number of stages + cards used in quest
+        int numberToDraw = gameLogic.getMaxStages() + numberOfCardsDiscarded;
+        dealNumberOfAdventureCardsToPlayer(getSponsorPlayerID(), numberToDraw);
+        //check if trim hand
+        int n = computeNumberOfCardsToDiscard(getSponsorPlayerID());
+        if(n > 0) {
+            trimHandPlayer(getSponsorPlayerID(), n);
+        }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
         //System draws 1 adventure card to add to a participant’s hand and possibly trims hand

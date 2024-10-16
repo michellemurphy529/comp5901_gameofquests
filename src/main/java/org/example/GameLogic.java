@@ -408,4 +408,15 @@ public class GameLogic {
             getPlayer(participantID).addShields(getMaxStages());
         }
     }
+    public int getNumberofCardsUsedInQuestAndDiscard() {
+        int numberOfCards = 0;
+        for(Integer key : questBuilt.keySet()) {
+            ArrayList<Card> cards = questBuilt.get(key);
+            for(Card card : cards) {
+                discardCard(getSponsorID(), adventureDeck, card);
+                numberOfCards++;
+            }
+        }
+        return numberOfCards;
+    }
 }
