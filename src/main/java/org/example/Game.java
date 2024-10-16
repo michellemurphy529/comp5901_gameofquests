@@ -128,8 +128,16 @@ public class Game {
     public void processEndOfQuest() {
         ArrayList<Player> winners = getWinners();
         if(winners.isEmpty()){
+            if(gameLogic.getQuestInfo() != null) {
+                discardSponsorHandAndDrawCards();
+            }
+            if(noParticipantsFound()) {
+                gameDisplay.displayNoParticipants();
+            }
+            //Display Quest has ended
+            gameDisplay.displayQuestEnded();
+            //display no winners
             displayNoWinners();
-            playTurn();
         }else{
             displayWinnersAndTerminate(winners);
         }
@@ -344,8 +352,6 @@ public class Game {
             promptToParticipateInCurrentStage();
             if(noParticipantsFound()) {
                 leaveQuest = true;
-                gameDisplay.displayNoParticipants();
-                gameDisplay.displayQuestEnded();
             }else if (!noParticipantsFound()) {
                 //participants set up attack
                 participantsSetUpAttacks();
@@ -353,21 +359,16 @@ public class Game {
                 discardParticipantsCards();
                 if(noParticipantsFound()) {
                     leaveQuest = true;
-                    gameDisplay.displayNoParticipants();
-                    gameDisplay.displayQuestEnded();
                 }
                 if(gameLogic.getCurrentStageNumber() == gameLogic.getMaxStages()) {
                     leaveQuest = true;
                     if(!gameLogic.getStageWinners().isEmpty()) {
                         gameLogic.addShieldsToWinners(gameLogic.getStageWinners());
                     }
-                    gameDisplay.displayQuestEnded();
                 }
             }
         }
-        if(getWinners().isEmpty() && gameLogic.getQuestInfo() != null) {
-            discardSponsorHandAndDrawCards();
-        }
+        processEndOfQuest();
     }
     public void discardSponsorHandAndDrawCards() {
         //get number of cards used in quest and discard them
