@@ -4513,4 +4513,163 @@ class GameTest {
         assertEquals(expectedOutput, output);
         assertTrue(output.contains(expectedOutput));
     }
+
+    @Test
+    @DisplayName("RESP-034-Test-001: After a quest is completed (and if no player has won the game), the system " +
+            "prompts the sponsor to discard all cards used to build the quest and draw new adventure cards equal " +
+            "to the number discarded, plus an additional card for each stage in the quest. Trims player hand. " +
+            "Testing hand size")
+    void RESP_034_test_001() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "yes\nno\nno\nD5\nH10\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(4);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P2", "P3"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Add cards to sponsor hand to ensure correct trim
+        Player sponsor = game.gameLogic.getPlayer("P1");
+        sponsor.getHand().clear();
+        //these cards will be used in the quest being built
+        sponsor.getHand().add(new FoeCard(5));
+        sponsor.getHand().add(new FoeCard(5));
+        sponsor.getHand().add(new FoeCard(5));
+        sponsor.getHand().add(new FoeCard(5));
+        //these are left over
+        sponsor.getHand().add(new WeaponCard("D",5));
+        sponsor.getHand().add(new WeaponCard("H",10));
+        sponsor.getHand().add(new WeaponCard("S",10));
+        sponsor.getHand().add(new WeaponCard("D",5));
+        sponsor.getHand().add(new WeaponCard("H",10));
+        sponsor.getHand().add(new WeaponCard("S",10));
+
+        //Force removal of 4 cards to mock the quest being built
+        sponsor.getHand().removeFirst();
+        sponsor.getHand().removeFirst();
+        sponsor.getHand().removeFirst();
+        sponsor.getHand().removeFirst();
+
+        //test sponsor hand has 6 cards
+        assertEquals(6, sponsor.getHandSize());
+
+        //sponsor to sponsor
+        game.promptCurrentPlayerToSponsor();
+        //set questBuilt to have 4 cards in it
+        game.gameLogic.setQuestInfo(4);
+        Card card1 = new FoeCard(5);
+        ArrayList<Card> cardList = new ArrayList<>();
+        cardList.add(card1);
+        game.gameLogic.addCardstoQuestInfo(1, cardList);
+        game.gameLogic.addCardstoQuestInfo(2, cardList);
+        game.gameLogic.addCardstoQuestInfo(3, cardList);
+        game.gameLogic.addCardstoQuestInfo(4, cardList);
+
+        //carry out quest and force termination by not accepting
+        game.beginQuest();
+
+        //Test sponsor hand has 12 cards in it
+        assertEquals(12, sponsor.getHandSize());
+    }
+
+    @Test
+    @DisplayName("RESP-034-Test-002: After a quest is completed (and if no player has won the game), the system " +
+            "prompts the sponsor to discard all cards used to build the quest and draw new adventure cards equal " +
+            "to the number discarded, plus an additional card for each stage in the quest. Trims player hand. " +
+            "testing discard pile")
+    void RESP_034_test_002() {
+        //SETUP
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        //Created set up for general Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //user input
+        String userInput = "yes\nno\nno\nD5\nH10\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(4);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P2", "P3"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //Add cards to sponsor hand to ensure correct trim
+        Player sponsor = game.gameLogic.getPlayer("P1");
+        sponsor.getHand().clear();
+        //these cards will be used in the quest being built
+        sponsor.getHand().add(new FoeCard(5));
+        sponsor.getHand().add(new FoeCard(5));
+        sponsor.getHand().add(new FoeCard(5));
+        sponsor.getHand().add(new FoeCard(5));
+        //these are left over
+        sponsor.getHand().add(new WeaponCard("D",5));
+        sponsor.getHand().add(new WeaponCard("H",10));
+        sponsor.getHand().add(new WeaponCard("S",10));
+        sponsor.getHand().add(new WeaponCard("D",5));
+        sponsor.getHand().add(new WeaponCard("H",10));
+        sponsor.getHand().add(new WeaponCard("S",10));
+
+        //Force removal of 4 cards to mock the quest being built
+        sponsor.getHand().removeFirst();
+        sponsor.getHand().removeFirst();
+        sponsor.getHand().removeFirst();
+        sponsor.getHand().removeFirst();
+
+        //test sponsor hand has 6 cards
+        assertEquals(6, sponsor.getHandSize());
+
+        //sponsor to sponsor
+        game.promptCurrentPlayerToSponsor();
+        //set questBuilt to have 4 cards in it
+        game.gameLogic.setQuestInfo(4);
+        Card card1 = new FoeCard(5);
+        ArrayList<Card> cardList = new ArrayList<>();
+        cardList.add(card1);
+        game.gameLogic.addCardstoQuestInfo(1, cardList);
+        game.gameLogic.addCardstoQuestInfo(2, cardList);
+        game.gameLogic.addCardstoQuestInfo(3, cardList);
+        game.gameLogic.addCardstoQuestInfo(4, cardList);
+
+        //test discard pile has 0 cards in it
+        assertEquals(0, game.getAdventureDeck().getDiscardPileSize());
+
+        //carry out quest and force termination by not accepting
+        game.beginQuest();
+
+        //test discard pile has 6 cards in it
+        // (6 cards to begin with in sponsor hand, pick up 8 cards (4 added to quest + 4 added for stage number) = 14 cards
+        //Trim hand -> 14 - 12 = 2 cards
+        //PLUS the cards in quest discarded = 2 + 4 card = 6
+        assertEquals(6, game.getAdventureDeck().getDiscardPileSize());
+    }
+
+    @Test
+    @DisplayName("RESP-034: After a quest is completed (and if no player has won the game), the system prompts " +
+            "the sponsor to discard all cards used to build the quest and draw new adventure cards equal to the " +
+            "number discarded, plus an additional card for each stage in the quest. Trim hand if necessary.")
+    void RESP_034() {
+        RESP_034_test_001();
+        RESP_034_test_002();
+    }
 }
