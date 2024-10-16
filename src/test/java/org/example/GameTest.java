@@ -4266,4 +4266,196 @@ class GameTest {
     void RESP_031() {
         RESP_031_test_001();
     }
+
+    @Test
+    @DisplayName("RESP-033-Test-001: System ends the quest if there are no eligible participants remaining for the " +
+            "next stage")
+    void RESP_033_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //user input
+        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force adventure deck always give the same cards to the players when drawing adventure card
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(50));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(15));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        //Clear cards from player hand and then add the cards
+        game.gameLogic.getPlayer("P1").getHand().clear();
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").getHand().clear();
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").getHand().clear();
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //set current stage value to be so all participants are ineligble
+        game.gameLogic.setCurrentStageValue(20);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(20, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,15);
+        game.gameLogic.addAttackValue(2,15);
+
+        //Set attack hands
+        game.gameLogic.setAttackHands();
+
+        //Test 3 eligible players
+        assertEquals(3, game.gameLogic.getEligiblePlayers().size());
+
+        game.beginQuest();
+
+        //Test there are 0 eligble players
+        assertEquals(0, game.gameLogic.getEligiblePlayers().size());
+
+        String expectedOutput = "The Quest Begins!\n" +
+                "Eligible Players for Stage 1: P1 P3 P4\n\n" +
+                "Asking P1:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P3:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Asking P4:\n" +
+                "Would you like to participate in the current stage?\n" +
+                "Type 'yes' or 'no':\n\n" +
+                "Setting up an Attack...\n\n" +
+                "P1 hand: D5 F10\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Attack set up is completed...\n" +
+                "Your Attack: D5\n\n" +
+                "Setting up an Attack...\n\n" +
+                "P3 hand: H10 D5 F15\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "H10 added to Attack...\n" +
+                "Attack Card(s): H10\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "D5 added to Attack...\n" +
+                "Attack Card(s): H10 D5\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Attack set up is completed...\n" +
+                "Your Attack: H10 D5\n\n" +
+                "Setting up an Attack...\n\n" +
+                "P4 hand: B15 F50\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "B15 added to Attack...\n" +
+                "Attack Card(s): B15\n\n" +
+                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
+                "Enter 'Quit' to end the attack setup.\n\n" +
+                "Attack set up is completed...\n" +
+                "Your Attack: B15\n\n" +
+                "No Participants for Current Stage...\n" +
+                "Quest has ended.\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains(expectedOutput));
+    }
+
+    @Test
+    @DisplayName("RESP-033-Test-002: If it is the last stage, the shield total of each winner (if any) is increased, " +
+            "and the quest ends.")
+    void RESP_033_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //user input
+        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        //Clear cards from player hand and then add the cards
+        game.gameLogic.getPlayer("P1").getHand().clear();
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").getHand().clear();
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").getHand().clear();
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //set current stage value so P3 and P4 have their shields increased by 1
+        game.gameLogic.setCurrentStageValue(10);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(10, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,15);
+        game.gameLogic.addAttackValue(2,15);
+
+        //Set attack hands
+        game.gameLogic.setAttackHands();
+
+        //Test players have 0 shields
+        assertEquals(0, game.gameLogic.getPlayer("P1").getShieldCount());
+        assertEquals(0, game.gameLogic.getPlayer("P3").getShieldCount());
+        assertEquals(0, game.gameLogic.getPlayer("P4").getShieldCount());
+
+        game.beginQuest();
+
+        //Test players 3 and 4 have 1 shield
+        assertEquals(0, game.gameLogic.getPlayer("P1").getShieldCount());
+        assertEquals(1, game.gameLogic.getPlayer("P3").getShieldCount());
+        assertEquals(1, game.gameLogic.getPlayer("P4").getShieldCount());
+    }
+
+    @Test
+    @DisplayName("RESP-033: System ends the quest if there are no eligible participants remaining for the next " +
+            "stage or if the current stage is the last stage. If it is the last stage, the shield total of each " +
+            "winner (if any) is increased, and the quest ends.")
+    void RESP_033() {
+        RESP_033_test_001();
+        RESP_033_test_002();
+    }
 }
