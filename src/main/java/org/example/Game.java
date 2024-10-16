@@ -107,10 +107,6 @@ public class Game {
         if(cardDrawn.getType().equals("Q")) {
             carryOutQuestAction();
         }
-
-        //Next Player Logic
-        //Next Turn invoked
-        gameLogic.nextTurn();
     }
     public void dealNumberOfAdventureCardsToPlayer(String playerID, int numberOfCards) {
         gameLogic.dealNumberAdventureCards(playerID, numberOfCards);
@@ -181,10 +177,7 @@ public class Game {
         displayTrimmedHand(playerID);
     }
     public void stageIsValidAndDisplayCards(HashMap<Integer, ArrayList<Card>> questBuilt) {
-        boolean stageIsValid = gameDisplay.getUserInputBuildStage(input);
-        if(stageIsValid) {
-            gameDisplay.displayBuiltQuest(questBuilt);
-        }
+        gameDisplay.displayBuiltQuest(questBuilt);
     }
     public void displaySponsorHandAndSetUpStages(String playerID, int stages) {
         //Building Quest from stageCards
@@ -516,24 +509,35 @@ public class Game {
         }
         gameLogic.removePlayerFromSubsequentStages(gameLogic.getStageLosers());
     }
+    public void nextTurn() {
+        gameLogic.nextTurn();
+    }
 
     public static void main(String[] args) {
         //Initialize game
         Game game = new Game(new GameLogic(), new GameDisplay());
-
         //Set up decks
         game.setDecks();
-
         //Shuffle decks
         Deck adventureDeck = game.getAdventureDeck();
         Deck eventDeck = game.getEventDeck();
-
         adventureDeck.shuffle();
         eventDeck.shuffle();
-
         //Set Players
         game.setPlayers();
         //Distribute 12 Adventure Cards to each player
         game.dealInitial12AdventureCards();
+
+        //Start game loop
+        while(game.getWinners().isEmpty()) {
+            //Display Player in HotSeat
+            game.displayPlayerInHotSeat();
+            game.playTurn();
+            //Get player in hotseat to press <enter>
+            game.promptToLeaveHotSeat();
+            game.nextTurn();
+            game.flushDisplay();
+        }
+        game.displayWinnersAndTerminate(game.getWinners());
     }
 }
