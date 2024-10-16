@@ -342,21 +342,27 @@ public class Game {
             gameLogic.incrementStageNumber();
             showEligiblePlayersForStage(gameLogic.getCurrentStageNumber());
             promptToParticipateInCurrentStage();
-            //participants set up attack
-            participantsSetUpAttacks();
-            resolveAttacks();
-            discardParticipantsCards();
             if(noParticipantsFound()) {
                 leaveQuest = true;
                 gameDisplay.displayNoParticipants();
                 gameDisplay.displayQuestEnded();
-            }
-            if(gameLogic.getCurrentStageNumber() == gameLogic.getMaxStages()) {
-                leaveQuest = true;
-                if(!gameLogic.getStageWinners().isEmpty()) {
-                    gameLogic.addShieldsToWinners(gameLogic.getStageWinners());
+            }else if (!noParticipantsFound()) {
+                //participants set up attack
+                participantsSetUpAttacks();
+                resolveAttacks();
+                discardParticipantsCards();
+                if(noParticipantsFound()) {
+                    leaveQuest = true;
+                    gameDisplay.displayNoParticipants();
+                    gameDisplay.displayQuestEnded();
                 }
-                gameDisplay.displayQuestEnded();
+                if(gameLogic.getCurrentStageNumber() == gameLogic.getMaxStages()) {
+                    leaveQuest = true;
+                    if(!gameLogic.getStageWinners().isEmpty()) {
+                        gameLogic.addShieldsToWinners(gameLogic.getStageWinners());
+                    }
+                    gameDisplay.displayQuestEnded();
+                }
             }
         }
     }
@@ -433,10 +439,6 @@ public class Game {
             }
         }
         gameLogic.removePlayerFromSubsequentStages(playersToRemove);
-        if(noParticipantsFound()) {
-            gameDisplay.displayNoParticipants();
-            gameDisplay.displayQuestEnded();
-        }
     }
     public boolean noParticipantsFound() {
         return gameLogic.checkForParticipants();
