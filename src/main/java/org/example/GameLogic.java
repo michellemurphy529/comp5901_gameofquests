@@ -403,4 +403,9 @@ public class GameLogic {
     public void addToWinners(String participantID) {
         stageWinners.add(participantID);
     }
+    public void addShieldsToWinners(ArrayList<String> stageWinners) {
+        for (String participantID : stageWinners) {
+            getPlayer(participantID).addShields(getMaxStages());
+        }
+    }
 }

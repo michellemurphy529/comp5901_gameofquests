@@ -337,7 +337,8 @@ public class Game {
     }
     public void beginQuest() {
         gameDisplay.displayQuestBegins();
-        while(gameLogic.getCurrentStageNumber() != gameLogic.getMaxStages()) {
+        boolean leaveQuest = false;
+        while(!leaveQuest && gameLogic.getCurrentStageNumber() != gameLogic.getMaxStages()) {
             gameLogic.incrementStageNumber();
             showEligiblePlayersForStage(gameLogic.getCurrentStageNumber());
             promptToParticipateInCurrentStage();
@@ -345,6 +346,18 @@ public class Game {
             participantsSetUpAttacks();
             resolveAttacks();
             discardParticipantsCards();
+            if(noParticipantsFound()) {
+                leaveQuest = true;
+                gameDisplay.displayNoParticipants();
+                gameDisplay.displayQuestEnded();
+            }
+            if(gameLogic.getCurrentStageNumber() == gameLogic.getMaxStages()) {
+                leaveQuest = true;
+                if(!gameLogic.getStageWinners().isEmpty()) {
+                    gameLogic.addShieldsToWinners(gameLogic.getStageWinners());
+                }
+                gameDisplay.displayQuestEnded();
+            }
         }
     }
     public void draw1AdventureCardForParticipantAndTrim(String participantID) {
