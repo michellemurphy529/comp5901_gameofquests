@@ -334,8 +334,14 @@ public class Game {
         //Current player can either sponsor or decline
         promptCurrentPlayerToSponsor();
         if(getSponsorPlayerID() != null) {
-            gameLogic.setCurrentStageNumber(0);
+            //Quest card needed for stage number
             QuestCard questCard = (QuestCard) getLastEventCardDrawn();
+            //Get sponsor to build the quest and display to user
+            displaySponsorHandAndSetUpStages(getSponsorPlayerID(), questCard.getStages());
+            stageIsValidAndDisplayCards(gameLogic.getQuestInfo());
+
+            //Set up for variables before quest begins
+            gameLogic.setCurrentStageNumber(0);
             //Set max stages
             gameLogic.setMaxStages(questCard.getStages());
             //Set eligible players without sponsor
