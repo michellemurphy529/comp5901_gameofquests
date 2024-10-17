@@ -425,6 +425,6 @@ public class GameLogic {
         return numberOfCards;
     }
     public int getCurrentStageValueFromQuestInfo() {
-        return -1;
+        return getStageValue(getCurrentStageNumber(), getQuestInfo());
     }
 }
