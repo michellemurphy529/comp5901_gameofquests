@@ -162,7 +162,7 @@ public class Game {
         }
     }
     public void trimHandPlayer(String playerID, int n) {
-        //Display current Player Hand
+        //Display current Player Hand sorted
         displayPlayerHand(playerID);
         int numberOfCardsToDiscard = n;
 
@@ -270,12 +270,15 @@ public class Game {
             else {
                 gameDisplay.displayRepeatedWeaponCardMessage();
             }
+            gameLogic.sortPlayerHand(gameLogic.getPlayer(playerID));
         }
         return stageCards;
     }
     //Attack methods
     public void displaySetUpForAttackAndPlayerHand(String playerID) {
         gameDisplay.displaySettingUpAttackForPlayer();
+        //Adding to call sort player hand
+        gameLogic.sortPlayerHand(gameLogic.getPlayer(playerID));
         gameDisplay.displayPlayerHand(gameLogic.getPlayer(playerID));
     }
     public ArrayList<Card> promptPlayerToSelectCardOrQuit(String playerID) {
@@ -302,8 +305,11 @@ public class Game {
                 String cardType = inputReceived.substring(0,1);
                 int cardValue = Integer.parseInt(inputReceived.substring(1));
                 Card cardFromParticipant = gameLogic.getCardFromHand(cardType, cardValue, playerID);
+                //sort player hand after removing the card
+                gameLogic.getPlayer(playerID).sortHand();
                 attackCards.addLast(cardFromParticipant);
-                gameDisplay.addedCardToAttackMessage(inputReceived);
+                //display card from participant not input received
+                gameDisplay.addedCardToAttackMessage(cardFromParticipant.displayCardName());
                 gameDisplay.displayAttackCards(attackCards);
             }
             //Case where weapon cards are repeated
