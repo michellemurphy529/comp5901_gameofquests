@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
 
     protected String playerID;
-    private ArrayList<Card> hand;
+    protected ArrayList<Card> hand;
     private int shields;
 
     public Player(String playerID) {
@@ -38,4 +38,7 @@ public class Player {
         hand.sort(new SortHand());
     }
     public int getHandSize() { return hand.size(); }
+    public Card getCardFromHand(int index) {
+        return hand.remove(index);
+    }
 }

@@ -152,11 +152,16 @@ public class GameLogic {
         discardCard(playerID, getAdventureDeck(), cardToDiscard);
     }
     public Card getCardFromHand(String cardTypeToFind, int cardValueToFind, String playerID) {
+        //Changing to remove card from player hand when found
         Card cardFound = null;
-        for (Card card : getPlayerHand(playerID)) {
-            AdventureCard adventureCard = (AdventureCard) card;
-            if(adventureCard.getType().equals(cardTypeToFind) && adventureCard.getValue() == cardValueToFind) {
-                cardFound = card;
+        for (int i = 0; i < getPlayer(playerID).getHandSize(); i++) {
+            Card card = getPlayer(playerID).getHand().get(i);
+            if (card instanceof AdventureCard) {
+                AdventureCard adventureCard = (AdventureCard) card;
+                if (adventureCard.getType().equals(cardTypeToFind) && adventureCard.getValue() == cardValueToFind) {
+                    cardFound = getPlayer(playerID).getCardFromHand(i);
+                    break;
+                }
             }
         }
         return cardFound;
