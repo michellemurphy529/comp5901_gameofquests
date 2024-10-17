@@ -183,6 +183,8 @@ public class Game {
         //Building Quest from stageCards
         //Initialize questBuilt
         gameLogic.setQuestInfo(stages);
+        //Flush display for Sponsor building hand
+        flushDisplay();
         //Display building Quest with stage number
         gameDisplay.displayBuildingQuestMessage(stages);
 
@@ -209,6 +211,8 @@ public class Game {
 
             currentStage++;
         }
+        //Flush display for Sponsor building hand
+        flushDisplay();
     }
     public ArrayList<String> getCardsForStage(String playerID, int currentStage, int previousStageValue) {
         //check weapons are non repeating

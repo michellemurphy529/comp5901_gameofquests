@@ -248,7 +248,7 @@ public class GameAcceptanceTest {
         /*
         4) P1 is asked but declines to sponsor
         5) P2 is asked and sponsors and then builds the 4 stages of the quest as posted.
-        a. Other players do NOT see these stages - TODO
+        a. Other players do NOT see these stages
          */
 
         //Assert P1 has no shields
