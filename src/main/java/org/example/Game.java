@@ -347,6 +347,8 @@ public class Game {
         boolean leaveQuest = false;
         while(!leaveQuest && gameLogic.getCurrentStageNumber() != gameLogic.getMaxStages()) {
             gameLogic.incrementStageNumber();
+            //Set current stage attack value
+            gameLogic.setCurrentStageValue(gameLogic.getCurrentStageValueFromQuestInfo());
             showEligiblePlayersForStage(gameLogic.getCurrentStageNumber());
             promptToParticipateInCurrentStage();
             if(noParticipantsFound()) {
