@@ -3781,6 +3781,7 @@ class GameTest {
         RESP_030_test_001();
         RESP_030_test_002();
         RESP_030_test_003();
+        RESP_030_test_004();
     }
 //    @Test
 //    @DisplayName("RESP-021-Test-003: System draws a Quest card. ")
@@ -4713,5 +4714,32 @@ class GameTest {
 
         //Test card is removed from player hand
         assertEquals(12, p2.getHandSize());
+    }
+
+    @Test
+    @DisplayName("RESP-030-Test-004: The system decides ineligibility for the next Stage by comparing each " +
+            "participant’s attack value with the current stage value. testing method call to get the stage value")
+    void RESP_030_test_004() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P2"};
+        game.gameLogic.setEligiblePlayers(players);
+        //set currentStageNumber
+        game.gameLogic.setCurrentStageNumber(1);
+
+        //set up built quest
+        ArrayList<Card> stage1 = new ArrayList<>();
+        stage1.add(new FoeCard(10));
+        game.gameLogic.setQuestInfo(1);
+        game.gameLogic.addCardstoQuestInfo(1,stage1);
+
+        int stageValue = game.gameLogic.getCurrentStageValueFromQuestInfo();
+
+        //Test the method gets the right stage value
+        assertEquals(10, stageValue);
     }
 }
