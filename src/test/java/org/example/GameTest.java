@@ -2415,6 +2415,7 @@ class GameTest {
     void RESP_044() {
         RESP_044_test_001();
         RESP_044_test_002();
+        RESP_044_test_003();
     }
 
     @Test
@@ -4674,5 +4675,43 @@ class GameTest {
     void RESP_034() {
         RESP_034_test_001();
         RESP_034_test_002();
+    }
+
+    @Test
+    @DisplayName("RESP-044-Test-003: Gets cards from participant hand. test card is removed from hand.")
+    void RESP_044_test_003() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+        helper.forcePlayerTurn(game, 2);
+        Player p2 = game.getCurrentPlayer();
+        //Set weapon cards
+        game.gameLogic.setUpWeaponCards();
+        //user input
+        String userInput = "L20\nquit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Add cards to the players hand
+        Card weaponCard = new WeaponCard("L", 20);
+        p2.addCardToHand(weaponCard);
+
+        //Player hand has 13 cards in it
+        assertEquals(13, p2.getHandSize());
+
+        //get attack cards method under test
+        ArrayList<Card> attackCards = game.promptPlayerToSelectCardOrQuit(p2.getPlayerID());
+
+        //Test card is added to attack cards
+        assertEquals(1, attackCards.size());
+        AdventureCard aCard1 = (AdventureCard) attackCards.getFirst();
+        assertTrue(aCard1 instanceof AdventureCard);
+        assertEquals("L", aCard1.getType());
+        assertEquals(20, aCard1.getValue());
+
+        //Test card is removed from player hand
+        assertEquals(12, p2.getHandSize());
     }
 }
