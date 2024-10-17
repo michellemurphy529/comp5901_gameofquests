@@ -306,4 +306,7 @@ public class GameDisplay {
         lastInput = input;
         return input.trim();
     }
+    public void flush() {
+        stringWriter.getBuffer().setLength(0);
+    }
 }
