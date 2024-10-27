@@ -1504,209 +1504,209 @@ class GameTest {
         RESP_041_test_001();
     }
 
-//    @Test
-//    @DisplayName("RESP-035-Test-001: System displays sponsor’s hand and prompts the sponsor to select a card " +
-//            "or enter ‘Quit’ to end a stage setup. System must ensure that the sponsor selected card is a valid one " +
-//            "(a single Foe card and zero or more non-repeated weapon cards)")
-//    void RESP_035_test_001() {
-//        //Test helpers
-//        TestHelpers helper = new TestHelpers();
-//
-//        //Created set up for UC-05 Tests
-//        Game game = new Game(new GameLogic(), new GameDisplay());
-//        helper.setUpForTestsBuildingQuest(game);
-//
-//        //Force Player 2 to be sponsoring Quest
-//        helper.forcePlayerTurn(game, 2);
-//
-//        //Input quit
-//        String userInput = "F5\nD5\nQuit\nF10\nH10\nQuit\nF15\nS10\nQuit\n";
-//        Scanner overrideInput = new Scanner(userInput);
-//        //Forcing overriding of input
-//        game.setInput(overrideInput);
-//
-//        //Force a Quest card to be the first event card to be drawn
-//        QuestCard questCard = new QuestCard(3);
-//        game.gameLogic.getEventDeck().cards.addFirst(questCard);
-//
-//        //Player 2 playerID
-//        String playerID = game.getCurrentPlayer().getPlayerID();
-//        //Number of stages from Last Quest card
-//        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
-//        //Test these are the same cards
-//        assertEquals(questCard, card);
-//
-//        //Build Player hand
-//        game.getCurrentPlayer().getHand().clear();
-//        Card card1 = new FoeCard(5);
-//        Card card2 = new WeaponCard("D", 5);
-//        Card card3 = new FoeCard(10);
-//        Card card4 = new WeaponCard("H", 10);
-//        Card card5 = new FoeCard(15);
-//        Card card6 = new WeaponCard("S", 10);
-//        game.getCurrentPlayer().addCardToHand(card1);
-//        game.getCurrentPlayer().addCardToHand(card2);
-//        game.getCurrentPlayer().addCardToHand(card3);
-//        game.getCurrentPlayer().addCardToHand(card4);
-//        game.getCurrentPlayer().addCardToHand(card5);
-//        game.getCurrentPlayer().addCardToHand(card6);
-//
-//        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
-//
-//        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-//                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+
-//                "Building a Quest with 3 Stages...\n\n" +
-//                "Building Stage 1:\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F5 added to Stage...\n" +
-//                "Stage 1 Card(s): F5\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "D5 added to Stage...\n" +
-//                "Stage 1 Card(s): F5 D5\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "Building Stage 2:\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F10 added to Stage...\n" +
-//                "Stage 2 Card(s): F10\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "H10 added to Stage...\n" +
-//                "Stage 2 Card(s): F10 H10\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "Building Stage 3:\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F15 added to Stage...\n" +
-//                "Stage 3 Card(s): F15\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "S10 added to Stage...\n" +
-//                "Stage 3 Card(s): F15 S10\n\n" +
-//                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-//                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-//
-//        //Test expected output
-//        String output = game.gameDisplay.getOutput();
-//        assertEquals(expectedOutput, output);
-//    }
+    @Test
+    @DisplayName("RESP-035-Test-001: System displays sponsor’s hand and prompts the sponsor to select a card " +
+            "or enter ‘Quit’ to end a stage setup. System must ensure that the sponsor selected card is a valid one " +
+            "(a single Foe card and zero or more non-repeated weapon cards)")
+    void RESP_035_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 2 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 2);
+
+        //Input quit
+        String userInput = "F5\nD5\nQuit\nF10\nH10\nQuit\nF15\nS10\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(3);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 2 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new WeaponCard("D", 5);
+        Card card3 = new FoeCard(10);
+        Card card4 = new WeaponCard("H", 10);
+        Card card5 = new FoeCard(15);
+        Card card6 = new WeaponCard("S", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+        game.getCurrentPlayer().addCardToHand(card6);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+
+                "Building a Quest with 3 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 1 Card(s): F5\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "D5 added to Stage...\n" +
+                "Stage 1 Card(s): F5 D5\n\n" +
+                "P2 hand: F5 F10 F15 D5 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P2 hand: F10 F15 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F10 added to Stage...\n" +
+                "Stage 2 Card(s): F10\n\n" +
+                "P2 hand: F10 F15 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "H10 added to Stage...\n" +
+                "Stage 2 Card(s): F10 H10\n\n" +
+                "P2 hand: F10 F15 S10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 3:\n\n" +
+                "P2 hand: F15 S10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F15 added to Stage...\n" +
+                "Stage 3 Card(s): F15\n\n" +
+                "P2 hand: F15 S10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "S10 added to Stage...\n" +
+                "Stage 3 Card(s): F15 S10\n\n" +
+                "P2 hand: F15 S10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
 
     @Test
     @DisplayName("RESP-035: System displays sponsor’s hand and prompts the sponsor to select a card position or " +
             "enter ‘Quit’ to end a stage setup. System must ensure that the sponsor selected card is a valid one " +
             "(a single Foe card and zero or more non-repeated weapon cards)")
     void RESP_035() {
-//        RESP_035_test_001();
+        RESP_035_test_001();
     }
 
-//    @Test
-//    @DisplayName("RESP-036-Test-001: System must ensure that when sponsor’s select an invalid card its" +
-//            " reasoning is explained to the user and re-prompted. 2 Foe's & Repeating weapon cards")
-//    void RESP_036_test_001() {
-//        //Test helpers
-//        TestHelpers helper = new TestHelpers();
-//
-//        //Created set up for UC-05 Tests
-//        Game game = new Game(new GameLogic(), new GameDisplay());
-//        helper.setUpForTestsBuildingQuest(game);
-//
-//        //Force Player 3 to be sponsoring Quest
-//        helper.forcePlayerTurn(game, 3);
-//
-//        //Input quit
-//        String userInput = "F5\nF5\nQuit\nF10\nH10\nH10\nQuit\n";
-//        Scanner overrideInput = new Scanner(userInput);
-//        //Forcing overriding of input
-//        game.setInput(overrideInput);
-//
-//        //Force a Quest card to be the first event card to be drawn
-//        QuestCard questCard = new QuestCard(2);
-//        game.gameLogic.getEventDeck().cards.addFirst(questCard);
-//
-//        //Player 3 playerID
-//        String playerID = game.getCurrentPlayer().getPlayerID();
-//        //Number of stages from Last Quest card
-//        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
-//        //Test these are the same cards
-//        assertEquals(questCard, card);
-//
-//        //Build Player hand
-//        game.getCurrentPlayer().getHand().clear();
-//        Card card1 = new FoeCard(5);
-//        Card card2 = new FoeCard(5);
-//        Card card3 = new FoeCard(10);
-//        Card card4 = new WeaponCard("H", 10);
-//        Card card5 = new WeaponCard("H", 10);
-//        game.getCurrentPlayer().addCardToHand(card1);
-//        game.getCurrentPlayer().addCardToHand(card2);
-//        game.getCurrentPlayer().addCardToHand(card3);
-//        game.getCurrentPlayer().addCardToHand(card4);
-//        game.getCurrentPlayer().addCardToHand(card5);
-//
-//        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
-//
-//        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-//                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-//                "Building a Quest with 2 Stages...\n\n" +
-//                "Building Stage 1:\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F5 added to Stage...\n" +
-//                "Stage 1 Card(s): F5\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "There is already a Foe card in this stage. Try Again.\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "Building Stage 2:\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F10 added to Stage...\n" +
-//                "Stage 2 Card(s): F10\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "H10 added to Stage...\n" +
-//                "Stage 2 Card(s): F10 H10\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "There is already that same Weapon card in this stage. Try Again.\n\n" +
-//                "P3 hand: F5 F5 F10 H10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-//                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-//
-//        //Test expected output
-//        String output = game.gameDisplay.getOutput();
-//        assertTrue(output.contains(expectedOutput));
-//    }
+    @Test
+    @DisplayName("RESP-036-Test-001: System must ensure that when sponsor’s select an invalid card its" +
+            " reasoning is explained to the user and re-prompted. 2 Foe's & Repeating weapon cards")
+    void RESP_036_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 3 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 3);
+
+        //Input quit
+        String userInput = "F5\nF5\nQuit\nF10\nH10\nH10\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 3 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(5);
+        Card card3 = new FoeCard(10);
+        Card card4 = new WeaponCard("H", 10);
+        Card card5 = new WeaponCard("H", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+        game.getCurrentPlayer().addCardToHand(card4);
+        game.getCurrentPlayer().addCardToHand(card5);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "Building a Quest with 2 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P3 hand: F5 F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 1 Card(s): F5\n\n" +
+                "P3 hand: F5 F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "There is already a Foe card in this stage. Try Again.\n\n" +
+                "P3 hand: F5 F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P3 hand: F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F10 added to Stage...\n" +
+                "Stage 2 Card(s): F10\n\n" +
+                "P3 hand: F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "H10 added to Stage...\n" +
+                "Stage 2 Card(s): F10 H10\n\n" +
+                "P3 hand: F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "There is already that same Weapon card in this stage. Try Again.\n\n" +
+                "P3 hand: F5 F10 H10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertTrue(output.contains(expectedOutput));
+    }
 
     @Test
     @DisplayName("RESP-036: System must ensure that when sponsor’s select an invalid card its reasoning is " +
             "explained to the user and re-prompted")
     void RESP_036() {
-//        RESP_036_test_001();
+        RESP_036_test_001();
     }
 
 //    @Test
@@ -1788,85 +1788,89 @@ class GameTest {
 //        RESP_037_test_001();
 //    }
 
-//    @Test
-//    @DisplayName("RESP-038-Test-001: System displays ‘A stage cannot be empty’ message when sponsor" +
-//            " enters ‘Quit’ with no cards in the stage ")
-//    void RESP_038_test_001() {
-//        //Test helpers
-//        TestHelpers helper = new TestHelpers();
-//
-//        //Created set up for UC-05 Tests
-//        Game game = new Game(new GameLogic(), new GameDisplay());
-//        helper.setUpForTestsBuildingQuest(game);
-//
-//        //Force Player 1 to be sponsoring Quest
-//        helper.forcePlayerTurn(game, 1);
-//
-//        //Input quit
-//        String userInput = "Quit\nF5\nQuit\nQuit\nF10\nQuit\n";
-//        Scanner overrideInput = new Scanner(userInput);
-//        //Forcing overriding of input
-//        game.setInput(overrideInput);
-//
-//        //Force a Quest card to be the first event card to be drawn
-//        QuestCard questCard = new QuestCard(2);
-//        game.gameLogic.getEventDeck().cards.addFirst(questCard);
-//
-//        //Player 1 playerID
-//        String playerID = game.getCurrentPlayer().getPlayerID();
-//        //Number of stages from Last Quest card
-//        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
-//        //Test these are the same cards
-//        assertEquals(questCard, card);
-//
-//        //Build Player hand
-//        game.getCurrentPlayer().getHand().clear();
-//        Card card1 = new FoeCard(5);
-//        Card card2 = new FoeCard(10);
-//        Card card3 = new WeaponCard("H", 10);
-//        game.getCurrentPlayer().addCardToHand(card1);
-//        game.getCurrentPlayer().addCardToHand(card2);
-//        game.getCurrentPlayer().addCardToHand(card3);
-//
-//        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
-//
-//        String expectedOutput = "Building a Quest with 2 Stages...\n\n" +
-//                "Building Stage 1:\n\n" +
-//                "P1 hand: F5 F10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "A stage cannot be empty\n\n" +
-//                "P1 hand: F5 F10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F5 added to Stage...\n" +
-//                "Stage 1 Card(s): F5\n\n" +
-//                "P1 hand: F5 F10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "Building Stage 2:\n\n" +
-//                "P1 hand: F5 F10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "A stage cannot be empty\n\n" +
-//                "P1 hand: F5 F10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F10 added to Stage...\n" +
-//                "Stage 2 Card(s): F10\n\n" +
-//                "P1 hand: F5 F10 H10\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n";
-//
-//        //Test expected output
-//        String output = game.gameDisplay.getOutput();
-//        assertEquals(expectedOutput, output);
-//    }
+    @Test
+    @DisplayName("RESP-038-Test-001: System displays ‘A stage cannot be empty’ message when sponsor" +
+            " enters ‘Quit’ with no cards in the stage ")
+    void RESP_038_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 1 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 1);
+
+        //Input quit
+        String userInput = "Quit\nF5\nQuit\nQuit\nF10\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 1 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(5);
+        Card card2 = new FoeCard(10);
+        Card card3 = new WeaponCard("H", 10);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "Building a Quest with 2 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "A stage cannot be empty\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 1 Card(s): F5\n\n" +
+                "P1 hand: F5 F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P1 hand: F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "A stage cannot be empty\n\n" +
+                "P1 hand: F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F10 added to Stage...\n" +
+                "Stage 2 Card(s): F10\n\n" +
+                "P1 hand: F10 H10\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
 
     @Test
     @DisplayName("RESP-038: System displays ‘A stage cannot be empty’ message when sponsor enters ‘Quit’ with no cards in the stage ")
     void RESP_038() {
-//        RESP_038_test_001();
+        RESP_038_test_001();
     }
 
     @Test
@@ -1935,87 +1939,91 @@ class GameTest {
         RESP_039_test_003();
     }
 
-//    @Test
-//    @DisplayName("RESP-040-Test-001: System displays ‘Insufficient value for this stage’ message when sponsor " +
-//            "enters ‘Quit’ and the stage value is insufficient")
-//    void RESP_040_test_001() {
-//        //Test helpers
-//        TestHelpers helper = new TestHelpers();
-//
-//        //Created set up for UC-05 Tests
-//        Game game = new Game(new GameLogic(), new GameDisplay());
-//        helper.setUpForTestsBuildingQuest(game);
-//
-//        //Force Player 4 to be sponsoring Quest
-//        helper.forcePlayerTurn(game, 4);
-//
-//        //Input quit
-//        String userInput = "F15\nQuit\nF5\nQuit\nB15\nQuit\n";
-//        Scanner overrideInput = new Scanner(userInput);
-//        //Forcing overriding of input
-//        game.setInput(overrideInput);
-//
-//        //Force a Quest card to be the first event card to be drawn
-//        QuestCard questCard = new QuestCard(2);
-//        game.gameLogic.getEventDeck().cards.addFirst(questCard);
-//
-//        //Player 4 playerID
-//        String playerID = game.getCurrentPlayer().getPlayerID();
-//        //Number of stages from Last Quest card
-//        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
-//        //Test these are the same cards
-//        assertEquals(questCard, card);
-//
-//        //Build Player hand
-//        game.getCurrentPlayer().getHand().clear();
-//        Card card1 = new FoeCard(15);
-//        Card card2 = new FoeCard(5);
-//        Card card3 = new WeaponCard("B", 15);
-//        game.getCurrentPlayer().addCardToHand(card1);
-//        game.getCurrentPlayer().addCardToHand(card2);
-//        game.getCurrentPlayer().addCardToHand(card3);
-//
-//        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
-//
-//        String expectedOutput = "Building a Quest with 2 Stages...\n\n" +
-//                "Building Stage 1:\n\n" +
-//                "P4 hand: F5 F15 B15\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F15 added to Stage...\n" +
-//                "Stage 1 Card(s): F15\n\n" +
-//                "P4 hand: F5 F15 B15\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "Building Stage 2:\n\n" +
-//                "P4 hand: F5 F15 B15\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "F5 added to Stage...\n" +
-//                "Stage 2 Card(s): F5\n\n" +
-//                "P4 hand: F5 F15 B15\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "Insufficient value for this stage\n\n" +
-//                "P4 hand: F5 F15 B15\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n" +
-//                "B15 added to Stage...\n" +
-//                "Stage 2 Card(s): F5 B15\n\n" +
-//                "P4 hand: F5 F15 B15\n\n" +
-//                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
-//                "Enter 'Quit' to end this stage setup.\n\n";
-//
-//        //Test expected output
-//        String output = game.gameDisplay.getOutput();
-//        assertEquals(expectedOutput, output);
-//    }
+    @Test
+    @DisplayName("RESP-040-Test-001: System displays ‘Insufficient value for this stage’ message when sponsor " +
+            "enters ‘Quit’ and the stage value is insufficient")
+    void RESP_040_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+
+        //Created set up for UC-05 Tests
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestsBuildingQuest(game);
+
+        //Force Player 4 to be sponsoring Quest
+        helper.forcePlayerTurn(game, 4);
+
+        //Input quit
+        String userInput = "F15\nQuit\nF5\nQuit\nB15\nQuit\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force a Quest card to be the first event card to be drawn
+        QuestCard questCard = new QuestCard(2);
+        game.gameLogic.getEventDeck().cards.addFirst(questCard);
+
+        //Player 4 playerID
+        String playerID = game.getCurrentPlayer().getPlayerID();
+        //Number of stages from Last Quest card
+        Card card = game.gameLogic.drawCard(playerID, game.getEventDeck());
+        //Test these are the same cards
+        assertEquals(questCard, card);
+
+        //Build Player hand
+        game.getCurrentPlayer().getHand().clear();
+        Card card1 = new FoeCard(15);
+        Card card2 = new FoeCard(5);
+        Card card3 = new WeaponCard("B", 15);
+        game.getCurrentPlayer().addCardToHand(card1);
+        game.getCurrentPlayer().addCardToHand(card2);
+        game.getCurrentPlayer().addCardToHand(card3);
+
+        game.displaySponsorHandAndSetUpStages(playerID, questCard.getStages());
+
+        String expectedOutput = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "Building a Quest with 2 Stages...\n\n" +
+                "Building Stage 1:\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F15 added to Stage...\n" +
+                "Stage 1 Card(s): F15\n\n" +
+                "P4 hand: F5 F15 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Building Stage 2:\n\n" +
+                "P4 hand: F5 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "F5 added to Stage...\n" +
+                "Stage 2 Card(s): F5\n\n" +
+                "P4 hand: F5 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "Insufficient value for this stage\n\n" +
+                "P4 hand: F5 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "B15 added to Stage...\n" +
+                "Stage 2 Card(s): F5 B15\n\n" +
+                "P4 hand: F5 B15\n\n" +
+                "Select 1 Foe card and 0 or more non-repeating Weapon cards from your hand to build this stage.\n" +
+                "Enter 'Quit' to end this stage setup.\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+
+        //Test expected output
+        String output = game.gameDisplay.getOutput();
+        assertEquals(expectedOutput, output);
+    }
 
     @Test
     @DisplayName("RESP-040: System displays ‘Insufficient value for this stage’ message when sponsor enters " +
             "‘Quit’ and the stage value is insufficient")
     void RESP_040() {
-//        RESP_040_test_001();
+        RESP_040_test_001();
     }
 
     @Test
@@ -4291,196 +4299,185 @@ class GameTest {
         RESP_031_test_001();
     }
 
-//    @Test
-//    @DisplayName("RESP-033-Test-001: System ends the quest if there are no eligible participants remaining for the " +
-//            "next stage")
-//    void RESP_033_test_001() {
-//        //Test helpers
-//        TestHelpers helper = new TestHelpers();
-//        Game game = new Game(new GameLogic(), new GameDisplay());
-//        helper.setUpForTestGeneral(game);
-//
-//        //set up players that would be eligible
-//        String[] players = new String[] {"P1", "P3", "P4"};
-//        game.gameLogic.setEligiblePlayers(players);
-//
-//        //user input
-//        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\n";
-//        Scanner overrideInput = new Scanner(userInput);
-//        //Forcing overriding of input
-//        game.setInput(overrideInput);
-//
-//        //Force adventure deck always give the same cards to the players when drawing adventure card
-//        game.getAdventureDeck().getDeck().addFirst(new FoeCard(50));
-//        game.getAdventureDeck().getDeck().addFirst(new FoeCard(15));
-//        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
-//
-//        //Force setting values for beginQuest
-//        game.gameLogic.setCurrentStageNumber(0);
-//        //Set max stages
-//        game.gameLogic.setMaxStages(1);
-//
-//        //Force cards from input in the participants hands
-//        Card card1 = new WeaponCard("D", 5);
-//        Card card2 = new WeaponCard("H", 10);
-//        Card card3 = new WeaponCard("D", 5);
-//        Card card4 = new WeaponCard("B", 15);
-//        //Clear cards from player hand and then add the cards
-//        game.gameLogic.getPlayer("P1").getHand().clear();
-//        game.gameLogic.getPlayer("P1").addCardToHand(card1);
-//        game.gameLogic.getPlayer("P3").getHand().clear();
-//        game.gameLogic.getPlayer("P3").addCardToHand(card2);
-//        game.gameLogic.getPlayer("P3").addCardToHand(card3);
-//        game.gameLogic.getPlayer("P4").getHand().clear();
-//        game.gameLogic.getPlayer("P4").addCardToHand(card4);
-//
-//        //set current stage value to be so all participants are ineligble
-//        game.gameLogic.setCurrentStageValue(20);
-//        int currentStageValue = game.gameLogic.getCurrentStageValue();
-//        assertEquals(20, currentStageValue);
-//
-//        //set attack values
-//        game.gameLogic.setAttackValues();
-//        game.gameLogic.addAttackValue(0,5);
-//        game.gameLogic.addAttackValue(1,15);
-//        game.gameLogic.addAttackValue(2,15);
-//
-//        //Set attack hands
-//        game.gameLogic.setAttackHands();
-//
-//        //Test 3 eligible players
-//        assertEquals(3, game.gameLogic.getEligiblePlayers().size());
-//
-//        game.beginQuest();
-//
-//        //Test there are 0 eligble players
-//        assertEquals(0, game.gameLogic.getEligiblePlayers().size());
-//
-//        String expectedOutput = "The Quest Begins!\n" +
-//                "Eligible Players for Stage 1: P1 P3 P4\n\n" +
-//                "Asking P1:\n" +
-//                "Would you like to participate in the current stage?\n" +
-//                "Type 'yes' or 'no':\n\n" +
-//                "Asking P3:\n" +
-//                "Would you like to participate in the current stage?\n" +
-//                "Type 'yes' or 'no':\n\n" +
-//                "Asking P4:\n" +
-//                "Would you like to participate in the current stage?\n" +
-//                "Type 'yes' or 'no':\n\n" +
-//                "Setting up an Attack...\n\n" +
-//                "P1 hand: D5 F10\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "D5 added to Attack...\n" +
-//                "Attack Card(s): D5\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "Attack set up is completed...\n" +
-//                "Your Attack: D5\n\n" +
-//                "Setting up an Attack...\n\n" +
-//                "P3 hand: H10 D5 F15\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "H10 added to Attack...\n" +
-//                "Attack Card(s): H10\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "D5 added to Attack...\n" +
-//                "Attack Card(s): H10 D5\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "Attack set up is completed...\n" +
-//                "Your Attack: H10 D5\n\n" +
-//                "Setting up an Attack...\n\n" +
-//                "P4 hand: B15 F50\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "B15 added to Attack...\n" +
-//                "Attack Card(s): B15\n\n" +
-//                "Select 0 or more non-repeating Weapon cards from your hand to build this attack.\n" +
-//                "Enter 'Quit' to end the attack setup.\n\n" +
-//                "Attack set up is completed...\n" +
-//                "Your Attack: B15\n\n" +
-//                "No Participants for Current Stage...\n" +
-//                "Quest has ended.\n\n";
-//
-//        //Test expected output
-//        String output = game.gameDisplay.getOutput();
-//        assertTrue(output.contains(expectedOutput));
-//    }
+    @Test
+    @DisplayName("RESP-033-Test-001: System ends the quest if there are no eligible participants remaining for the " +
+            "next stage")
+    void RESP_033_test_001() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
 
-//    @Test
-//    @DisplayName("RESP-033-Test-002: If it is the last stage, the shield total of each winner (if any) is increased, " +
-//            "and the quest ends.")
-//    void RESP_033_test_002() {
-//        //Test helpers
-//        TestHelpers helper = new TestHelpers();
-//        Game game = new Game(new GameLogic(), new GameDisplay());
-//        helper.setUpForTestGeneral(game);
-//
-//        //set up players that would be eligible
-//        String[] players = new String[] {"P1", "P3", "P4"};
-//        game.gameLogic.setEligiblePlayers(players);
-//
-//        //user input
-//        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\n";
-//        Scanner overrideInput = new Scanner(userInput);
-//        //Forcing overriding of input
-//        game.setInput(overrideInput);
-//
-//        //Force setting values for beginQuest
-//        game.gameLogic.setCurrentStageNumber(0);
-//        //Set max stages
-//        game.gameLogic.setMaxStages(1);
-//
-//        //Force cards from input in the participants hands
-//        Card card1 = new WeaponCard("D", 5);
-//        Card card2 = new WeaponCard("H", 10);
-//        Card card3 = new WeaponCard("D", 5);
-//        Card card4 = new WeaponCard("B", 15);
-//        //Clear cards from player hand and then add the cards
-//        game.gameLogic.getPlayer("P1").getHand().clear();
-//        game.gameLogic.getPlayer("P1").addCardToHand(card1);
-//        game.gameLogic.getPlayer("P3").getHand().clear();
-//        game.gameLogic.getPlayer("P3").addCardToHand(card2);
-//        game.gameLogic.getPlayer("P3").addCardToHand(card3);
-//        game.gameLogic.getPlayer("P4").getHand().clear();
-//        game.gameLogic.getPlayer("P4").addCardToHand(card4);
-//
-//        //set current stage value so P3 and P4 have their shields increased by 1
-//        game.gameLogic.setCurrentStageValue(10);
-//        int currentStageValue = game.gameLogic.getCurrentStageValue();
-//        assertEquals(10, currentStageValue);
-//
-//        //set attack values
-//        game.gameLogic.setAttackValues();
-//        game.gameLogic.addAttackValue(0,5);
-//        game.gameLogic.addAttackValue(1,15);
-//        game.gameLogic.addAttackValue(2,15);
-//
-//        //Set attack hands
-//        game.gameLogic.setAttackHands();
-//
-//        //Test players have 0 shields
-//        assertEquals(0, game.gameLogic.getPlayer("P1").getShieldCount());
-//        assertEquals(0, game.gameLogic.getPlayer("P3").getShieldCount());
-//        assertEquals(0, game.gameLogic.getPlayer("P4").getShieldCount());
-//
-//        game.beginQuest();
-//
-//        //Test players 3 and 4 have 1 shield
-//        assertEquals(0, game.gameLogic.getPlayer("P1").getShieldCount());
-//        assertEquals(1, game.gameLogic.getPlayer("P3").getShieldCount());
-//        assertEquals(1, game.gameLogic.getPlayer("P4").getShieldCount());
-//    }
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+
+        //set up P2 as sponsor
+        game.gameLogic.setSponsorID("P2");
+
+        //user input
+        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\nF10\nF10\nF10\nF10\nF10\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force adventure deck always give the same cards to the players when drawing adventure card
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(50));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(15));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+
+        //Force P2 hand discards
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        //Clear cards from player hand and then add the cards
+        game.gameLogic.getPlayer("P1").getHand().clear();
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").getHand().clear();
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").getHand().clear();
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //set current stage value to be so all participants are ineligble
+        game.gameLogic.setCurrentStageValue(20);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(20, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,15);
+        game.gameLogic.addAttackValue(2,15);
+
+        //Set attack hands
+        game.gameLogic.setAttackHands();
+
+        //set questBuilt to have 4 cards in it all that force current players to become disqualified
+        game.gameLogic.setQuestInfo(4);
+        Card card = new FoeCard(20);
+        ArrayList<Card> cardList = new ArrayList<>();
+        cardList.add(card);
+        game.gameLogic.addCardstoQuestInfo(1, cardList);
+        game.gameLogic.addCardstoQuestInfo(2, cardList);
+        game.gameLogic.addCardstoQuestInfo(3, cardList);
+        game.gameLogic.addCardstoQuestInfo(4, cardList);
+
+        //Test 3 eligible players
+        assertEquals(3, game.gameLogic.getEligiblePlayers().size());
+
+        game.beginQuest();
+
+        //Test there are 0 eligble players
+        assertEquals(0, game.gameLogic.getEligiblePlayers().size());
+
+    }
+
+    @Test
+    @DisplayName("RESP-033-Test-002: If it is the last stage, the shield total of each winner (if any) is increased, " +
+            "and the quest ends.")
+    void RESP_033_test_002() {
+        //Test helpers
+        TestHelpers helper = new TestHelpers();
+        Game game = new Game(new GameLogic(), new GameDisplay());
+        helper.setUpForTestGeneral(game);
+
+        //set up players that would be eligible
+        String[] players = new String[] {"P1", "P3", "P4"};
+        game.gameLogic.setEligiblePlayers(players);
+        //set up P2 as sponsor
+        game.gameLogic.setSponsorID("P2");
+
+        //user input
+        String userInput = "yes\nyes\nyes\nD5\nquit\nH10\nD5\nquit\nB15\nquit\nF10\nF10\nF10\nF10\nF10\n";
+        Scanner overrideInput = new Scanner(userInput);
+        //Forcing overriding of input
+        game.setInput(overrideInput);
+
+        //Force setting values for beginQuest
+        game.gameLogic.setCurrentStageNumber(0);
+        //Set max stages
+        game.gameLogic.setMaxStages(1);
+
+        //Force P2 hand discards
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+        game.getAdventureDeck().getDeck().addFirst(new FoeCard(10));
+
+        //Force cards from input in the participants hands
+        Card card1 = new WeaponCard("D", 5);
+        Card card2 = new WeaponCard("H", 10);
+        Card card3 = new WeaponCard("D", 5);
+        Card card4 = new WeaponCard("B", 15);
+        //Clear cards from player hand and then add the cards
+        game.gameLogic.getPlayer("P1").getHand().clear();
+        game.gameLogic.getPlayer("P1").addCardToHand(card1);
+        game.gameLogic.getPlayer("P3").getHand().clear();
+        game.gameLogic.getPlayer("P3").addCardToHand(card2);
+        game.gameLogic.getPlayer("P3").addCardToHand(card3);
+        game.gameLogic.getPlayer("P4").getHand().clear();
+        game.gameLogic.getPlayer("P4").addCardToHand(card4);
+
+        //set current stage value so P3 and P4 have their shields increased by 1
+        game.gameLogic.setCurrentStageValue(10);
+        int currentStageValue = game.gameLogic.getCurrentStageValue();
+        assertEquals(10, currentStageValue);
+
+        //set attack values
+        game.gameLogic.setAttackValues();
+        game.gameLogic.addAttackValue(0,5);
+        game.gameLogic.addAttackValue(1,15);
+        game.gameLogic.addAttackValue(2,15);
+
+        //Set attack hands
+        game.gameLogic.setAttackHands();
+
+        //set questBuilt to have 4 cards in it all that force current players to become disqualified
+        game.gameLogic.setQuestInfo(4);
+        Card card = new FoeCard(10);
+        ArrayList<Card> cardList = new ArrayList<>();
+        cardList.add(card);
+        game.gameLogic.addCardstoQuestInfo(1, cardList);
+        game.gameLogic.addCardstoQuestInfo(2, cardList);
+        game.gameLogic.addCardstoQuestInfo(3, cardList);
+        game.gameLogic.addCardstoQuestInfo(4, cardList);
+
+
+        //Test players have 0 shields
+        assertEquals(0, game.gameLogic.getPlayer("P1").getShieldCount());
+        assertEquals(0, game.gameLogic.getPlayer("P3").getShieldCount());
+        assertEquals(0, game.gameLogic.getPlayer("P4").getShieldCount());
+
+        game.beginQuest();
+
+        //Test players 3 and 4 have 1 shield
+        assertEquals(0, game.gameLogic.getPlayer("P1").getShieldCount());
+        assertEquals(1, game.gameLogic.getPlayer("P3").getShieldCount());
+        assertEquals(1, game.gameLogic.getPlayer("P4").getShieldCount());
+    }
 
     @Test
     @DisplayName("RESP-033: System ends the quest if there are no eligible participants remaining for the next " +
             "stage or if the current stage is the last stage. If it is the last stage, the shield total of each " +
             "winner (if any) is increased, and the quest ends.")
     void RESP_033() {
-//        RESP_033_test_001();
-//        RESP_033_test_002();
+        RESP_033_test_001();
+        RESP_033_test_002();
     }
 
 //    @Test
