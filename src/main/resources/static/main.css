@@ -1,0 +1,36 @@
+/*General Style*/
+body{
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+h5{
+    font-weight: bold;
+    color: #b81c1c;
+}
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+#topContainer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#welcomeTitle{
+    font-size: 2rem;
+    font-weight: bold;
+}
+#gameTitle{
+    font-family: 'Uncial Antiqua', serif; /*Medieval font*/
+    font-size: 4rem;
+    color: #b38b0b; /*Gold Colour*/
+    text-shadow: 1px 1px 2px black;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/*Button Style*/
+#startBtn, #registerBtn{
+    font-size: 1.5rem;
+}
