@@ -1,21 +1,20 @@
-/*General Style*/
-body{
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-}
-h5{
-    font-weight: bold;
-    color: #b81c1c;
-}
-.container{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-top: 20px;
-}
-#topContainer .container {
+#header {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+#nav {
+    display: flex;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
 }
 #welcomeTitle{
     font-size: 2rem;
@@ -29,8 +28,46 @@ h5{
     font-weight: bold;
     letter-spacing: 1px;
 }
-
-/*Button Style*/
 #startBtn, #registerBtn{
     font-size: 1.5rem;
+}
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+body{
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+#shieldCountList {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    position: absolute;
+    /* position: relative; */
+    /* align-self: flex-start; */
+    top: 0;
+    left: 0;
+}
+#deck img {
+    width: 100px;
+    height: auto;
+}
+#handLabel {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+#hand {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
+    width: 100%;
+}
+.card {
+    margin-right: 1px;
+    width: 70px;
+    height: 100px;
 }

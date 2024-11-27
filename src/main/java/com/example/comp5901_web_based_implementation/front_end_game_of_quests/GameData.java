@@ -3,13 +3,9 @@ import java.util.ArrayList;
 import com.example.comp5901_web_based_implementation.back_end_game_of_quests.*;
 
 public interface GameData {
-    public Card getTopAdventureCard();
-
-    public void setTopAdventureCard(Card card);
-
     public Card getTopEventCard();
 
-    public void setTopEventCard(Card card);
+    public void setTopEventCard(Card eventCard);
 
     public ArrayList<Player> getPlayers();
 
@@ -21,11 +17,11 @@ public interface GameData {
 
     public Deck getAdventureDeck();
 
-    public void setAdventureDeck(Deck eventDeck);
+    public void setAdventureDeck(Deck adventureDeck);
 
     public void addPlayer(Player player);
 
-    public void setCurrentPlayer(int id);
+    public void setCurrentPlayerInHotseat(String playerID);
 
-    public int getCurrentPlayer();
+    public String getCurrentPlayerInHotseat();
 }

@@ -9,48 +9,21 @@ public class NonRiggedData implements GameData {
     Deck eventDeck;
     Deck adventureDeck;
     Card topEventCard;
-    Card topAdventureCard;
-    int currentPlayer;
+    String currentPlayer;
 
     public NonRiggedData() {
         players = new ArrayList<>();
         eventDeck = new EventDeck();
         adventureDeck = new AdventureDeck();
         topEventCard = new EventCard(null);
-        topAdventureCard = new AdventureCard("",0);
-        this.currentPlayer = 1;
-    }
-
-    @Override
-    public Card getTopAdventureCard() {
-        try {
-            if (this.topAdventureCard == null) {
-                throw new IllegalStateException("Top Adventure Card has not been initialized.");
-            }
-            return this.topAdventureCard;
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public void setTopAdventureCard(Card card) {
-        if (card == null) {
-            throw new IllegalArgumentException("Card cannot be null!");
-        }
-        if (!(card instanceof AdventureCard)) {
-            throw new IllegalArgumentException("Invalid card type. Expected AdventureCard.");
-        }
-        AdventureCard adventureCard = (AdventureCard) card;
-        this.topAdventureCard = adventureCard;
+        this.currentPlayer = "";
     }
 
     @Override
     public Card getTopEventCard() {
         try {
             if (this.topEventCard == null) {
-                throw new IllegalStateException("Top Event Card has not been initialized.");
+                throw new IllegalStateException("Top event Card has not been initialized.");
             }
             return this.topEventCard;
         } catch (IllegalStateException e) {
@@ -60,14 +33,7 @@ public class NonRiggedData implements GameData {
     }
 
     @Override
-    public void setTopEventCard(Card card) {
-        if (card == null) {
-            throw new IllegalArgumentException("Card cannot be null!");
-        }
-            if (!(card instanceof EventCard)) {
-            throw new IllegalArgumentException("Invalid card type. Expected EventCard.");
-        }
-        EventCard eventCard = (EventCard) card;
+    public void setTopEventCard(Card eventCard) {
         this.topEventCard = eventCard;
     }
 
@@ -106,11 +72,11 @@ public class NonRiggedData implements GameData {
         this.players.add(p);
     }
 
-    public void setCurrentPlayer(int id) {
-        this.currentPlayer = id;
+    public void setCurrentPlayerInHotseat(String playerId) {
+        this.currentPlayer = playerId;
     }
 
-    public int getCurrentPlayer() {
+    public String getCurrentPlayerInHotseat() {
         return this.currentPlayer;
     }
 }

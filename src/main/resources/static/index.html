@@ -12,29 +12,84 @@
 </head>
 
 <body>
-<div class="container" id="topContainer">
-    <nav class="container">
-        <div class="container-fluid d-flex flex-column align-items-center">
-            <a class="header" id="welcomeTitle">Welcome to:</a>
-            <a class="header" id="gameTitle">A Game of Quests</a>
-        </div>
-        <button
-                class="btn btn-outline-primary"
-                id="startBtn"
-                type="button"
-                style="visibility: hidden"
+    <div class="container" id="header"></div>
+    <div class="container-flex align-items-center" id="nav">
+        <h2 id="welcomeTitle">Welcome to:</h2>
+        <h2 id="gameTitle">A Game of Quests</h2>
+        <button 
+            class="btn btn-outline-primary" 
+            id="startBtn" 
+            type="button" 
+            style="visibility: hidden"
         >
             Start Game
         </button>
-        <button
-                class="btn btn-outline-success"
-                id="registerBtn"
-                type="submit"
-                style="visibility: hidden"
+        <button 
+            class="btn btn-outline-success" 
+            id="registerBtn" 
+            type="submit" 
+            style="visibility: hidden"
         >
             Register
         </button>
-    </nav>
-</div>
+        <input
+            type="button"
+            value="Leave Hotseat"
+            class="btn btn-outline-primary"
+            id="leaveHotseat"
+            style="visibility: hidden"
+            disabled
+        />
+        <input
+            type="button"
+            value="Yes"
+            class="btn btn-outline-primary"
+            id="yes"
+            style="visibility: hidden"
+            disabled
+        />
+        <input
+            type="button"
+            value="No"
+            class="btn btn-outline-primary"
+            id="no"
+            style="visibility: hidden"
+            disabled
+        />
+        <input
+            type="button"
+            value="Quit"
+            class="btn btn-outline-primary"
+            id="quit"
+            style="visibility: hidden"
+            disabled
+        />
+        <ul id="shieldCountList"></ul>
+    </div>
+
+    <!-- Main Game board section -->
+    <div class="container" id="gameBoardContainer">
+        <div class="row">
+            <div class="col-md-4 text-right">
+                <input
+                    type="button"
+                    value="Draw Event Card"
+                    class="btn btn-outline-success"
+                    id="draw"
+                    style="visibility: hidden"
+                    disabled
+                />
+            </div>
+            <div class="col-md-4" id="deck"></div>
+            <div class="col-md-4" id="eventCardDrawn"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row flex-column">
+            <div id="handLabel" style="visibility: hidden">Your Hand:</div>
+            <div class="row" id="hand"></div>
+        </div>
+    </div>
 </body>
 </html>
