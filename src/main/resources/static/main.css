@@ -31,11 +31,11 @@
 #startBtn, #registerBtn{
     font-size: 1.5rem;
 }
-.container{
+/* .container{
     max-width: 1200px;
     margin: 0 auto;
     padding-top: 20px;
-}
+} */
 body{
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
@@ -54,11 +54,26 @@ body{
     width: 100px;
     height: auto;
 }
-#handLabel {
+.hand-label {
     font-weight: bold;
     margin-bottom: 10px;
 }
-#hand {
+/* #hand {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
+    width: 100%;
+} */
+#hands-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+.hand-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -70,4 +85,12 @@ body{
     margin-right: 1px;
     width: 70px;
     height: 100px;
+}
+
+/* #hands-container.row {
+    display: flex !important;
+    flex-direction: row !important;
+} */
+.row {
+    display: none;
 }

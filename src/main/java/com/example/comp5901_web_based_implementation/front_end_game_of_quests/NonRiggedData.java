@@ -15,27 +15,27 @@ public class NonRiggedData implements GameData {
         players = new ArrayList<>();
         eventDeck = new EventDeck();
         adventureDeck = new AdventureDeck();
-        topEventCard = new EventCard(null);
+        // topEventCard = new EventCard(null);
         this.currentPlayer = "";
     }
 
-    @Override
-    public Card getTopEventCard() {
-        try {
-            if (this.topEventCard == null) {
-                throw new IllegalStateException("Top event Card has not been initialized.");
-            }
-            return this.topEventCard;
-        } catch (IllegalStateException e) {
-            System.err.println(e.getMessage());
-            return null;
-        }
-    }
+    // @Override
+    // public Card getTopEventCard() {
+    //     try {
+    //         if (this.topEventCard == null) {
+    //             throw new IllegalStateException("Top event Card has not been initialized.");
+    //         }
+    //         return this.topEventCard;
+    //     } catch (IllegalStateException e) {
+    //         System.err.println(e.getMessage());
+    //         return null;
+    //     }
+    // }
 
-    @Override
-    public void setTopEventCard(Card eventCard) {
-        this.topEventCard = eventCard;
-    }
+    // @Override
+    // public void setTopEventCard(Card eventCard) {
+    //     this.topEventCard = eventCard;
+    // }
 
     @Override
     public ArrayList<Player> getPlayers() {

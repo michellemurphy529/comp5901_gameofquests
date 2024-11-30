@@ -1,21 +1,20 @@
 package com.example.comp5901_web_based_implementation.front_end_game_of_quests;
 
 public class ConnectionMessage {
+    private String name;
 
-    private String message;
-  
     public ConnectionMessage() {
     }
-  
-    public ConnectionMessage(String message) {
-      this.message = message;
+
+    public ConnectionMessage(String name) {
+        this.name = name;
     }
-  
-    public String getMessage() {
-      return message;
+
+    public String getName() {
+        return name;
     }
-  
-    public void setMessage(String message) {
-      this.message = message;
+
+    public void setName(String name) {
+        this.name = name;
     }
-  }
+}
