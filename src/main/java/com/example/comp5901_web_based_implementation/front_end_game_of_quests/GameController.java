@@ -101,7 +101,7 @@ public class GameController {
 
             return new QueenMessage(eventCard, id, discardsLeft, playerHand.toString());
         }
-        return new DrawMessage();
+        return new Message("noCardFound", "null");
     }
 
     @MessageMapping("/discardCard")
