@@ -31,11 +31,6 @@
 #startBtn, #registerBtn{
     font-size: 1.5rem;
 }
-/* .container{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-top: 20px;
-} */
 body{
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
@@ -45,8 +40,6 @@ body{
     margin: 0;
     padding: 10px;
     position: absolute;
-    /* position: relative; */
-    /* align-self: flex-start; */
     top: 0;
     left: 0;
 }
@@ -58,14 +51,6 @@ body{
     font-weight: bold;
     margin-bottom: 10px;
 }
-/* #hand {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-x: auto;
-    width: 100%;
-} */
 #hands-container {
     display: flex;
     flex-direction: row;
@@ -86,11 +71,21 @@ body{
     width: 70px;
     height: 100px;
 }
-
-/* #hands-container.row {
-    display: flex !important;
-    flex-direction: row !important;
-} */
 .row {
     display: none;
+}
+#discardText {
+    padding: 10px;
+}
+#responseDiv {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+#responseDiv label, #responseDiv input {
+    margin: 0 10px;
 }

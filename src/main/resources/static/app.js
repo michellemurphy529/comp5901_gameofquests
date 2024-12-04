@@ -49,6 +49,12 @@ function startGame() {
     stompClient.send("/app/start", {}, JSON.stringify({ name: "" }));
 }
 function drawCard() {
+    
+    let eventCardElement = document.getElementById("eventCard");
+    if (eventCardElement !== null) {
+        let eventCards = document.querySelectorAll("#eventCard");
+        eventCards.forEach(card => card.remove());
+    }
     stompClient.send("/app/drawCard", {}, JSON.stringify({ name: id }));
 }
 function sendDiscard(playerID, card) {
@@ -64,6 +70,10 @@ function sendDiscard(playerID, card) {
         {},
         JSON.stringify({ name: playerID + " " + card })
     );
+}
+function changeHotseat() {
+    removeHotseatButton(id);
+    stompClient.send("/app/changeHotseat", {}, JSON.stringify({ name: "" }));
 }
 
 //Subscription functions
@@ -144,7 +154,43 @@ function setupStartGame(msg) {
     hotseatLabelElement.appendChild(playerInHosteatText);
     document.getElementById("header").appendChild(hotseatLabelElement);
 }
+function carryOutPlague(msg) {
+    let shieldElement = document.getElementById("shields" + msg.id);
+    let currentText = shieldElement.innerHTML;
+    let playerNumber = currentText.split(":")[0];
+    shieldElement.innerHTML = playerNumber + ": " + msg.shields;
+
+    showHotseatButton(msg.id);
+    disableDraw(msg.id);
+}
 function carryOutQueensFavor(msg) {
+
+    if (id === msg.id) {
+        updateHand(msg.id, msg.playerHand);
+    }
+
+    if (id === msg.id && msg.discardsLeft !== "0") {
+        if(!document.getElementById("discardText")) {
+            let discardText = document.createElement("LABEL");
+            discardText.setAttribute("id", "discardText");
+            discardText.innerHTML = msg.discardsLeft + " cards to discard!";
+            document.getElementById("deck").appendChild(discardText);
+        }
+        document.getElementById("draw").disabled = true;
+        enableHandCards(id);
+        discardText.innerHTML = msg.discardsLeft + " cards to discard!";
+    }
+
+    if (id === msg.id && msg.discardsLeft === "0") {
+        discardText.remove();
+        disableHandCards(msg.id);
+
+        //Ask Player to leave hotseat
+        showHotseatButton(msg.id);
+        disableDraw(msg.id);
+    }
+}
+function carryOutProsperity(msg) {
     let player = {
         "P1": { hand: msg.p1Hand, discard: msg.p1Discard },
         "P2": { hand: msg.p2Hand, discard: msg.p2Discard },
@@ -154,27 +200,21 @@ function carryOutQueensFavor(msg) {
 
     if (id === msg.id) {
         updateHand(msg.id, player[msg.id].hand);
-    }
-
-    if (msg.id === id && player[msg.id].discard !== "0") {
-        let discardText = document.createElement("LABEL");
-        discardText.setAttribute("id", "discardText");
-        discardText.innerHTML = player[msg.id].discard + " cards to discard!";
-        document.getElementById("nav").appendChild(discardText);
-
-        enableHandCards(id);
-
-    }
-    else if(player[msg.id].discard !== "0") {
-        let eventCards = document.querySelectorAll("#eventCard");
-        eventCards.forEach(card => card.remove());
+    }else if(id !== msg.id && id === "P1") {
+        updateHand("P1", player["P1"].hand);
+    }else if(id !== msg.id && id === "P2") {
+        updateHand("P2", player["P2"].hand);
+    }else if(id !== msg.id && id === "P3") {
+        updateHand("P3", player["P3"].hand);
+    }else if(id !== msg.id && id === "P4") {
+        updateHand("P4", player["P4"].hand);
     }
 }
 //Set up subscriptions based on info sent from Game Controller
 function setupSubscriptions() {
     stompClient.subscribe("/topic/message", function (greeting) {
         let msg = JSON.parse(greeting.body);
-        console.log("message", msg)
+        console.log("message", msg);
 
         //Registering of PlayerID
         if (msg.content === "id") {
@@ -184,46 +224,59 @@ function setupSubscriptions() {
         else if (msg.content === "start") {
             setupStartGame(msg)
         } 
-        //Draw event card
-        else if (msg.content === "drawEvent") {
-
+        //Draw event cards
+        else if (msg.content === "Plague") {
             displayEventCard(msg);
-            //TODO For after testing is done
-            //document.getElementById("draw").disabled = true;
-
-            switch (msg.eventCard) {
-                case "Plague":
-                    carryOutPlague(msg);
-                    break;
-                case "QueensFavor":
-                    carryOutQueensFavor(msg);
-                    break;
+            carryOutPlague(msg);
+        }else if (msg.content === "QueensFavor") {
+            if(!document.getElementById("eventCard")) {
+                displayEventCard(msg);
             }
-
-            //TODO For after testing is done
-            // let eventCards = document.querySelectorAll("#eventCard");
-            // eventCards.forEach(card => card.remove());
-
-            //ask player to leave hotseat
-            //send to gamecontroller
-            //update player in htoseat
-            //change turns backend game cotnroller
-            //enable next player draw event card button
+            carryOutQueensFavor(msg);
+        }else if (msg.content === "Prosperity") {
+            if(!document.getElementById("eventCard")) {
+                displayEventCard(msg);
+            }
+            carryOutProsperity(msg);
         }
-        //Discard event card
-        else if (msg.content === "discard") {
-            if(msg.discardsLeft !== "0") {
-                document.getElementById("discardText").innerHTML = msg.discardsLeft + " cards to discard!";
-
-            }
-            else {
-                document.getElementById("discardText").remove();
-                disableHandCards(msg.id);
-            }
+        //Change Hotseat Player
+        else if (msg.content === "changeHotseat") {
+            removeEventCard();
+            updateHotseatPlayerLabelAndDraw(msg.id);
         }
     });
 }
+
 //Subscription helper functions
+function disableDraw(playerID) {
+    if (id === playerID) {
+        document.getElementById("draw").disabled = true;
+    }
+}
+function showHotseatButton(playerID) {
+    if (id === playerID) {
+        console.log("HIT");
+        document.getElementById("hotseatLabel").style.visibility = "visible";
+        document.getElementById("leaveHotseat").style.visibility = "visible";
+        document.getElementById("leaveHotseat").disabled = false;
+    }
+}
+function removeHotseatButton(playerID) {
+    if (id === playerID) {
+        document.getElementById("hotseatLabel").style.visibility = "hidden";
+        document.getElementById("leaveHotseat").style.visibility = "hidden";
+        document.getElementById("leaveHotseat").disabled = true;
+    }
+}
+function removeEventCard() {
+    document.getElementById("eventCard").remove();
+}
+function updateHotseatPlayerLabelAndDraw(playerID) {
+    if(id === playerID) {
+        document.getElementById("draw").disabled = false;
+    }
+    document.getElementById("hotseatPlayerID").innerHTML = "Player in Hotseat: " + playerID;
+}
 function enableHandCards(playerID) {
     let handContainer = document.getElementById(playerID + "hand");
     let cards = handContainer.getElementsByClassName("card");
@@ -240,20 +293,13 @@ function disableHandCards(playerID) {
 }
 function displayEventCard(msg) {
     let eventCard = document.createElement("IMG");
-    eventCard.setAttribute("src", "/imgs/cards/" + msg.eventCard + ".svg");
+    eventCard.setAttribute("src", "/imgs/cards/" + msg.content + ".svg");
     eventCard.setAttribute("id", "eventCard");
     document.getElementById("deck").appendChild(eventCard);
 }
-function carryOutPlague(msg) {
-    let shieldElement = document.getElementById("shields" + msg.id);
-    let currentText = shieldElement.innerHTML;
-    let playerNumber = currentText.split(":")[0];
-    shieldElement.innerHTML = playerNumber + ": " + msg.shields;
-    
+function removeEventCard() {
     let eventCards = document.querySelectorAll("#eventCard");
     eventCards.forEach(card => card.remove());
-
-
 }
 function addShieldCount(id, shields) {
     let shieldElement = document.createElement("LI");
@@ -300,5 +346,8 @@ $(function () {
     });
     $("#draw").click(function () {
         drawCard();
+    });
+    $("#leaveHotseat").click(function () {
+        changeHotseat();
     });
 });

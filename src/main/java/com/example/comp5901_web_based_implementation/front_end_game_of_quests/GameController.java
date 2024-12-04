@@ -15,31 +15,11 @@ public class GameController {
     Game game;
     GameData gameData;
     int numPlayers = 0;
+    String currentEventCard;
 
     public GameController(GameData gameData) {
         this.game = new Game(new GameLogic(), new GameDisplay());
         this.gameData = gameData;
-    }
-
-    //helper
-    private Map<String, StringBuilder> generatePlayerHands(GameLogic gameLogic, List<Player> players) {
-        Map<String, StringBuilder> playerHands = new HashMap<>();
-
-        for (Player player : players) {
-            gameLogic.getPlayer(player.getPlayerID()).sortHand();
-            ArrayList<Card> hand = gameLogic.getPlayer(player.getPlayerID()).getHand();
-            StringBuilder cardNames = new StringBuilder();
-            for (Card card : hand) {
-                AdventureCard aCard = (AdventureCard) card;
-                if (cardNames.length() > 0) {
-                    cardNames.append(" ");
-                }
-                cardNames.append(aCard.displayCardName());
-            }
-            playerHands.put(player.getPlayerID(), cardNames);
-        }
-
-        return playerHands;
     }
 
     @MessageMapping("/connect")
@@ -87,72 +67,41 @@ public class GameController {
 
     @MessageMapping("/drawCard")
     @SendTo("/topic/message")
-    public DrawMessage drawCard(ConnectionMessage message) throws Exception {
+    public Object drawCard(ConnectionMessage message) throws Exception {
         String id = message.getName();
         System.out.println("Player ID: " + id);
         
         Card cardDrawn = game.drawEventCard(id);
         String eventCard = cardDrawn.getType();
+        currentEventCard = eventCard;
 
         String stages = "0";
         if(eventCard.equals("Q")) {
+            currentEventCard = cardDrawn.displayCardName();
             eventCard = cardDrawn.displayCardName();
+            System.out.println("Drew : " + eventCard);
             stages = cardDrawn.displayCardName().substring(1);
             System.out.println("Quest card drawn with " + stages + " stages");
         }
+        System.out.println("Current Event Card GLOBAL: " + currentEventCard);
+
         game.discardEventCard(id, cardDrawn);
         String shields = "0";
-        String p1Discard = "0";
-        String p2Discard = "0";
-        String p3Discard = "0";
-        String p4Discard = "0";
 
-        switch (eventCard) {
-            case "Plague":
-                game.gameLogic.carryOutPlagueAction();
-                shields = String.valueOf(game.gameLogic.getPlayer(id).getShieldCount());
-                break;
-            case "Queen's Favor":
-                eventCard = "QueensFavor";
-                game.gameLogic.dealNumberAdventureCards(id, 2);
-                game.gameLogic.getPlayer(id).sortHand();
-                int cardsToDiscard = game.computeNumberOfCardsToDiscard(id);
-                if (cardsToDiscard > 0) {
-                    switch (id) {
-                        case "P1":
-                            p1Discard = String.valueOf(game.computeNumberOfCardsToDiscard(id));
-                            break;
+        if(eventCard.equals("Plague")) {
+            game.gameLogic.carryOutPlagueAction();
+            shields = String.valueOf(game.gameLogic.getPlayer(id).getShieldCount());
+            return new PlagueMessage(eventCard, id, shields);
+        }else if(eventCard.equals("Queen's Favor")) {
+            currentEventCard = "QueensFavor";
+            eventCard = "QueensFavor";
+            game.gameLogic.dealNumberAdventureCards(id, 2);
+            String discardsLeft = Integer.toString(game.computeNumberOfCardsToDiscard(id));
+            StringBuilder playerHand = generatePlayerHand(id);
 
-                        case "P2":
-                            p2Discard = String.valueOf(game.computeNumberOfCardsToDiscard(id));
-                            break;
-
-                        case "P3":
-                            p3Discard = String.valueOf(game.computeNumberOfCardsToDiscard(id));
-                            break;
-
-                        case "P4":
-                            p4Discard = String.valueOf(game.computeNumberOfCardsToDiscard(id));
-                            break;
-                    }
-                }
-                break;
-            case "Prosperity":
-                game.gameLogic.dealAllPlayersAdventureCards(game.getPlayerIDs(), 2);
-                for(String playerID : game.getPlayerIDs()) {
-                    game.gameLogic.getPlayer(playerID).sortHand();
-                }
-                break;
+            return new QueenMessage(eventCard, id, discardsLeft, playerHand.toString());
         }
-
-        //convert players hand to strings
-        Map<String, StringBuilder> playerHands = generatePlayerHands(game.gameLogic, gameData.getPlayers());
-        StringBuilder p1Hand = playerHands.getOrDefault("P1", new StringBuilder());
-        StringBuilder p2Hand = playerHands.getOrDefault("P2", new StringBuilder());
-        StringBuilder p3Hand = playerHands.getOrDefault("P3", new StringBuilder());
-        StringBuilder p4Hand = playerHands.getOrDefault("P4", new StringBuilder());
-
-        return new DrawMessage("drawEvent", eventCard, id, shields, p1Discard, p2Discard, p3Discard, p4Discard, p1Hand.toString(), p2Hand.toString(), p3Hand.toString(), p4Hand.toString(), stages);
+        return new DrawMessage();
     }
 
     @MessageMapping("/discardCard")
@@ -164,7 +113,42 @@ public class GameController {
 
         game.gameLogic.removeCardsAndDiscard(cardToDiscard, id);
         String discardsLeft = String.valueOf(game.computeNumberOfCardsToDiscard(id));
+        StringBuilder playerHand = generatePlayerHand(id);
 
-        return new DiscardMessage("discard", id, discardsLeft);
+        return new DiscardMessage(currentEventCard, id, discardsLeft, playerHand.toString());
+    }
+
+    @MessageMapping("/changeHotseat")
+    @SendTo("/topic/message")
+    public Message changePlayerHotseat(ConnectionMessage message) throws Exception {
+        game.gameLogic.nextTurn();
+        gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
+
+        return new Message("changeHotseat", gameData.getCurrentPlayerInHotseat());
+    }
+
+    //helpers
+    private Map<String, StringBuilder> generatePlayerHands(GameLogic gameLogic, List<Player> players) {
+        Map<String, StringBuilder> playerHands = new HashMap<>();
+
+        for (Player player : players) {
+            StringBuilder playerHand = generatePlayerHand(player.getPlayerID());
+            playerHands.put(player.getPlayerID(), playerHand);
+        }
+
+        return playerHands;
+    }
+    private StringBuilder generatePlayerHand(String id) {
+        game.gameLogic.getPlayer(id).sortHand();
+        ArrayList<Card> hand = game.gameLogic.getPlayer(id).getHand();
+        StringBuilder cardNames = new StringBuilder();
+        for (Card card : hand) {
+            AdventureCard aCard = (AdventureCard) card;
+            if (cardNames.length() > 0) {
+                cardNames.append(" ");
+            }
+            cardNames.append(aCard.displayCardName());
+        }
+        return cardNames;
     }
 }
