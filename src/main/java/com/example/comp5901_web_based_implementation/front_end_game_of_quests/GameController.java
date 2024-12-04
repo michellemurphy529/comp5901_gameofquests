@@ -16,6 +16,7 @@ public class GameController {
     GameData gameData;
     int numPlayers = 0;
     String currentEventCard;
+    int prosperityChange = 0;
 
     public GameController(GameData gameData) {
         this.game = new Game(new GameLogic(), new GameDisplay());
@@ -88,11 +89,13 @@ public class GameController {
         game.discardEventCard(id, cardDrawn);
         String shields = "0";
 
-        if(eventCard.equals("Plague")) {
+        if (eventCard.equals("Plague")) {
             game.gameLogic.carryOutPlagueAction();
             shields = String.valueOf(game.gameLogic.getPlayer(id).getShieldCount());
+            
             return new PlagueMessage(eventCard, id, shields);
-        }else if(eventCard.equals("Queen's Favor")) {
+        }
+        else if (eventCard.equals("Queen's Favor")) {
             currentEventCard = "QueensFavor";
             eventCard = "QueensFavor";
             game.gameLogic.dealNumberAdventureCards(id, 2);
@@ -101,6 +104,14 @@ public class GameController {
 
             return new QueenMessage(eventCard, id, discardsLeft, playerHand.toString());
         }
+        else if (eventCard.equals("Prosperity")) {
+            game.gameLogic.dealAllPlayersAdventureCards(game.getPlayerIDs(), 2);
+            String discardsLeft = Integer.toString(game.computeNumberOfCardsToDiscard(id));
+            StringBuilder playerHand = generatePlayerHand(id);
+
+            return new DiscardMessage(eventCard, "no", id, discardsLeft, playerHand.toString());
+        }
+
         return new Message("noCardFound", "null");
     }
 
@@ -114,7 +125,10 @@ public class GameController {
         game.gameLogic.removeCardsAndDiscard(cardToDiscard, id);
         String discardsLeft = String.valueOf(game.computeNumberOfCardsToDiscard(id));
         StringBuilder playerHand = generatePlayerHand(id);
-
+    
+        if (currentEventCard.equals("Prosperity")) {
+            return new DiscardMessage(currentEventCard, "no", id, discardsLeft, playerHand.toString());
+        }
         return new DiscardMessage(currentEventCard, id, discardsLeft, playerHand.toString());
     }
 
@@ -126,6 +140,23 @@ public class GameController {
 
         return new Message("changeHotseat", gameData.getCurrentPlayerInHotseat());
     }
+
+    @MessageMapping("/prosperityChange")
+    @SendTo("/topic/message")
+    public DiscardMessage prosperityChange(ConnectionMessage message) throws Exception {
+        prosperityChange++;
+        game.gameLogic.nextTurn();
+        gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
+
+        String discardsLeft = String.valueOf(game.computeNumberOfCardsToDiscard(gameData.getCurrentPlayerInHotseat()));
+        StringBuilder playerHand = generatePlayerHand(gameData.getCurrentPlayerInHotseat());
+
+        if (prosperityChange == 4) {
+            return new DiscardMessage(currentEventCard, "yes", gameData.getCurrentPlayerInHotseat(), discardsLeft, playerHand.toString());
+        }
+        return new DiscardMessage(currentEventCard, "no", gameData.getCurrentPlayerInHotseat(), discardsLeft, playerHand.toString());
+    }
+
 
     //helpers
     private Map<String, StringBuilder> generatePlayerHands(GameLogic gameLogic, List<Player> players) {

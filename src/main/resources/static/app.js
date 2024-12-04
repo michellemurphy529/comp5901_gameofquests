@@ -1,6 +1,5 @@
 var stompClient = null;
 let id = "0";
-let hand = [];
 let playerHands = {
     "P1": [],
     "P2": [],
@@ -74,6 +73,10 @@ function sendDiscard(playerID, card) {
 function changeHotseat() {
     removeHotseatButton(id);
     stompClient.send("/app/changeHotseat", {}, JSON.stringify({ name: "" }));
+}
+function changePlayerProsperity() {
+    removeProsperityOk(id);
+    stompClient.send("/app/prosperityChange", {}, JSON.stringify({ name: "" }));
 }
 
 //Subscription functions
@@ -191,23 +194,36 @@ function carryOutQueensFavor(msg) {
     }
 }
 function carryOutProsperity(msg) {
-    let player = {
-        "P1": { hand: msg.p1Hand, discard: msg.p1Discard },
-        "P2": { hand: msg.p2Hand, discard: msg.p2Discard },
-        "P3": { hand: msg.p3Hand, discard: msg.p3Discard },
-        "P4": { hand: msg.p4Hand, discard: msg.p4Discard }
-    };
-
     if (id === msg.id) {
-        updateHand(msg.id, player[msg.id].hand);
-    }else if(id !== msg.id && id === "P1") {
-        updateHand("P1", player["P1"].hand);
-    }else if(id !== msg.id && id === "P2") {
-        updateHand("P2", player["P2"].hand);
-    }else if(id !== msg.id && id === "P3") {
-        updateHand("P3", player["P3"].hand);
-    }else if(id !== msg.id && id === "P4") {
-        updateHand("P4", player["P4"].hand);
+        updateHand(msg.id, msg.playerHand);
+    }
+
+    if (id === msg.id && msg.discardsLeft !== "0") {
+        if(!document.getElementById("discardText")) {
+            let discardText = document.createElement("LABEL");
+            discardText.setAttribute("id", "discardText");
+            discardText.innerHTML = msg.discardsLeft + " cards to discard!";
+            document.getElementById("deck").appendChild(discardText);
+        }
+        document.getElementById("draw").disabled = true;
+        enableHandCards(id);
+        discardText.innerHTML = msg.discardsLeft + " cards to discard!";
+    }
+
+    if (id === msg.id && msg.discardsLeft === "0") {
+        if(document.getElementById("discardText")) {
+            discardText.remove();
+        }
+        disableHandCards(msg.id);
+
+        if (msg.isDone === "no") {
+            showProsperityOk(msg.id);
+            disableDraw(msg.id);
+        }
+        if (msg.isDone === "yes") {
+            showHotseatButton(msg.id);
+            // disableDraw(msg.id);
+        }
     }
 }
 //Set up subscriptions based on info sent from Game Controller
@@ -253,9 +269,22 @@ function disableDraw(playerID) {
         document.getElementById("draw").disabled = true;
     }
 }
+function showProsperityOk(playerID) {
+    if (id === playerID) {
+        document.getElementById("prosperityOkLabel").style.visibility = "visible";
+        document.getElementById("prosperityOk").style.visibility = "visible";
+        document.getElementById("prosperityOk").disabled = false;
+    }
+}
+function removeProsperityOk(playerID) {
+    if (id === playerID) {
+        document.getElementById("prosperityOkLabel").style.visibility = "hidden";
+        document.getElementById("prosperityOk").style.visibility = "hidden";
+        document.getElementById("prosperityOk").disabled = true;
+    }
+}
 function showHotseatButton(playerID) {
     if (id === playerID) {
-        console.log("HIT");
         document.getElementById("hotseatLabel").style.visibility = "visible";
         document.getElementById("leaveHotseat").style.visibility = "visible";
         document.getElementById("leaveHotseat").disabled = false;
@@ -349,5 +378,8 @@ $(function () {
     });
     $("#leaveHotseat").click(function () {
         changeHotseat();
+    });
+    $("#prosperityOk").click(function () {
+        changePlayerProsperity();
     });
 });
