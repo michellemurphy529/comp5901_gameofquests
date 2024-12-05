@@ -194,8 +194,8 @@ public class GameController {
             game.gameLogic.nextTurn();
             //Update gameData hotseat player to continue
             gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
-            Thread.sleep(500);
 
+            Thread.sleep(500);
             return new QuestMessage(currentEventCard, gameData.getCurrentPlayerInHotseat(), "done");
         }
 
@@ -204,8 +204,8 @@ public class GameController {
             game.gameLogic.setSponsorID(id);
             //Set GameData sponsorID
             gameData.setSponsorID(game.getSponsorPlayerID());
-            Thread.sleep(500);
 
+            Thread.sleep(500);
             return new QuestMessage(currentEventCard, gameData.getSponsorID(), "yes", String.valueOf(stage));
 
         }
@@ -215,8 +215,8 @@ public class GameController {
             game.gameLogic.nextTurn();
             //Set GameData player being asked
             gameData.setPlayerBeingAsked(game.getCurrentPlayer().getPlayerID());
-            Thread.sleep(500);
 
+            Thread.sleep(500);
             return new QuestMessage(currentEventCard, gameData.getPlayerBeingAsked(), "no");
         }
     
@@ -232,19 +232,11 @@ public class GameController {
         String [] cards = msg[1].split(",");
         ArrayList<String> stageCards = new ArrayList<>(Arrays.asList(cards));
 
-        // System.out.println(id);
-        // System.out.println(cards);
-        // System.out.println(stageCards);
-
         if (stage == 1) {
-            // Object stages = gameData.getStages();
-            // System.out.println(gameData.getStages());
-            // System.out.println(stages.getClass());
-
             game.gameLogic.setQuestInfo(gameData.getTotalStages());
         }
 
-        //Calling Game
+        //Calling Game to build quest in backend
         ArrayList<Card> stageCardsFromSponsorHand = game.gameLogic.getStageCardsFromSponsor(gameData.getSponsorID(), stageCards);
         game.gameLogic.sortStageCards(stageCardsFromSponsorHand);
         game.gameLogic.addCardstoQuestInfo(stage, stageCardsFromSponsorHand);
@@ -252,7 +244,7 @@ public class GameController {
         StringBuilder playerHand = generatePlayerHand(id);
 
         if (stage == gameData.getTotalStages()) {
-            //Reset stage number
+            //Reset stage number for the quest stages
             stage = 0;
 
             Thread.sleep(500);

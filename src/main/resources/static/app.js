@@ -102,16 +102,6 @@ function sendStage() {
     hideQuitStageAndWeaponReqMessage(id);
     builtQuest[stage] = { cards: stageCards.slice(), value: calculateStageValue(stageCards) };
 
-    // if (maxStages === stage) {
-        // document.getElementById("buildStage").remove();
-        // document.getElementById("foeReqMessage").remove();
-        // document.getElementById("weaponReqMessage").remove();
-        // document.getElementById("stageCards").remove();
-    //     //Reset global vars
-    //     maxStages = "0";
-    //     stage = "0";
-    // }
-
     stompClient.send(
         "/app/buildStage",
         {},
@@ -200,18 +190,6 @@ function setupStartGame(msg) {
     hotseatLabelElement.setAttribute("id", "hotseatPlayerID");
     hotseatLabelElement.appendChild(playerInHosteatText);
     document.getElementById("header").appendChild(hotseatLabelElement);
-
-    //SponsorID Label - hidden
-    // if (document.getElementById("sponsorIDLabel") !== null) {
-    //     const sponsorID = document.getElementById("sponsorIDLabel");
-    //     sponsorID.remove();
-    // }
-    // let sponsorIDElement = document.createElement("LABEL");
-    // let sponsorIDText = document.createTextNode("Quest Sponsor : ");
-    // sponsorIDElement.setAttribute("id", "sponsorIDLabel");
-    // sponsorIDElement.style.visibility = "hidden";
-    // sponsorIDElement.appendChild(sponsorIDText);
-    // document.getElementById("header").appendChild(sponsorIDElement);
 }
 function carryOutPlague(msg) {
     let shieldElement = document.getElementById("shields" + msg.id);
@@ -413,7 +391,6 @@ function showBeginQuestButtonAndMessage(playerID) {
         document.getElementById("buildStage").remove();
         document.getElementById("foeReqMessage").remove();
         document.getElementById("weaponReqMessage").remove();
-        // document.getElementById("stageCards").remove();
 
         if (!document.getElementById("sponsorDoneMessage")) {
             let beginQuestMessage = document.createElement("LABEL");
@@ -437,8 +414,6 @@ function displayStageBuildingMessage(msg) {
 
     if (msg.stageBeingBuilt === "1") {
         sponsorID = msg.id;
-        // document.getElementById("sponsorIDLabel").innerHTML = "Quest Sponsor : " + sponsorID;
-        // document.getElementById("sponsorIDLabel").style.visibility = "visible";
     }
     if (id === msg.id) {
         //Stage building Message

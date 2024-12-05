@@ -99,7 +99,7 @@ html, body {
     align-items: center;
     text-align: center;
 }
-#buildStage, #foeReqMessage, #weaponReqMessage {
+#buildStage, #foeReqMessage, #weaponReqMessage, #stageValueMessage, #stageCards, #sponsorDoneMessage, #builtStages {
     padding: 10px;
     justify-content: center;
     align-items: center;
