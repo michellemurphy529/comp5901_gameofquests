@@ -109,13 +109,13 @@ public class NonRiggedData implements GameData {
     }
 
     @Override
-    public void setStages(String stages) {
+    public void setTotalStages(String stages) {
         int newStages = Integer.valueOf(stages);
         this.stages = newStages;
     }
 
     @Override
-    public int getStages() {
+    public int getTotalStages() {
         return this.stages;
     }
 }

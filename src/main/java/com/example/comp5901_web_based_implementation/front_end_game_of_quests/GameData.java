@@ -33,7 +33,7 @@ public interface GameData {
 
     public String getPlayerBeingAsked();
 
-    public void setStages(String stages);
+    public void setTotalStages(String stages);
 
-    public int getStages();
+    public int getTotalStages();
 }

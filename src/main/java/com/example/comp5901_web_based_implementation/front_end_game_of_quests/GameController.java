@@ -19,7 +19,7 @@ public class GameController {
     String currentEventCard;
     int prosperityChange = 0;
     int playersAskedSponsorship = 0;
-    int stageBeingBuilt = 0;
+    int stage = 0;
     int previousStageValue = 0;
 
     public GameController(GameData gameData) {
@@ -114,14 +114,14 @@ public class GameController {
         else if (eventCard.equals("Q")) {
             //reset Quest card variables
             playersAskedSponsorship = 0;
-            stageBeingBuilt = 0;
+            stage = 1;
             previousStageValue = 0;
 
             //Quest functionality
             currentEventCard = cardDrawn.displayCardName();
             eventCard = cardDrawn.displayCardName();
             System.out.println("Drew : " + eventCard);
-            gameData.setStages(eventCard.substring(1));
+            gameData.setTotalStages(eventCard.substring(1));
 
             game.discardEventCard(id, cardDrawn);
             Thread.sleep(500);
@@ -206,7 +206,7 @@ public class GameController {
             gameData.setSponsorID(game.getSponsorPlayerID());
             Thread.sleep(500);
 
-            return new QuestMessage(currentEventCard, gameData.getSponsorID(), "yes");
+            return new QuestMessage(currentEventCard, gameData.getSponsorID(), "yes", String.valueOf(stage));
 
         }
 
@@ -229,35 +229,39 @@ public class GameController {
     public QuestMessage buildStage(ConnectionMessage message) throws Exception {
         String [] msg = message.getName().split(" ");
         String id = msg[0];
-        int currentStage = Integer.valueOf(msg[1]);
-        String [] cards = msg[2].split(",");
+        String [] cards = msg[1].split(",");
         ArrayList<String> stageCards = new ArrayList<>(Arrays.asList(cards));
 
-        System.out.println(id);
-        System.out.println(currentStage);
-        System.out.println(cards);
-        System.out.println(stageCards);
+        // System.out.println(id);
+        // System.out.println(cards);
+        // System.out.println(stageCards);
 
-        if (stageBeingBuilt == 0) {
-            Object stages = gameData.getStages();
-            System.out.println(gameData.getStages());
-            System.out.println(stages.getClass());
+        if (stage == 1) {
+            // Object stages = gameData.getStages();
+            // System.out.println(gameData.getStages());
+            // System.out.println(stages.getClass());
 
-            game.gameLogic.setQuestInfo(gameData.getStages());
+            game.gameLogic.setQuestInfo(gameData.getTotalStages());
         }
 
         //Calling Game
-        //set all of this in the gameData?
         ArrayList<Card> stageCardsFromSponsorHand = game.gameLogic.getStageCardsFromSponsor(gameData.getSponsorID(), stageCards);
         game.gameLogic.sortStageCards(stageCardsFromSponsorHand);
-        game.gameLogic.addCardstoQuestInfo(currentStage, stageCardsFromSponsorHand);
-        previousStageValue = game.gameLogic.getStageValue(currentStage, game.gameLogic.getQuestInfo());
-        stageBeingBuilt++;
-
+        game.gameLogic.addCardstoQuestInfo(stage, stageCardsFromSponsorHand);
+        previousStageValue = game.gameLogic.getStageValue(stage, game.gameLogic.getQuestInfo());
         StringBuilder playerHand = generatePlayerHand(id);
 
+        if (stage == gameData.getTotalStages()) {
+            //Reset stage number
+            stage = 0;
+
+            Thread.sleep(500);
+            return new QuestMessage(currentEventCard, id, "yes", playerHand.toString(), "finishedBuilding");
+        }
+
+        stage++;
         Thread.sleep(500);
-        return new QuestMessage(currentEventCard, id, "yes", playerHand.toString());
+        return new QuestMessage(currentEventCard, id, "yes", playerHand.toString(), String.valueOf(stage));
     }
 
 

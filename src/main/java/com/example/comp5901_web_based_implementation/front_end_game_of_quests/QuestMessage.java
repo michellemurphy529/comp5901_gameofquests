@@ -5,29 +5,40 @@ public class QuestMessage {
     private String id;
     private String sponsorFound;
     private String playerHand;
+    private String stageBeingBuilt;
     
     public QuestMessage(String content, String id) {
         this.content = content;
         this.id = id;
     }
 
-    //sponsor found yes or no
+    //Sponsor found
     public QuestMessage(String content, String id, String sponsorFound) {
         this.content = content;
         this.id = id;
         this.sponsorFound = sponsorFound;
     }
 
-    //sponsor found and playerhand
-    public QuestMessage(String content, String id, String sponsorFound, String playerHand) {
+    //Sponsor found
+    public QuestMessage(String content, String id, String sponsorFound, String stageBeingBuilt) {
+        this.content = content;
+        this.id = id;
+        this.sponsorFound = sponsorFound;
+        this.stageBeingBuilt = stageBeingBuilt;
+    }
+
+    //Sponsor builds Quest
+    public QuestMessage(String content, String id, String sponsorFound, String playerHand, String stageBeingBuilt) {
         this.content = content;
         this.id = id;
         this.sponsorFound = sponsorFound;
         this.playerHand = playerHand;
+        this.stageBeingBuilt = stageBeingBuilt;
     }
 
     public String getContent() {return content;}
     public String getSponsorFound() {return sponsorFound;}
     public String getId(){return id;}
     public String getPlayerHand(){return playerHand;}
+    public String getStageBeingBuilt(){return stageBeingBuilt;}
 }
