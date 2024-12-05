@@ -364,17 +364,12 @@ function displayBuiltStages(playerID) {
         if (!builtStagesElement) {
             builtStagesElement = document.createElement("DIV");
             builtStagesElement.setAttribute("id", "builtStages");
-            document.getElementById("stageBuildArea").appendChild(builtStagesElement);
+            document.getElementById("mainMessageArea").appendChild(builtStagesElement);
         }
         builtStagesElement.innerHTML = "";
         for (let stage in builtQuest) {
             let stageElement = document.createElement("DIV");
-            stageElement.innerHTML = `Stage ${stage}: ${builtQuest[stage].cards.join(", ")}`;
-    
-            let valueElement = document.createElement("DIV");
-            valueElement.innerHTML = `Value ${stage}: ${builtQuest[stage].value}`;
-            stageElement.appendChild(valueElement);
-    
+            stageElement.innerHTML = `<br><u>Stage ${stage}</u><br>Card(s): ${builtQuest[stage].cards.join(", ")} & Value = <strong>${builtQuest[stage].value}</strong>`;
             builtStagesElement.appendChild(stageElement);
         }
     }
@@ -393,10 +388,10 @@ function showBeginQuestButtonAndMessage(playerID) {
         document.getElementById("weaponReqMessage").remove();
 
         if (!document.getElementById("sponsorDoneMessage")) {
-            let beginQuestMessage = document.createElement("LABEL");
+            let beginQuestMessage = document.createElement("DIV");
             beginQuestMessage.setAttribute("id", "sponsorDoneMessage");
-            beginQuestMessage.innerHTML = "Press 'Begin Quest' to ask player's to participate!";
-            document.getElementById("deck").appendChild(beginQuestMessage);
+            beginQuestMessage.innerHTML = "<br><strong>Press 'Begin Quest' to ask player's to participate!</strong>";
+            document.getElementById("mainMessageArea").appendChild(beginQuestMessage);
         }
         document.getElementById("sponsorDone").disabled = false;
         document.getElementById("sponsorDone").style.visibility = "visible";
@@ -422,26 +417,26 @@ function displayStageBuildingMessage(msg) {
             maxStages = parseInt(msg.content.slice(1), 10);
             console.log(maxStages);
     
-            let buildingStageMessage = document.createElement("LABEL");
+            let buildingStageMessage = document.createElement("DIV");
             buildingStageMessage.setAttribute("id", "buildStage");
             buildingStageMessage.style.visibility = "visible";
-            document.getElementById("deck").appendChild(buildingStageMessage);
+            document.getElementById("mainMessageArea").appendChild(buildingStageMessage);
         }
         document.getElementById("buildStage").innerHTML = "Building Quest Stage: " + stage;
 
         if (!document.getElementById("foeReqMessage")) {
-            let foeCardReqMessage = document.createElement("LABEL");
+            let foeCardReqMessage = document.createElement("DIV");
             foeCardReqMessage.setAttribute("id", "foeReqMessage");
             foeCardReqMessage.innerHTML = "Add 1 Foe Card to Stage now!";
-            document.getElementById("deck").appendChild(foeCardReqMessage);
+            document.getElementById("mainMessageArea").appendChild(foeCardReqMessage);
         }
         document.getElementById("foeReqMessage").style.visibility = "visible";
 
         if (!document.getElementById("weaponReqMessage")) {
-            let weaponReqMessage = document.createElement("LABEL");
+            let weaponReqMessage = document.createElement("DIV");
             weaponReqMessage.setAttribute("id", "weaponReqMessage");
-            weaponReqMessage.innerHTML = "Add Non-Repeating Weapon Card(s) to Stage now! OR Press 'Quit' to finish building this stage!";
-            document.getElementById("deck").appendChild(weaponReqMessage);
+            weaponReqMessage.innerHTML = "Add Non-Repeating Weapon Card(s) to Stage now!<br>OR<br>Press 'Quit' to finish building this stage!";
+            document.getElementById("mainMessageArea").appendChild(weaponReqMessage);
         }
         document.getElementById("weaponReqMessage").style.visibility = "hidden";
     }
@@ -523,16 +518,19 @@ function showStageValueMessage(previousStageValue, playerID) {
         if (!messageElement) {
             messageElement = document.createElement("DIV");
             messageElement.setAttribute("id", "stageValueMessage");
-            document.getElementById("deck").appendChild(messageElement);
+            messageElement.innerHTML = `Stage value must be GREATER than ${previousStageValue}!`;
+            document.getElementById("mainMessageArea").appendChild(messageElement);
+        }else {
+            messageElement.innerHTML = `Stage value must be GREATER than ${previousStageValue}!`;
         }
-        messageElement.innerHTML = `Stage value must be GREATER than ${previousStageValue}.`;
-        messageElement.style.visibility = "visible";
-    }
+    }    
 }
 function removeStageValueMessage(playerID) {
-    let messageElement = document.getElementById("stageValueMessage");
-    if (messageElement) {
-        messageElement.style.visibility = "hidden";
+    if (id === playerID) {
+        let messageElement = document.getElementById("stageValueMessage");
+        if (messageElement) {
+            messageElement.style.visibility = "hidden";
+        }
     }
 }
 function disableRepeatingWeapons(playerID) {
@@ -547,20 +545,20 @@ function disableRepeatingWeapons(playerID) {
 function displayStageCards(playerID) {
     if (id === playerID) {
         if (!document.getElementById("stageCards")) {
-            let stageCardsElement = document.createElement("LABEL");
+            let stageCardsElement = document.createElement("DIV");
             stageCardsElement.setAttribute("id", "stageCards");
-            stageCardsElement.innerHTML = "Stage " + stage + " Cards: " + stageCards.join(", ");
-            document.getElementById("deck").appendChild(stageCardsElement);
+            stageCardsElement.innerHTML = "<strong>Card(s) in Stage: " + stageCards.join(", ") + "</strong>";
+            document.getElementById("mainMessageArea").appendChild(stageCardsElement);
         }
-        document.getElementById("stageCards").innerHTML = "Stage " + stage + " Cards: " + stageCards.join(", ");
+        document.getElementById("stageCards").innerHTML = "<strong>Card(s) in Stage: " + stageCards.join(", ") + "</strong>";
     }
 }
 function showNoSponsorFoundMessage(playerID) {
     if (id === playerID) {
-        let noSponsorElement = document.createElement("LABEL");
+        let noSponsorElement = document.createElement("DIV");
         noSponsorElement.setAttribute("id", "noSponsorFound");
         noSponsorElement.innerHTML = "No Player's Sponsored Quest... Game Continues!";
-        document.getElementById("deck").appendChild(noSponsorElement);
+        document.getElementById("mainMessageArea").appendChild(noSponsorElement);
     }
 }
 function showAskSponsorMessageAndButtons(playerID) {

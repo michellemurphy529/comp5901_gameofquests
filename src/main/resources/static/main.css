@@ -95,16 +95,49 @@ html, body {
     margin: 10px 0;
 }
 #noSponsorFound {
-    padding: 10px;
+    padding: 5px;
     align-items: center;
     text-align: center;
 }
-#buildStage, #foeReqMessage, #weaponReqMessage, #stageValueMessage, #stageCards, #sponsorDoneMessage, #builtStages {
-    padding: 10px;
+#buildStage, #foeReqMessage, #weaponReqMessage {
+    padding: 3px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#stageValueMessage, #stageCards, #sponsorDoneMessage {
+    padding: 3px;
+    text-align: center;
+    margin: auto;
+}
+#stageValueMessage {
+    color: red;
+}
+#builtStages {
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 #quitStage {
-    margin-top: 20px;
+    margin-top: 10px;
+}
+.d-flex {
+    display: flex;
+}
+.flex-column {
+    flex-direction: column;
+}
+.align-items-center {
+    align-items: center;
+}
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+#mainMessageArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
 }
