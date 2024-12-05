@@ -6,6 +6,13 @@ let playerHands = {
     "P3": [],
     "P4": []
 };
+let maxStages = 0;
+let stage = 0;
+let stageCards = [];
+// let builtQuest = {};
+// let participants = {};
+// let attacks = {};
+
 
 //Conecting to server functions
 window.onload = () => {
@@ -71,12 +78,42 @@ function sendDiscard(playerID, card) {
     );
 }
 function changeHotseat() {
+    let noSponsorElement = document.getElementById("noSponsorFound");
+    if (noSponsorElement) {
+        noSponsorElement.remove();
+    }
     removeHotseatButton(id);
     stompClient.send("/app/changeHotseat", {}, JSON.stringify({ name: "" }));
 }
 function changePlayerProsperity() {
     removeProsperityOk(id);
     stompClient.send("/app/prosperityChange", {}, JSON.stringify({ name: "" }));
+}
+function yesSponsorResponse() {
+    removeAskSponsorMessageAndButtons(id);
+    stompClient.send("/app/sponsorshipResponse", {}, JSON.stringify({ name: id + " yes" }));
+}
+function noSponsorResponse() {
+    removeAskSponsorMessageAndButtons(id);
+    stompClient.send("/app/sponsorshipResponse", {}, JSON.stringify({ name: id + " no" }));
+}
+function sendStage() {
+    console.log(id);
+
+    hideQuitStageAndWeaponReqMessage(id);
+
+    if (maxStages === stage) {
+        document.getElementById("buildStage").remove();
+        document.getElementById("foeReqMessage").remove();
+        document.getElementById("weaponReqMessage").remove();
+        document.getElementById("stageCards").remove();
+    }
+
+    stompClient.send(
+        "/app/buildStage",
+        {},
+        JSON.stringify({ name: id + " " + stage + " " + stageCards.join(",") })
+    );
 }
 
 //Subscription functions
@@ -222,10 +259,28 @@ function carryOutProsperity(msg) {
         }
         if (msg.isDone === "yes") {
             showHotseatButton(msg.id);
-            // disableDraw(msg.id);
+            disableDraw(msg.id);
         }
     }
 }
+function askForSponsorship(msg) {
+    if (id === msg.id && msg.sponsorFound === "no") {
+        disableDraw(msg.id);
+        showAskSponsorMessageAndButtons(msg.id);
+    }
+}
+function executeSponsorshipResponse(msg) {
+    if (id === msg.id && msg.sponsorFound === "yes") {
+        if (msg.playerHand !== null) {
+            updateHand(msg.id, msg.playerHand);
+        }
+        stageCards.length = 0;
+        //Create element for stage building
+        displayStageBuildingMessage(msg);
+        enableFoeCards(msg);
+    }
+}
+
 //Set up subscriptions based on info sent from Game Controller
 function setupSubscriptions() {
     stompClient.subscribe("/topic/message", function (greeting) {
@@ -254,6 +309,21 @@ function setupSubscriptions() {
                 displayEventCard(msg);
             }
             carryOutProsperity(msg);
+        }else if (msg.content.includes("Q") && msg.content.length === 2) {
+            if(!document.getElementById("eventCard")) {
+                displayEventCard(msg);
+            }
+            
+            if (msg.sponsorFound === "no") {
+                askForSponsorship(msg);
+            }else if (msg.sponsorFound === "done") {
+                disableDraw(msg.id);
+                showNoSponsorFoundMessage(msg.id);
+                showHotseatButton(msg.id);
+            }else if (msg.sponsorFound === "yes") {
+                executeSponsorshipResponse(msg);
+            }
+            
         }
         //Change Hotseat Player
         else if (msg.content === "changeHotseat") {
@@ -264,6 +334,151 @@ function setupSubscriptions() {
 }
 
 //Subscription helper functions
+function hideQuitStageAndWeaponReqMessage(playerID) {
+    if (id === playerID) {
+        document.getElementById("weaponReqMessage").style.visibility = "hidden";
+        document.getElementById("quitStage").disabled = true;
+        document.getElementById("quitStage").style.visibility = "hidden";
+        document.getElementById("stageCards").remove();
+    }
+}
+function displayStageBuildingMessage(msg) {
+    if (id === msg.id) {
+        //Stage building Message
+        if (!document.getElementById("buildStage")) {
+            //Set globals for all stages
+            maxStages = parseInt(msg.content.slice(1), 10);
+            console.log(maxStages);
+            //Current Stage
+            stage = 0;
+            stage++;
+    
+            let buildingStageMessage = document.createElement("LABEL");
+            buildingStageMessage.setAttribute("id", "buildStage");
+            buildingStageMessage.style.visibility = "visible";
+            document.getElementById("deck").appendChild(buildingStageMessage);
+        }else if (stage >= 1) {
+            stage++;
+        }
+        document.getElementById("buildStage").innerHTML = "Building Quest Stage: " + stage;
+
+        if (!document.getElementById("foeReqMessage")) {
+            let foeCardReqMessage = document.createElement("LABEL");
+            foeCardReqMessage.setAttribute("id", "foeReqMessage");
+            foeCardReqMessage.innerHTML = "\nAdd 1 Foe Card to Stage now!";
+            document.getElementById("deck").appendChild(foeCardReqMessage);
+        }
+        document.getElementById("foeReqMessage").style.visibility = "visible";
+
+        if (!document.getElementById("weaponReqMessage")) {
+            let weaponReqMessage = document.createElement("LABEL");
+            weaponReqMessage.setAttribute("id", "weaponReqMessage");
+            weaponReqMessage.innerHTML = "\nAdd Non-Repeating Weapon Card(s) to Stage now!\nOR\nPress 'Quit Building Stage'";
+            document.getElementById("deck").appendChild(weaponReqMessage);
+        }
+        document.getElementById("weaponReqMessage").style.visibility = "hidden";
+    }   
+}
+function foeCardSelected(playerID, card) {
+    console.log("foeCardSelected " + card)
+    if (id === playerID) {
+        stageCards.push(card);
+        console.log(stageCards);
+        document.getElementById("foeReqMessage").style.visibility = "hidden";
+        document.getElementById("weaponReqMessage").style.visibility = "visible";
+        document.getElementById("quitStage").style.visibility = "visible";
+        document.getElementById("quitStage").disabled = false;
+    
+        document.getElementById(playerID + card).remove();
+
+        displayStageCards(playerID);
+        disableFoeCardsAndEnableWeaponCards(playerID);
+    }
+}
+function enableFoeCards(msg) {
+    if (id === msg.id) {
+        let handContainer = document.getElementById(msg.id + "hand");
+        let cards = handContainer.getElementsByClassName("card");
+        for (let card of cards) {
+            if (card.id.startsWith(msg.id + "F")) {
+                card.disabled = false;
+
+                card.setAttribute("onclick", `foeCardSelected('${msg.id}', '${card.id.slice(2)}')`);
+            } else {
+                card.disabled = true;
+            }
+        }
+    }
+}
+function disableFoeCardsAndEnableWeaponCards(playerID) {
+    if (id === playerID) {
+        let handContainer = document.getElementById(playerID + "hand");
+        let cards = handContainer.getElementsByClassName("card");
+        for (let card of cards) {
+            if (card.id.startsWith(playerID + "F")) {
+                card.disabled = true;
+            } else {
+                card.setAttribute("onclick", `weaponCardSelected('${playerID}', '${card.id.slice(2)}')`);
+                card.disabled = false;
+            }
+        }
+    }
+}
+function weaponCardSelected(playerID, card) {
+    stageCards.push(card);
+
+    console.log(stageCards);
+
+    document.getElementById(playerID + card).remove();
+    displayStageCards(playerID);
+    disableRepeatingWeapons(playerID);
+}
+function disableRepeatingWeapons(playerID) {
+    let handContainer = document.getElementById(playerID + "hand");
+    let cards = handContainer.getElementsByClassName("card");
+    for (let cardElement of cards) {
+        if (stageCards.includes(cardElement.id.replace(playerID, ""))) {
+            cardElement.disabled = true;
+        }
+    }
+}
+function displayStageCards(playerID) {
+    if (id === playerID) {
+        if (!document.getElementById("stageCards")) {
+            let stageCardsElement = document.createElement("LABEL");
+            stageCardsElement.setAttribute("id", "stageCards");
+            stageCardsElement.innerHTML = "Stage " + stage + " Cards: " + stageCards.join(", ");
+            document.getElementById("deck").appendChild(stageCardsElement);
+        }
+        document.getElementById("stageCards").innerHTML = "Stage " + stage + " Cards: " + stageCards.join(", ");
+    }
+}
+function showNoSponsorFoundMessage(playerID) {
+    if (id === playerID) {
+        let noSponsorElement = document.createElement("LABEL");
+        noSponsorElement.setAttribute("id", "noSponsorFound");
+        noSponsorElement.innerHTML = "No Player's Sponsored Quest... Game Continues!";
+        document.getElementById("deck").appendChild(noSponsorElement);
+    }
+}
+function showAskSponsorMessageAndButtons(playerID) {
+    if (id === playerID) {
+        document.getElementById("sponsorResponseLabel").style.visibility = "visible";
+        document.getElementById("yesSponsor").style.visibility = "visible";
+        document.getElementById("yesSponsor").disabled = false;
+        document.getElementById("noSponsor").style.visibility = "visible";
+        document.getElementById("noSponsor").disabled = false;
+    }
+}
+function removeAskSponsorMessageAndButtons(playerID) {
+    if (id === playerID) {
+        document.getElementById("sponsorResponseLabel").style.visibility = "hidden";
+        document.getElementById("yesSponsor").style.visibility = "hidden";
+        document.getElementById("yesSponsor").disabled = true;
+        document.getElementById("noSponsor").style.visibility = "hidden";
+        document.getElementById("noSponsor").disabled = true;
+    }
+}
 function disableDraw(playerID) {
     if (id === playerID) {
         document.getElementById("draw").disabled = true;
@@ -381,5 +596,14 @@ $(function () {
     });
     $("#prosperityOk").click(function () {
         changePlayerProsperity();
+    });
+    $("#yesSponsor").click(function () {
+        yesSponsorResponse();
+    });
+    $("#noSponsor").click(function () {
+        noSponsorResponse();
+    });
+    $("#quitStage").click(function () {
+        sendStage();
     });
 });

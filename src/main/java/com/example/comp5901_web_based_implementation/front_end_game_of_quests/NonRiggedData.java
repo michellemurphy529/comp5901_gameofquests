@@ -10,6 +10,9 @@ public class NonRiggedData implements GameData {
     Deck adventureDeck;
     Card topEventCard;
     String currentPlayer;
+    String sponsorPlayer;
+    String playerBeingAsked;
+    int stages;
 
     public NonRiggedData() {
         players = new ArrayList<>();
@@ -17,6 +20,9 @@ public class NonRiggedData implements GameData {
         adventureDeck = new AdventureDeck();
         // topEventCard = new EventCard(null);
         this.currentPlayer = "";
+        this.sponsorPlayer = "";
+        this.playerBeingAsked = "";
+        this.stages = 0;
     }
 
     // @Override
@@ -72,11 +78,44 @@ public class NonRiggedData implements GameData {
         this.players.add(p);
     }
 
+    @Override
     public void setCurrentPlayerInHotseat(String playerId) {
         this.currentPlayer = playerId;
     }
 
+    @Override
     public String getCurrentPlayerInHotseat() {
         return this.currentPlayer;
+    }
+
+    @Override
+    public void setSponsorID(String playerId) {
+        this.sponsorPlayer = playerId;
+    }
+
+    @Override
+    public String getSponsorID() {
+        return this.sponsorPlayer;
+    }
+
+    @Override
+    public void setPlayerBeingAsked(String playerId) {
+        this.playerBeingAsked = playerId;
+    }
+
+    @Override
+    public String getPlayerBeingAsked() {
+        return this.playerBeingAsked;
+    }
+
+    @Override
+    public void setStages(String stages) {
+        int newStages = Integer.valueOf(stages);
+        this.stages = newStages;
+    }
+
+    @Override
+    public int getStages() {
+        return this.stages;
     }
 }

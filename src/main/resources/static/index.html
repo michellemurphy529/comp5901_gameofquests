@@ -47,6 +47,14 @@
                     style="visibility: hidden"
                     disabled
                 />
+                <input
+                    type="button"
+                    value="Quit Building Stage"
+                    class="btn btn-outline-primary"
+                    id="quitStage"
+                    style="visibility: hidden"
+                    disabled
+                />
             </div>
             <div class="col-md-4" id="deck"></div>
         </div>
@@ -72,6 +80,7 @@
             </div>
         </div>
     </div>
+    <div class="container" id="stageBuildArea"></div>
     <div id="responseDiv">
         <label id="hotseatLabel" style="visibility: hidden">Your turn is over! Press leave hotseat!</label>
         <input
@@ -91,11 +100,12 @@
             style="visibility: hidden"
             disabled
         />
+        <label id="sponsorResponseLabel" style="visibility: hidden">Do you want to Sponsor this Quest?</label>
         <input
             type="button"
             value="Yes"
             class="btn btn-outline-primary"
-            id="yes"
+            id="yesSponsor"
             style="visibility: hidden"
             disabled
         />
@@ -103,15 +113,7 @@
             type="button"
             value="No"
             class="btn btn-outline-primary"
-            id="no"
-            style="visibility: hidden"
-            disabled
-        />
-        <input
-            type="button"
-            value="Quit"
-            class="btn btn-outline-primary"
-            id="quit"
+            id="noSponsor"
             style="visibility: hidden"
             disabled
         />

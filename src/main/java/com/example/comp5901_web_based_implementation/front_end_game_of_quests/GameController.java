@@ -1,5 +1,6 @@
 package com.example.comp5901_web_based_implementation.front_end_game_of_quests;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,9 @@ public class GameController {
     int numPlayers = 0;
     String currentEventCard;
     int prosperityChange = 0;
+    int playersAskedSponsorship = 0;
+    int stageBeingBuilt = 0;
+    int previousStageValue = 0;
 
     public GameController(GameData gameData) {
         this.game = new Game(new GameLogic(), new GameDisplay());
@@ -62,6 +66,7 @@ public class GameController {
         StringBuilder p2Hand = playerHands.getOrDefault("P2", new StringBuilder());
         StringBuilder p3Hand = playerHands.getOrDefault("P3", new StringBuilder());
         StringBuilder p4Hand = playerHands.getOrDefault("P4", new StringBuilder());
+        Thread.sleep(500);
 
         return new StartMessage("start", "P1", "P2", "P3", "P4",p1Hand.toString(), p2Hand.toString(), p3Hand.toString(), p4Hand.toString(), "0", "0", "0", "0", gameData.getCurrentPlayerInHotseat());
     }
@@ -76,23 +81,15 @@ public class GameController {
         String eventCard = cardDrawn.getType();
         currentEventCard = eventCard;
 
-        String stages = "0";
-        if(eventCard.equals("Q")) {
-            currentEventCard = cardDrawn.displayCardName();
-            eventCard = cardDrawn.displayCardName();
-            System.out.println("Drew : " + eventCard);
-            stages = cardDrawn.displayCardName().substring(1);
-            System.out.println("Quest card drawn with " + stages + " stages");
+        if(!eventCard.equals("Q")) {
+            game.discardEventCard(id, cardDrawn);
         }
-        System.out.println("Current Event Card GLOBAL: " + currentEventCard);
-
-        game.discardEventCard(id, cardDrawn);
-        String shields = "0";
 
         if (eventCard.equals("Plague")) {
             game.gameLogic.carryOutPlagueAction();
-            shields = String.valueOf(game.gameLogic.getPlayer(id).getShieldCount());
-            
+            String shields = String.valueOf(game.gameLogic.getPlayer(id).getShieldCount());
+            Thread.sleep(500);
+
             return new PlagueMessage(eventCard, id, shields);
         }
         else if (eventCard.equals("Queen's Favor")) {
@@ -101,18 +98,38 @@ public class GameController {
             game.gameLogic.dealNumberAdventureCards(id, 2);
             String discardsLeft = Integer.toString(game.computeNumberOfCardsToDiscard(id));
             StringBuilder playerHand = generatePlayerHand(id);
+            Thread.sleep(500);
 
             return new QueenMessage(eventCard, id, discardsLeft, playerHand.toString());
         }
         else if (eventCard.equals("Prosperity")) {
+            prosperityChange = 0;
             game.gameLogic.dealAllPlayersAdventureCards(game.getPlayerIDs(), 2);
             String discardsLeft = Integer.toString(game.computeNumberOfCardsToDiscard(id));
             StringBuilder playerHand = generatePlayerHand(id);
+            Thread.sleep(500);
 
-            return new DiscardMessage(eventCard, "no", id, discardsLeft, playerHand.toString());
+            return new ProsperityMessage(eventCard, "no", id, discardsLeft, playerHand.toString());
+        }
+        else if (eventCard.equals("Q")) {
+            //reset Quest card variables
+            playersAskedSponsorship = 0;
+            stageBeingBuilt = 0;
+            previousStageValue = 0;
+
+            //Quest functionality
+            currentEventCard = cardDrawn.displayCardName();
+            eventCard = cardDrawn.displayCardName();
+            System.out.println("Drew : " + eventCard);
+            gameData.setStages(eventCard.substring(1));
+
+            game.discardEventCard(id, cardDrawn);
+            Thread.sleep(500);
+
+            return new QuestMessage(eventCard, id, "no");
         }
 
-        return new Message("noCardFound", "null");
+        return new Message("noMessage", "fromDrawCard");
     }
 
     @MessageMapping("/discardCard")
@@ -127,8 +144,10 @@ public class GameController {
         StringBuilder playerHand = generatePlayerHand(id);
     
         if (currentEventCard.equals("Prosperity")) {
+            Thread.sleep(500);
             return new DiscardMessage(currentEventCard, "no", id, discardsLeft, playerHand.toString());
         }
+        Thread.sleep(500);
         return new DiscardMessage(currentEventCard, id, discardsLeft, playerHand.toString());
     }
 
@@ -138,12 +157,13 @@ public class GameController {
         game.gameLogic.nextTurn();
         gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
 
+        Thread.sleep(500);
         return new Message("changeHotseat", gameData.getCurrentPlayerInHotseat());
     }
 
     @MessageMapping("/prosperityChange")
     @SendTo("/topic/message")
-    public DiscardMessage prosperityChange(ConnectionMessage message) throws Exception {
+    public ProsperityMessage prosperityChange(ConnectionMessage message) throws Exception {
         prosperityChange++;
         game.gameLogic.nextTurn();
         gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
@@ -152,9 +172,92 @@ public class GameController {
         StringBuilder playerHand = generatePlayerHand(gameData.getCurrentPlayerInHotseat());
 
         if (prosperityChange == 4) {
-            return new DiscardMessage(currentEventCard, "yes", gameData.getCurrentPlayerInHotseat(), discardsLeft, playerHand.toString());
+            Thread.sleep(500);
+            return new ProsperityMessage(currentEventCard, "yes", gameData.getCurrentPlayerInHotseat(), discardsLeft, playerHand.toString());
         }
-        return new DiscardMessage(currentEventCard, "no", gameData.getCurrentPlayerInHotseat(), discardsLeft, playerHand.toString());
+        Thread.sleep(500);
+        return new ProsperityMessage(currentEventCard, "no", gameData.getCurrentPlayerInHotseat(), discardsLeft, playerHand.toString());
+    }
+
+    @MessageMapping("/sponsorshipResponse")
+    @SendTo("/topic/message")
+    public QuestMessage sponsorResponse(ConnectionMessage message) throws Exception {
+
+        String [] msg = message.getName().split(" ");
+        String id = msg[0];
+        String response = msg[1];
+
+        playersAskedSponsorship++;
+
+        if (playersAskedSponsorship == 4 && response.equals("no")) {
+            //No players sponsor - change turn to next player
+            game.gameLogic.nextTurn();
+            //Update gameData hotseat player to continue
+            gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
+            Thread.sleep(500);
+
+            return new QuestMessage(currentEventCard, gameData.getCurrentPlayerInHotseat(), "done");
+        }
+
+        if (response.equals("yes")) {
+            //set Sponsor ID in Game
+            game.gameLogic.setSponsorID(id);
+            //Set GameData sponsorID
+            gameData.setSponsorID(game.getSponsorPlayerID());
+            Thread.sleep(500);
+
+            return new QuestMessage(currentEventCard, gameData.getSponsorID(), "yes");
+
+        }
+
+        if (response.equals("no")) {
+            //Ask next player
+            game.gameLogic.nextTurn();
+            //Set GameData player being asked
+            gameData.setPlayerBeingAsked(game.getCurrentPlayer().getPlayerID());
+            Thread.sleep(500);
+
+            return new QuestMessage(currentEventCard, gameData.getPlayerBeingAsked(), "no");
+        }
+    
+        Thread.sleep(500);
+        return new QuestMessage("noMessage", "fromSponsorResponse");
+    }
+
+    @MessageMapping("/buildStage")
+    @SendTo("/topic/message")
+    public QuestMessage buildStage(ConnectionMessage message) throws Exception {
+        String [] msg = message.getName().split(" ");
+        String id = msg[0];
+        int currentStage = Integer.valueOf(msg[1]);
+        String [] cards = msg[2].split(",");
+        ArrayList<String> stageCards = new ArrayList<>(Arrays.asList(cards));
+
+        System.out.println(id);
+        System.out.println(currentStage);
+        System.out.println(cards);
+        System.out.println(stageCards);
+
+        if (stageBeingBuilt == 0) {
+            Object stages = gameData.getStages();
+            System.out.println(gameData.getStages());
+            System.out.println(stages.getClass());
+
+            game.gameLogic.setQuestInfo(gameData.getStages());
+        }
+
+        //Calling Game
+        //set all of this in the gameData?
+        ArrayList<Card> stageCardsFromSponsorHand = game.gameLogic.getStageCardsFromSponsor(gameData.getSponsorID(), stageCards);
+        game.gameLogic.sortStageCards(stageCardsFromSponsorHand);
+        game.gameLogic.addCardstoQuestInfo(currentStage, stageCardsFromSponsorHand);
+        previousStageValue = game.gameLogic.getStageValue(currentStage, game.gameLogic.getQuestInfo());
+        stageBeingBuilt++;
+
+        StringBuilder playerHand = generatePlayerHand(id);
+
+        Thread.sleep(500);
+        return new QuestMessage(currentEventCard, id, "yes", playerHand.toString());
     }
 
 

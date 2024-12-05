@@ -24,4 +24,16 @@ public interface GameData {
     public void setCurrentPlayerInHotseat(String playerID);
 
     public String getCurrentPlayerInHotseat();
+
+    public void setSponsorID(String playerID);
+
+    public String getSponsorID();
+
+    public void setPlayerBeingAsked(String playerID);
+
+    public String getPlayerBeingAsked();
+
+    public void setStages(String stages);
+
+    public int getStages();
 }

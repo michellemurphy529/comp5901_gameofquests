@@ -31,9 +31,14 @@
 #startBtn, #registerBtn{
     font-size: 1.5rem;
 }
-body{
+/* body{
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
+} */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 #shieldCountList {
     list-style-type: none;
@@ -78,14 +83,28 @@ body{
     padding: 10px;
 }
 #responseDiv {
-    padding: 10px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 20px;
+    padding: 10px;
     width: 100%;
 }
 #responseDiv label, #responseDiv input {
-    margin: 0 10px;
+    margin: 10px 0;
+}
+#noSponsorFound {
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+}
+#buildStage, #foeReqMessage, #weaponReqMessage {
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#quitStage {
+    margin-top: 20px;
 }
