@@ -13,35 +13,20 @@ public class NonRiggedData implements GameData {
     String sponsorPlayer;
     String playerBeingAsked;
     int stages;
+    ArrayList<String> eligiblePlayers;
+    ArrayList<String> participants;
 
     public NonRiggedData() {
         players = new ArrayList<>();
         eventDeck = new EventDeck();
         adventureDeck = new AdventureDeck();
-        // topEventCard = new EventCard(null);
         this.currentPlayer = "";
         this.sponsorPlayer = "";
         this.playerBeingAsked = "";
         this.stages = 0;
+        eligiblePlayers = new ArrayList<>();
+        participants = new ArrayList<>();
     }
-
-    // @Override
-    // public Card getTopEventCard() {
-    //     try {
-    //         if (this.topEventCard == null) {
-    //             throw new IllegalStateException("Top event Card has not been initialized.");
-    //         }
-    //         return this.topEventCard;
-    //     } catch (IllegalStateException e) {
-    //         System.err.println(e.getMessage());
-    //         return null;
-    //     }
-    // }
-
-    // @Override
-    // public void setTopEventCard(Card eventCard) {
-    //     this.topEventCard = eventCard;
-    // }
 
     @Override
     public ArrayList<Player> getPlayers() {
@@ -117,5 +102,23 @@ public class NonRiggedData implements GameData {
     @Override
     public int getTotalStages() {
         return this.stages;
+    }
+
+    @Override
+    public void setEligiblePlayers(ArrayList<String> eligiblePlayers) {
+        this.eligiblePlayers = eligiblePlayers;
+    }
+
+    public ArrayList<String> getEligiblePlayers() {
+        return this.eligiblePlayers;
+    }
+
+    @Override
+    public void setParticpants(ArrayList<String> participants) {
+        this.participants = participants;
+    }
+
+    public ArrayList<String> getParticipants() {
+        return this.participants;
     }
 }

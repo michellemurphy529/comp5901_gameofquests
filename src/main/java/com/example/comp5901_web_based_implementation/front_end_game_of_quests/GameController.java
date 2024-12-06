@@ -21,6 +21,8 @@ public class GameController {
     int playersAskedSponsorship = 0;
     int stage = 0;
     int previousStageValue = 0;
+    int eligiblePlayersAsked = 0;
+    ArrayList<String> playersToRemoveFromEligibility;
 
     public GameController(GameData gameData) {
         this.game = new Game(new GameLogic(), new GameDisplay());
@@ -146,7 +148,11 @@ public class GameController {
         if (currentEventCard.equals("Prosperity")) {
             Thread.sleep(500);
             return new DiscardMessage(currentEventCard, "no", id, discardsLeft, playerHand.toString());
+        }else if (currentEventCard.contains("Q") && currentEventCard.length() == 2) {
+            Thread.sleep(500);
+            return new DiscardMessage("askStageDiscard", id, discardsLeft, playerHand.toString());
         }
+        
         Thread.sleep(500);
         return new DiscardMessage(currentEventCard, id, discardsLeft, playerHand.toString());
     }
@@ -254,6 +260,113 @@ public class GameController {
         stage++;
         Thread.sleep(500);
         return new QuestMessage(currentEventCard, id, "yes", playerHand.toString(), String.valueOf(stage));
+    }
+
+    @MessageMapping("/getParticipants")
+    @SendTo("/topic/message")
+    public Object getParticipants(ConnectionMessage message) throws Exception {
+
+        if (message.getName().equals("")) {
+            if (stage == 0) {
+                //Game methods
+                System.out.println("HIT IF STAGE == 0");
+                game.gameLogic.setCurrentStageNumber(0);
+                game.gameLogic.setMaxStages(gameData.getTotalStages());
+                game.gameLogic.setEligiblePlayersWithoutSponsor();
+                // eligiblePlayersAsked = 0;
+                //Set current stage number
+                // game.gameLogic.incrementStageNumber();
+                // stage = game.gameLogic.getCurrentStageNumber();
+                // ArrayList<String> eligiblePlayers = game.gameLogic.getEligiblePlayers();
+                // gameData.setEligiblePlayers(new ArrayList<>(eligiblePlayers));
+                // System.out.println(eligiblePlayersAsked);
+                // playersToRemoveFromEligibility = new ArrayList<>();
+                
+            }
+            game.gameLogic.incrementStageNumber();
+            stage = game.gameLogic.getCurrentStageNumber();
+            ArrayList<String> eligiblePlayers = game.gameLogic.getEligiblePlayers();
+            gameData.setEligiblePlayers(new ArrayList<>(eligiblePlayers));
+            // System.out.println(eligiblePlayersAsked);
+            playersToRemoveFromEligibility = new ArrayList<>();
+            //add try catch
+            String playerToAsk = gameData.getEligiblePlayers().isEmpty() ? "" : gameData.getEligiblePlayers().remove(0);
+            // gameData.getEligiblePlayers().remove(0);
+
+            eligiblePlayersAsked++;
+            // System.out.println("IN no string BLOCK eligible players asked count = " + eligiblePlayersAsked);
+            Thread.sleep(500);
+            return new Message("askStage", playerToAsk, String.valueOf(stage));
+        }
+        
+        //Message from front end
+        String [] msg = message.getName().split(" ");
+        String id = msg[0];
+        String response = msg[1];
+
+        if (response.equals("no")) {
+            // System.out.println(gameData.getEligiblePlayers().size());
+            playersToRemoveFromEligibility.add(id);
+            // System.out.println(playersToRemoveFromEligibility);
+            //add try catch
+            String playerToAsk = gameData.getEligiblePlayers().isEmpty() ? "" : gameData.getEligiblePlayers().remove(0);
+            // gameData.getEligiblePlayers().remove(0);
+
+            eligiblePlayersAsked++;
+            // System.out.println("IN second BLOCK eligible players asked count = " + eligiblePlayersAsked);
+
+            Thread.sleep(500);
+            return new Message("askStage", playerToAsk, String.valueOf(stage));
+        } else if (response.equals("playerDiscardDone") && game.gameLogic.getEligiblePlayers().size() >= eligiblePlayersAsked) {
+            // System.out.println("SIZE" + gameData.getEligiblePlayers().size());
+
+            String playerToAsk = gameData.getEligiblePlayers().isEmpty() ? "" : gameData.getEligiblePlayers().remove(0);
+
+            // System.out.println("IN playerDiscardDone eligible players asked count = " + eligiblePlayersAsked);
+            // System.out.println("SIZE" + gameData.getEligiblePlayers().size());
+
+            Thread.sleep(500);
+            return new Message("askStage", playerToAsk, String.valueOf(stage));
+        } else if (response.equals("yes")) {
+            game.gameLogic.dealNumberAdventureCards(id, 1);
+            String discardsLeft = Integer.toString(game.computeNumberOfCardsToDiscard(id));
+            StringBuilder playerHand = generatePlayerHand(id);
+
+            if (game.computeNumberOfCardsToDiscard(id) > 0) {
+                eligiblePlayersAsked++;
+                // System.out.println("IN 3rd BLOCK YES eligible players asked count = " + eligiblePlayersAsked);
+                //Reusing the Queen's Favor functionality
+                Thread.sleep(500);
+                return new QueenMessage("askStageDiscard", id, discardsLeft, playerHand.toString());
+            }else {
+                String playerToAsk = gameData.getEligiblePlayers().isEmpty() ? "" : gameData.getEligiblePlayers().remove(0);
+                // gameData.getEligiblePlayers().remove(0);
+
+                eligiblePlayersAsked++;
+                // System.out.println("IN 4th BLOCK YES eligible players asked count = " + eligiblePlayersAsked);
+                Thread.sleep(500);
+                return new Message("askStage", playerToAsk, String.valueOf(stage));
+            }
+            
+        }else if (game.gameLogic.getEligiblePlayers().size() < eligiblePlayersAsked) {
+            //remove players that answered no
+            game.gameLogic.removePlayerFromSubsequentStages(playersToRemoveFromEligibility);
+            gameData.setParticpants(game.gameLogic.getEligiblePlayers());
+
+            if (gameData.getParticipants().size() <= 1) {
+                eligiblePlayersAsked = 0;
+                Thread.sleep(500);
+                // return new Message("changeHotseat", gameData.getCurrentPlayerInHotseat());
+                return new Message("noMorePlayers", gameData.getCurrentPlayerInHotseat());
+            }
+            String playerToAsk = gameData.getParticipants().get(0);
+
+            //set up for attacks
+            Thread.sleep(500);
+            return new Message("setUpAttacks", playerToAsk, String.valueOf(stage));
+        }
+
+        return new Message();
     }
 
 

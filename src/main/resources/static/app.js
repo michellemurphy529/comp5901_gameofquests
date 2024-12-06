@@ -11,6 +11,7 @@ let maxStages = "0";
 let stage = "0";
 let stageCards = [];
 let sponsorID = "0";
+let eligiblePlayers = [];
 
 
 //Conecting to server functions
@@ -110,7 +111,19 @@ function sendStage() {
 }
 function sponsorDone() {
     removeBeginQuestMessageAndButton(id);
-    stompClient.send("/app/sponsorDone", {}, JSON.stringify({ name: id + "  sponsorDone" }));
+    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: "" }));
+}
+function yesStage() {
+    removeAskPlayerStage(id);
+    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: id + " yes" }));
+}
+function noStage() {
+    removeAskPlayerStage(id);
+    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: id + " no"}));
+}
+function changePlayerQuestDiscard() {
+    removeNextPlayerParticipate(id);
+    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: id + " playerDiscardDone" }));
 }
 
 //Subscription functions
@@ -296,6 +309,44 @@ function questBuildingComplete(msg) {
         showBeginQuestButtonAndMessage(msg.id);
     }
 }
+function askPlayerJoinStage(playerID) {
+    if (id === playerID) {
+        console.log("hit");
+        document.getElementById("askStageLabel").innerHTML = `Do you want to participate in <strong>Stage ${stage}</strong>?`;
+        document.getElementById("askStageLabel").style.visibility = "visible";
+        document.getElementById("yesStage").disabled = false;
+        document.getElementById("yesStage").style.visibility = "visible";
+        document.getElementById("noStage").disabled = false;
+        document.getElementById("noStage").style.visibility = "visible";
+    }
+}
+function carryOutQuestDiscard(msg) {
+
+    if (id === msg.id) {
+        updateHand(msg.id, msg.playerHand);
+    }
+
+    if (id === msg.id && msg.discardsLeft !== "0") {
+        if(!document.getElementById("discardText")) {
+            let discardText = document.createElement("LABEL");
+            discardText.setAttribute("id", "discardText");
+            discardText.innerHTML = msg.discardsLeft + " cards to discard!";
+            document.getElementById("deck").appendChild(discardText);
+        }
+        document.getElementById("draw").disabled = true;
+        enableHandCards(id);
+        discardText.innerHTML = msg.discardsLeft + " cards to discard!";
+    }
+
+    if (id === msg.id && msg.discardsLeft === "0") {
+        discardText.remove();
+        disableHandCards(msg.id);
+
+        //Ask Player to leave hotseat
+        showAskNextPlayerParticipate(msg.id);
+        disableDraw(msg.id);
+    }
+}
 
 //Set up subscriptions based on info sent from Game Controller
 function setupSubscriptions() {
@@ -329,7 +380,6 @@ function setupSubscriptions() {
             if(!document.getElementById("eventCard")) {
                 displayEventCard(msg);
             }
-            
             if (msg.sponsorFound === "no") {
                 askForSponsorship(msg);
             }else if (msg.sponsorFound === "done") {
@@ -341,17 +391,54 @@ function setupSubscriptions() {
             }else if (msg.sponsorFound === "yes" && msg.stageBeingBuilt === "finishedBuilding") {
                 questBuildingComplete(msg);
             }
-            
         }
         //Change Hotseat Player
         else if (msg.content === "changeHotseat") {
             removeEventCard();
             updateHotseatPlayerLabelAndDraw(msg.id);
         }
+        else if (msg.content === "askStageDiscard") {
+            carryOutQuestDiscard(msg);
+        }
+        else if (msg.content === "askStage") {
+            console.log(msg.content);
+            console.log(msg.id);
+            console.log(msg.stage);
+
+            if (stage === "0") {
+                console.log("changing stage glob to = " + msg.stage);
+                stage = msg.stage;
+            }
+            askPlayerJoinStage(msg.id);
+        }
     });
 }
 
 //Subscription helper functions
+function showAskNextPlayerParticipate(playerID) {
+    if (id === playerID) {
+        document.getElementById("discardQuestLabel").style.visibility = "visible";
+        document.getElementById("leaveQuestDiscard").style.visibility = "visible";
+        document.getElementById("leaveQuestDiscard").disabled = false;
+    }
+}
+function removeNextPlayerParticipate(playerID) {
+    if (id === playerID) {
+        document.getElementById("discardQuestLabel").style.visibility = "hidden";
+        document.getElementById("leaveQuestDiscard").style.visibility = "hidden";
+        document.getElementById("leaveQuestDiscard").disabled = true;
+    }
+}
+function removeAskPlayerStage(playerID) {
+    if (id === playerID) {
+        document.getElementById("askStageLabel").innerHTML = "";
+        document.getElementById("askStageLabel").style.visibility = "hidden";
+        document.getElementById("yesStage").disabled = true;
+        document.getElementById("yesStage").style.visibility = "hidden";
+        document.getElementById("noStage").disabled = true;
+        document.getElementById("noStage").style.visibility = "hidden";
+    }
+}
 function calculateStageValue(cards) {
     return cards.reduce((sum, card) => {
         let value = parseInt(card.match(/\d+/)[0], 10);
@@ -708,5 +795,14 @@ $(function () {
     });
     $("#sponsorDone").click(function () {
         sponsorDone();
+    });
+    $("#yesStage").click(function () {
+        yesStage();
+    });
+    $("#noStage").click(function () {
+        noStage();
+    });
+    $("#leaveQuestDiscard").click(function () {
+        changePlayerQuestDiscard();
     });
 });

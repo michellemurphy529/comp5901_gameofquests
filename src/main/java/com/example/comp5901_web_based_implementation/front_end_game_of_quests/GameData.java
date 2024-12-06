@@ -3,9 +3,6 @@ import java.util.ArrayList;
 import com.example.comp5901_web_based_implementation.back_end_game_of_quests.*;
 
 public interface GameData {
-    // public Card getTopEventCard();
-
-    // public void setTopEventCard(Card eventCard);
 
     public ArrayList<Player> getPlayers();
 
@@ -36,4 +33,12 @@ public interface GameData {
     public void setTotalStages(String stages);
 
     public int getTotalStages();
+
+    public void setEligiblePlayers(ArrayList<String> eligiblePlayers);
+
+    public ArrayList<String> getEligiblePlayers();
+
+    public void setParticpants(ArrayList<String> eligiblePlayers);
+
+    public ArrayList<String> getParticipants();
 }
