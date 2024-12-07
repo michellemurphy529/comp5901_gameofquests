@@ -1,7 +1,11 @@
 package com.example.comp5901_web_based_implementation.front_end_game_of_quests;
 import java.util.ArrayList;
+
+import org.springframework.stereotype.Component;
+
 import com.example.comp5901_web_based_implementation.back_end_game_of_quests.*;
 
+@Component
 public interface GameData {
 
     public ArrayList<Player> getPlayers();

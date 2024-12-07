@@ -2,13 +2,26 @@ package com.example.comp5901_web_based_implementation.back_end_game_of_quests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@Component
 public class Game {
+    // private final GameLogic gameLogic;
+    // private final GameDisplay gameDisplay;
+
+    // @Autowired
+    // public Game(GameLogic gameLogic, GameDisplay gameDisplay) {
+    //     this.gameLogic = gameLogic;
+    //     this.gameDisplay = gameDisplay;
+    //     this.input = new Scanner(System.in);
+    // }
 
     public GameLogic gameLogic;
     public GameDisplay gameDisplay;
     protected Scanner input;
 
+    @Autowired
     public Game(GameLogic gameLogic, GameDisplay gameDisplay) {
         this.gameLogic = gameLogic;
         this.gameDisplay = gameDisplay;

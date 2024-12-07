@@ -4,7 +4,9 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GameDisplay {
     protected StringWriter stringWriter;
     protected PrintWriter output;

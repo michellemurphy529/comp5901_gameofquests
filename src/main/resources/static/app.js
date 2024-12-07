@@ -11,7 +11,7 @@ let maxStages = "0";
 let stage = "0";
 let stageCards = [];
 let sponsorID = "0";
-let eligiblePlayers = [];
+let attackCards = [];
 
 
 //Conecting to server functions
@@ -64,9 +64,6 @@ function drawCard() {
     stompClient.send("/app/drawCard", {}, JSON.stringify({ name: id }));
 }
 function sendDiscard(playerID, card) {
-    console.log(card);
-    console.log(playerID);
-
     //Remove card from hand
     let cardElement = document.getElementById(playerID + card);
     cardElement.remove();
@@ -98,8 +95,6 @@ function noSponsorResponse() {
     stompClient.send("/app/sponsorshipResponse", {}, JSON.stringify({ name: id + " no" }));
 }
 function sendStage() {
-    console.log(id);
-
     hideQuitStageAndWeaponReqMessage(id);
     builtQuest[stage] = { cards: stageCards.slice(), value: calculateStageValue(stageCards) };
 
@@ -111,19 +106,28 @@ function sendStage() {
 }
 function sponsorDone() {
     removeBeginQuestMessageAndButton(id);
-    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: "" }));
+    stompClient.send("/app/carryOutQuest", {}, JSON.stringify({ name: "" }));
 }
 function yesStage() {
     removeAskPlayerStage(id);
-    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: id + " yes" }));
+    stompClient.send("/app/carryOutQuest", {}, JSON.stringify({ name: id + " yes" }));
 }
 function noStage() {
     removeAskPlayerStage(id);
-    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: id + " no"}));
+    stompClient.send("/app/carryOutQuest", {}, JSON.stringify({ name: id + " no"}));
 }
 function changePlayerQuestDiscard() {
     removeNextPlayerParticipate(id);
-    stompClient.send("/app/getParticipants", {}, JSON.stringify({ name: id + " playerDiscardDone" }));
+    stompClient.send("/app/carryOutQuest", {}, JSON.stringify({ name: id + " playerDiscardDone" }));
+}
+function sendAttack() {
+    removeSelectAttackMessage(id);
+    
+    stompClient.send(
+        "/app/buildAttack",
+        {},
+        JSON.stringify({ name: id + " " + attackCards.join(",") })
+    );
 }
 
 //Subscription functions
@@ -311,7 +315,7 @@ function questBuildingComplete(msg) {
 }
 function askPlayerJoinStage(playerID) {
     if (id === playerID) {
-        console.log("hit");
+        // console.log("hit");
         document.getElementById("askStageLabel").innerHTML = `Do you want to participate in <strong>Stage ${stage}</strong>?`;
         document.getElementById("askStageLabel").style.visibility = "visible";
         document.getElementById("yesStage").disabled = false;
@@ -345,6 +349,13 @@ function carryOutQuestDiscard(msg) {
         //Ask Player to leave hotseat
         showAskNextPlayerParticipate(msg.id);
         disableDraw(msg.id);
+    }
+}
+function getParticipantAttackCards(playerID) {
+    if (id === playerID) {
+        attackCards.length = 0;
+        displaySelectAttackMessage(playerID);
+        disableFoeCardsAndEnableWeaponCardsForAttack(playerID);
     }
 }
 
@@ -401,20 +412,137 @@ function setupSubscriptions() {
             carryOutQuestDiscard(msg);
         }
         else if (msg.content === "askStage") {
-            console.log(msg.content);
-            console.log(msg.id);
-            console.log(msg.stage);
+            // console.log(msg.content);
+            // console.log(msg.id);
+            // console.log(msg.stage);
 
             if (stage === "0") {
-                console.log("changing stage glob to = " + msg.stage);
+                // console.log("changing stage glob to = " + msg.stage);
                 stage = msg.stage;
             }
             askPlayerJoinStage(msg.id);
+        }
+        else if (msg.content === "setUpAttacks") {
+            if (parseInt(msg.stage) > 1) {
+                removeAttackCards();
+            }
+            getParticipantAttackCards(msg.id);
+        }
+        else if (msg.content === "endQuestEarly") {
+            // endQuestEarly(msg);
+            stage = "0";
+            removeAttackCards();
+            showStageWinners(msg.stageWinners);
+            showStageLosers(msg.stageLosers);
+            removeBuiltStages(sponsorID);
+            showEndingQuestEarlyMessage();
+            if (id === sponsorID) {
+                carryOutQuestDiscard(msg);
+            }
+            
+            
+            //FRONT END 
+            //Remove Attack Cards Message
+            //Show all stage winners and losers on their screen
+            //Get sponsorID hand updated and discards start
+            //sponsorRedraw flag happens so when there is 0 discards left it triggers change hotseat of the player in current hotseat
+            //Game continues
+            //return new EndQuestMessage("endQuestEarly", discardsLeft, sponsorHand, stageLosers, stageWinners);
+        }
+        else if (msg.content === "endQuest") {
+            // endQuest(msg);
+            stage = "0";
+            removeAttackCards();
+            showStageWinners(msg.stageWinners);
+            showStageLosers(msg.stageLosers);
+            removeBuiltStages(sponsorID);
+            showEndingQuest();
+            if (id === sponsorID) {
+                carryOutQuestDiscard(msg);
+            }
+            
+            //Display Stage Losers and Winners
+            //Remove Attack Cards Message
+            //boolean to check for sponsor redraw 
+            //+ questDone boolean to trigger winner situation when quest is over once discards are 0
+            // return new EndQuestMessage("endQuest", gameData.getSponsorID(), discardsLeft, sponsorHand.toString(), stageLosers, stageWinners);
         }
     });
 }
 
 //Subscription helper functions
+function showEndingQuest() {
+    for (let i = 1; i <= 4; i++) {
+        let playerID = "P" + i;
+        let messageElement = document.createElement("DIV");
+        messageElement.setAttribute("id", playerID + "EndQuestMessage");
+        messageElement.innerHTML = "Last Stage of Quest Completed!";
+        document.getElementById(playerID + "mainMessageArea").appendChild(messageElement);
+    }
+}
+function showEndingQuestEarlyMessage() {
+    for (let i = 1; i <= 4; i++) {
+        let playerID = "P" + i;
+        let messageElement = document.createElement("DIV");
+        messageElement.setAttribute("id", playerID + "EndingQuestMessage");
+        messageElement.innerHTML = "No more eligible players! Quest ended early! <br>No one earns any shields!";
+        document.getElementById(playerID + "mainMessageArea").appendChild(messageElement);
+    }
+}
+function showStageWinners(stageWinners) {
+    let winners = stageWinners.split(" ");
+    winners.forEach(winner => {
+        if (id === winner) {
+            let winnerElement = document.getElementById(winner + "EndStageMessage");
+            if (!winnerElement) {
+                winnerElement = document.createElement("DIV");
+                winnerElement.setAttribute("id", winner + "EndStageMessage");
+                winnerElement.innerHTML = "Congratulations you <strong>WON</strong> this Stage!";
+                document.getElementById("mainMessageArea").appendChild(winnerElement);
+            } else {
+                winnerElement.style.visibility = "visible";
+                winnerElement.innerHTML = "Congratulations you <strong>WON</strong> this Stage!";
+            }
+        }
+    });
+}
+function showStageLosers(stageLosers) {
+    let losers = stageLosers.split(" ");
+    losers.forEach(loser => {
+        if (id === loser) {
+            let loserElement = document.getElementById(loser + "EndStageMessage");
+            if (!loserElement) {
+                loserElement = document.createElement("DIV");
+                loserElement.setAttribute("id", loser + "EndStageMessage");
+                loserElement.innerHTML = "Sorry, you lost this Stage!";
+                document.getElementById("mainMessageArea").appendChild(loserElement);
+            } else {
+                loserElement.style.visibility = "visible";
+                loserElement.innerHTML = "Sorry, you lost this Stage!";
+            }
+        }
+    });
+}
+function displaySelectAttackMessage(playerID) {
+    if (id === playerID) {
+        let buildAttackElement = document.getElementById("buildAttackMessage");
+        if (!buildAttackElement) {
+            buildAttackElement = document.createElement("DIV");
+            buildAttackElement.setAttribute("id", "buildAttackMessage");
+            document.getElementById("mainMessageArea").appendChild(buildAttackElement);
+        }
+        buildAttackElement.innerHTML = "Add Non-Repeating Weapon Card(s) to your Attack now<br>OR<br>Select 'Quit' to Build an Empty Attack!";
+        document.getElementById("quitAttack").disabled = false;
+        document.getElementById("quitAttack").style.visibility = "visible";
+    }
+}
+function removeSelectAttackMessage(playerID) {
+    if (id === playerID) {
+        document.getElementById("buildAttackMessage").remove();
+        document.getElementById("quitAttack").disabled = true;
+        document.getElementById("quitAttack").style.visibility = "hidden";
+    }
+}
 function showAskNextPlayerParticipate(playerID) {
     if (id === playerID) {
         document.getElementById("discardQuestLabel").style.visibility = "visible";
@@ -461,6 +589,11 @@ function displayBuiltStages(playerID) {
         }
     }
 }
+function removeBuiltStages(playerID) {
+    if (id === playerID) {
+        document.getElementById("builtStages").remove();
+    }
+}
 function removeBeginQuestMessageAndButton(playerID) {
     if (id === playerID) {
         document.getElementById("sponsorDoneMessage").remove();
@@ -502,7 +635,7 @@ function displayStageBuildingMessage(msg) {
         if (!document.getElementById("buildStage")) {
             //Set globals for all stages
             maxStages = parseInt(msg.content.slice(1), 10);
-            console.log(maxStages);
+            // console.log(maxStages);
     
             let buildingStageMessage = document.createElement("DIV");
             buildingStageMessage.setAttribute("id", "buildStage");
@@ -529,10 +662,10 @@ function displayStageBuildingMessage(msg) {
     }
 }
 function foeCardSelected(playerID, card) {
-    console.log("foeCardSelected " + card)
+    // console.log("foeCardSelected " + card)
     if (id === playerID) {
         stageCards.push(card);
-        console.log(stageCards);
+        // console.log(stageCards);
         document.getElementById("foeReqMessage").style.visibility = "hidden";
         document.getElementById("weaponReqMessage").style.visibility = "visible";
         document.getElementById("quitStage").style.visibility = "visible";
@@ -574,10 +707,33 @@ function disableFoeCardsAndEnableWeaponCards(playerID) {
         }
     }
 }
+function disableFoeCardsAndEnableWeaponCardsForAttack(playerID) {
+    if (id === playerID) {
+        let handContainer = document.getElementById(playerID + "hand");
+        let cards = handContainer.getElementsByClassName("card");
+        for (let card of cards) {
+            if (card.id.startsWith(playerID + "F")) {
+                card.disabled = true;
+            } else {
+                card.setAttribute("onclick", `weaponCardForAttack('${playerID}', '${card.id.slice(2)}')`);
+                card.disabled = false;
+            }
+        }
+    }
+}
+function weaponCardForAttack(playerID, card) {
+    attackCards.push(card);
+
+    console.log(attackCards);
+
+    document.getElementById(playerID + card).remove();
+    displayAttackCards(playerID);
+    disableRepeatingWeaponsAttack(playerID);
+}
 function weaponCardSelected(playerID, card) {
     stageCards.push(card);
 
-    console.log(stageCards);
+    // console.log(stageCards);
 
     document.getElementById(playerID + card).remove();
     displayStageCards(playerID);
@@ -606,9 +762,11 @@ function showStageValueMessage(previousStageValue, playerID) {
             messageElement = document.createElement("DIV");
             messageElement.setAttribute("id", "stageValueMessage");
             messageElement.innerHTML = `Stage value must be GREATER than ${previousStageValue}!`;
+            messageElement.style.visibility = "visible";
             document.getElementById("mainMessageArea").appendChild(messageElement);
         }else {
             messageElement.innerHTML = `Stage value must be GREATER than ${previousStageValue}!`;
+            messageElement.style.visibility = "visible";
         }
     }    
 }
@@ -629,6 +787,15 @@ function disableRepeatingWeapons(playerID) {
         }
     }
 }
+function disableRepeatingWeaponsAttack(playerID) {
+    let handContainer = document.getElementById(playerID + "hand");
+    let cards = handContainer.getElementsByClassName("card");
+    for (let cardElement of cards) {
+        if (attackCards.includes(cardElement.id.replace(playerID, ""))) {
+            cardElement.disabled = true;
+        }
+    }
+}
 function displayStageCards(playerID) {
     if (id === playerID) {
         if (!document.getElementById("stageCards")) {
@@ -638,6 +805,28 @@ function displayStageCards(playerID) {
             document.getElementById("mainMessageArea").appendChild(stageCardsElement);
         }
         document.getElementById("stageCards").innerHTML = "<strong>Card(s) in Stage: " + stageCards.join(", ") + "</strong>";
+    }
+}
+function displayAttackCards(playerID) {
+    if (id === playerID) {
+        if (!document.getElementById("attackCards")) {
+            let attackCardsElement = document.createElement("DIV");
+            attackCardsElement.setAttribute("id", "attackCards");
+            attackCardsElement.innerHTML = "Card(s) in Attack: <strong>" + attackCards.join(", ") + "</strong>";
+            document.getElementById("mainMessageArea").appendChild(attackCardsElement);
+        }
+        document.getElementById("attackCards").innerHTML = "Card(s) in Attack: <strong>" + attackCards.join(", ") + "</strong>";
+    }
+}
+function removeAttackCards() {
+    for (let i = 1; i <= 4; i++) {
+        let playerID = "P" + i;
+        if (playerID !== sponsorID && id === playerID) {
+            let attackCardsElement = document.getElementById(playerID + "attackCards");
+            if (attackCardsElement) {
+                attackCardsElement.remove();
+            }
+        }
     }
 }
 function showNoSponsorFoundMessage(playerID) {
@@ -804,5 +993,8 @@ $(function () {
     });
     $("#leaveQuestDiscard").click(function () {
         changePlayerQuestDiscard();
+    });
+    $("#quitAttack").click(function () {
+        sendAttack();
     });
 });
