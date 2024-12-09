@@ -311,16 +311,24 @@ public class GameLogic {
     }
     public void setAttackValues() {
         attackValues = new ArrayList<>();
+        // System.out.println("GAMELOGIC setAttackValues eligplayers=" + getEligiblePlayers() );
     }
     public void setAttackHands() {
         attackHands = new HashMap<>();
+        // System.out.println("GAMELOGIC setAttackHands eligplayers BEFORE LOOP" + getEligiblePlayers() );
         for (String participantID : getEligiblePlayers()) {
             attackHands.put(participantID, new ArrayList<>());
         }
+        // System.out.println("GAMELOGIC setAttackHands eligplayers AFTER LOOP" + getEligiblePlayers() );
+        // System.out.println("GAMELOGIC setAttackHands attackHands" + attackHands );
     }
     public void addAttackCards(String participantID, ArrayList<Card> attackCards) {
+        // System.out.println("GAMELOGIC addAttackCards eligplayers BEFORE LOOP" + getEligiblePlayers() );
+        // System.out.println("GAMELOGIC addAttackCards attackHands=" + attackHands + " partID=" + participantID);
         ArrayList<Card> participantAttack = attackHands.get(participantID);
         participantAttack.addAll(attackCards);
+        // System.out.println("GAMELOGIC addAttackCards eligplayers AFTER LOOP" + getEligiblePlayers() );
+        // System.out.println("GAMELOGIC addAttackCards attackHands= AFTER LOOP" + attackHands );
     }
     public int getAttackValue(ArrayList<Card> attackCards) {
         int attackSum = 0;

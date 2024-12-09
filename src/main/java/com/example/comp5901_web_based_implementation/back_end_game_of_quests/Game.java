@@ -362,6 +362,7 @@ public class Game {
             gameLogic.setMaxStages(questCard.getStages());
             //Set eligible players without sponsor
             gameLogic.setEligiblePlayersWithoutSponsor();
+            System.out.println("carryOutQuestAction BACKEND line 365: gameLogic.setEligiblePlayersWithoutSponsor(); eligPlayers " + gameLogic.getEligiblePlayers() );
             beginQuest();
         }
     }
@@ -490,6 +491,9 @@ public class Game {
         //Each participant prepares an attack with one or more non-repeated weapon cards
         for(int i = 0; i < gameLogic.getEligiblePlayers().size(); i++) {
             String participantID = gameLogic.getEligiblePlayers().get(i);
+
+            System.out.println("participantsSetUpAttacks BACKEND line 494: eligPlayers " + gameLogic.getEligiblePlayers() );
+            
             //Display to participant who's turn it is
             displaySetUpForAttackAndPlayerHand(participantID);
             //Prompt for attack cards

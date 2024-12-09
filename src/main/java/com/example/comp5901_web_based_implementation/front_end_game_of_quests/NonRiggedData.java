@@ -106,18 +106,20 @@ public class NonRiggedData implements GameData {
 
     @Override
     public void setEligiblePlayers(ArrayList<String> eligiblePlayers) {
-        this.eligiblePlayers = eligiblePlayers;
+        this.eligiblePlayers = new ArrayList<>(eligiblePlayers);
     }
 
+    @Override
     public ArrayList<String> getEligiblePlayers() {
         return this.eligiblePlayers;
     }
 
     @Override
     public void setParticpants(ArrayList<String> participants) {
-        this.participants = participants;
+        this.participants = new ArrayList<>(participants);
     }
 
+    @Override
     public ArrayList<String> getParticipants() {
         return this.participants;
     }
