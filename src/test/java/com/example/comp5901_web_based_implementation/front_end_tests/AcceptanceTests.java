@@ -793,7 +793,7 @@ public class AcceptanceTests {
         participatesInStagePlayer3.click();
         slowDown(1000);
 
-        cardElement = selectCard(waitPlayer3, "P3", "F10");
+        cardElement = selectCard(waitPlayer3, "P3", "F15");
         cardElement.click();
         slowDown(1000);
 
@@ -828,12 +828,12 @@ public class AcceptanceTests {
         /* v. P3 plays nothing as attack and thus loses */
         WebElement finishAttackPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer3.click();
-        slowDown(5000);
+        slowDown(1000);
 
         /* g. vi. P4 plays nothing as attack and thus loses */
         WebElement finishAttackPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer4.click();
-        slowDown(80000);
+        slowDown(1000);
 
         /* 
         The quest ends with no winner 
@@ -916,17 +916,13 @@ public class AcceptanceTests {
                 The Message appears on all screens "There are no player's with 7 or more Shields<br>A Game of Quests Continues!"
         */
 
-        okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
-        okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
-
         String expectedMessage = "There are no player's with 7 or more Shields\nA Game of Quests Continues!";
         assertEquals(expectedMessage, finalQuestMessage("P1"));
         assertEquals(expectedMessage, finalQuestMessage("P2"));
         assertEquals(expectedMessage, finalQuestMessage("P3"));
         assertEquals(expectedMessage, finalQuestMessage("P4"));
 
-        slowDown(10000);
+        slowDown(1000);
     }
 
     //Helper Methods

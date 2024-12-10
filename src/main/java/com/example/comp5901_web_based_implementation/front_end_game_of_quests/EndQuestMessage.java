@@ -41,6 +41,7 @@ public class EndQuestMessage {
     //End Quest Early Message
     public EndQuestMessage(String content, String id, String discardsLeft, String playerHand, String stageLosers, String stageWinners) {
         this.content = content;
+        this.id = id;
         this.discardsLeft = discardsLeft;
         this.playerHand = playerHand;
         this.stageLosers = stageLosers;

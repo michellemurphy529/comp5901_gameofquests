@@ -31,10 +31,6 @@
 #startBtn, #registerBtn{
     font-size: 1.5rem;
 }
-/* body{
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-} */
 html, body {
     height: 100%;
     margin: 0;
@@ -49,7 +45,7 @@ html, body {
     left: 0;
 }
 #deck img {
-    width: 100px;
+    width: 90px;
     height: auto;
 }
 .hand-label {
@@ -62,19 +58,20 @@ html, body {
     justify-content: space-around;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 .hand-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    overflow-x: auto;
     width: 100%;
+    flex-wrap: wrap;
 }
 .card {
     margin-right: 1px;
-    width: 70px;
-    height: 100px;
+    width: 60px;
+    height: 90px;
 }
 .row {
     display: none;

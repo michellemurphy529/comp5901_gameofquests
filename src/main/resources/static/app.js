@@ -260,7 +260,6 @@ function carryOutQueensFavor(msg) {
 }
 function carryOutProsperity(msg) {
     if (id === msg.id) {
-        // findCardDrawnAndDisplay(msg.id, msg.playerHand);
         updateHand(msg.id, msg.playerHand);
     }
 
@@ -302,7 +301,6 @@ function askForSponsorship(msg) {
 function executeSponsorshipResponse(msg) {
     if (id === msg.id && msg.sponsorFound === "yes") {
         if (msg.playerHand !== null) {
-            // findCardDrawnAndDisplay(msg.id, msg.playerHand);
             updateHand(msg.id, msg.playerHand);
         }
         
@@ -318,7 +316,6 @@ function executeSponsorshipResponse(msg) {
 function questBuildingComplete(msg) {
     if (id === msg.id) {
         if (msg.playerHand !== null) {
-            // findCardDrawnAndDisplay(msg.id, msg.playerHand);
             updateHand(msg.id, msg.playerHand);
         }
         stageCards.length = 0;
@@ -333,7 +330,6 @@ function questBuildingComplete(msg) {
 }
 function askPlayerJoinStage(playerID) {
     if (id === playerID) {
-        // console.log("hit");
         document.getElementById("askStageLabel").innerHTML = `Do you want to participate in <strong>Stage ${stage}</strong>?`;
         document.getElementById("askStageLabel").style.visibility = "visible";
         document.getElementById("yesStage").disabled = false;
@@ -345,7 +341,6 @@ function askPlayerJoinStage(playerID) {
 function carryOutQuestDiscard(msg) {
 
     if (id === msg.id) {
-        // findCardDrawnAndDisplay(msg.id, msg.playerHand);
         updateHand(msg.id, msg.playerHand);
     }
 
@@ -441,22 +436,15 @@ function setupSubscriptions() {
             carryOutQuestDiscard(msg);
         }
         else if (msg.content === "askStage") {
-            // console.log(msg.content);
-            // console.log(msg.id);
-            // console.log(msg.stage);
-
             if (stage === "0") {
-                // console.log("changing stage glob to = " + msg.stage);
                 console.log("hit stage 0");
                 stage = msg.stage;
-                // displaySponsorIDLabel(msg.id);
                 removeDeclinedSponsorshipMessage(msg.id);
             }
             if (parseInt(stage) === parseInt(msg.stage) && msg.playerHand !== null &&
                 msg.stageLosers === null && msg.stageWinners === null) {
                 console.log("hit second if");
                 if (id === msg.id) {
-                    //findCardDrawnAndDisplay(msg.id, msg.playerHand);
                     updateHand(msg.id, msg.playerHand);
                 }
                 updateHotseatPlayerLabelAndDraw(msg.id);
@@ -481,39 +469,35 @@ function setupSubscriptions() {
         }
         else if (msg.content === "setUpAttacks") {
             if (msg.playerHand !== null && id === msg.id) {
-                // findCardDrawnAndDisplay(msg.id, msg.playerHand);
                 updateHand(msg.id, msg.playerHand);
             }
             updateHotseatPlayerLabelAndDraw(msg.id);
             getParticipantAttackCards(msg.id);
         }
         else if (msg.content === "endQuestEarly") {
-            // if (id === msg.id) {
-            //     console.log(msg.playerHand);
-            //     updateHand(sponsorID, msg.playerHand);
-            // }
-            if (id == sponsorID) {
-                updateHand(sponsorID, msg.playerHand);
+            if (id === msg.id) {
+                console.log(msg.playerHand);
+                updateHand(msg.id, msg.playerHand);
             }
-            updateHotseatPlayerLabelAndDraw(sponsorID);
+            if (id === "P1") {
+                removeDeclinedSponsorshipMessage("P1");
+            } else if (id === "P2") {
+                removeDeclinedSponsorshipMessage("P2");
+            } else if (id === "P3") {
+                removeDeclinedSponsorshipMessage("P3");
+            } else if (id === "P4") {
+                removeDeclinedSponsorshipMessage("P4");
+            }
+            updateHotseatPlayerLabelAndDraw(msg.id);
             removeAttackCards();
             showStageWinners(msg.stageWinners);
             showStageLosers(msg.stageLosers);
-            removeBuiltStages(sponsorID);
+            removeBuiltStages(msg.id);
             showEndingQuestEarlyMessage();
-            if (id === sponsorID && msg.discardsLeft !== null) {
+            if (id === msg.id && msg.discardsLeft !== null) {
                 carryOutQuestDiscard(msg);
             }
             stage = "0";
-            
-            
-            //FRONT END 
-            //Remove Attack Cards Message
-            //Show all stage winners and losers on their screen
-            //Get sponsorID hand updated and discards start
-            //sponsorRedraw flag happens so when there is 0 discards left it triggers change hotseat of the player in current hotseat
-            //Game continues
-            //return new EndQuestMessage("endQuestEarly", discardsLeft, sponsorHand, stageLosers, stageWinners);
         }
         else if (msg.content === "endQuest") {
             if (id === msg.id) {
@@ -559,12 +543,6 @@ function setupSubscriptions() {
             let gameWinners = msg.id.split(" ");
             displayWinnersMessage(gameWinners);
         }
-            //Display Stage Losers and Winners
-            //Remove Attack Cards Message
-            //boolean to check for sponsor redraw 
-            //+ questDone boolean to trigger winner situation when quest is over once discards are 0
-            // return new EndQuestMessage("endQuest", gameData.getSponsorID(), discardsLeft, sponsorHand.toString(), stageLosers, stageWinners);
-        
     });
 }
 
@@ -857,10 +835,8 @@ function displayStageBuildingMessage(msg) {
     }
 }
 function foeCardSelected(playerID, card) {
-    // console.log("foeCardSelected " + card)
     if (id === playerID) {
         stageCards.push(card);
-        // console.log(stageCards);
         document.getElementById("foeReqMessage").style.visibility = "hidden";
         document.getElementById("weaponReqMessage").style.visibility = "visible";
         document.getElementById("quitStage").style.visibility = "visible";
@@ -918,18 +894,12 @@ function disableFoeCardsAndEnableWeaponCardsForAttack(playerID) {
 }
 function weaponCardForAttack(playerID, card) {
     attackCards.push(card);
-
-    // console.log(attackCards);
-
     document.getElementById(playerID + card).remove();
     displayAttackCards(playerID);
     disableRepeatingWeaponsAttack(playerID);
 }
 function weaponCardSelected(playerID, card) {
     stageCards.push(card);
-
-    // console.log(stageCards);
-
     document.getElementById(playerID + card).remove();
     displayStageCards(playerID);
     disableRepeatingWeapons(playerID);
@@ -1159,9 +1129,6 @@ function removeAttackCardsFromHand(playerID) {
 }
 function findCardDrawnAndDisplay(playerID, newHand) {
     let addedCards = [...newHand.split(" ")];
-    console.log(playerHands[playerID]);
-    console.log(playerHands);
-    console.log(addedCards);
     if (playerHands[playerID] !== undefined) {
         playerHands[playerID].forEach(card => {
             let index = addedCards.indexOf(card);
@@ -1170,19 +1137,6 @@ function findCardDrawnAndDisplay(playerID, newHand) {
             }
         });
     }
-    console.log(addedCards);
-    
-    
-    // let addedCard = newHandCopy.length > 0 ? newHandCopy[0] : undefined;
-
-    // if (addedCard !== undefined && id === playerID) {
-    //     if (!document.getElementById(playerID + "DrawnCardLabel")) {
-    //         drawnCardLabel = document.createElement("DIV");
-    //         drawnCardLabel.setAttribute("id", playerID + "DrawnCardLabel");
-    //         document.getElementById("header").appendChild(drawnCardLabel);
-    //     }
-    //     document.getElementById(playerID + "DrawnCardLabel").innerHTML = "Your Last Adventure Card Drawn: <strong>" + addedCard + "</strong>";
-    // }
 
     let drawnCardLabelID = playerID + "DrawnCardLabel";
     let drawnCardLabel = document.getElementById(drawnCardLabelID);
@@ -1191,31 +1145,7 @@ function findCardDrawnAndDisplay(playerID, newHand) {
         drawnCardLabel.setAttribute("id", drawnCardLabelID);
         document.getElementById("header").appendChild(drawnCardLabel);
     }
-
-    // if (addedCards.length > 0 && addedCards[0] !== undefined) {
-    //     if (addedCards.length === 1 && drawnCardLabel.style.visibility == "visible") {
-    //         drawnCardLabel.innerHTML = "Your Last Adventure Card Drawn: <strong>" + addedCards[0] + "</strong>";
-    //     } else if (addedCards.length === 1 && drawnCardLabel.style.visibility == "hidden") {
-    //         drawnCardLabel.innerHTML = "Your Last Adventure Card Drawn: <strong>" + addedCards[0] + "</strong>";
-    //         drawnCardLabel.style.visibility = "visible";
-    //         document.getElementById(playerID + "DrawnCardMainMessage").remove();
-    //     } else if (addedCards.length > 1 && addedCards.length < 5 && drawnCardLabel.style.visibility == "visible"){
-    //         drawnCardLabel.innerHTML = "Your Last Adventure Cards Drawn: <strong>" + addedCards.join(", ") + "</strong> (" + addedCards.length + "cards)";
-    //     } else if (addedCards.length > 1 && addedCards.length < 5 && drawnCardLabel.style.visibility == "hidden"){
-    //         drawnCardLabel.innerHTML = "Your Last Adventure Cards Drawn: <strong>" + addedCards.join(", ") + "</strong> (" + addedCards.length + "cards)";
-    //         drawnCardLabel.style.visibility = "visible";
-    //         document.getElementById(playerID + "DrawnCardMainMessage").remove();
-    //     } else if (addedCards.length >= 5) {
-    //         drawnCardLabel.style.visibility = "hidden";
-    //         if (!document.getElementById(playerID + "DrawnCardMainMessage")) {
-    //             let mainMessageElement = document.createElement("DIV");
-    //             mainMessageElement.setAttribute("id", playerID + "DrawnCardMainMessage");
-    //             mainMessageElement.innerHTML = "Your Last Adventure Cards Drawn: <strong>" + addedCards.join(", ") + "</strong> (" + addedCards.length + "cards)";
-    //             document.getElementById("mainMessageArea").appendChild(mainMessageElement);
-    //         }
-    //         document.getElementById(playerID + "DrawnCardMainMessage").innerHTML = "Your Last Adventure Cards Drawn: <strong>" + addedCards.join(", ") + "</strong> (" + addedCards.length + "cards)";
-    //     }
-    // }
+    
     if (addedCards.length > 0 && addedCards[0] !== undefined) {
         if (addedCards.length === 1) {
             drawnCardLabel.innerHTML = "Your Last Adventure Card Drawn: <strong>" + addedCards[0] + "</strong>";

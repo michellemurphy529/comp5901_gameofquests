@@ -251,10 +251,16 @@ public class GameController {
 
         if (response.equals("yes")) {
             //set Sponsor ID in Game
+            // System.out.println("GameData getSponsorID: in sponsorRepspose yes block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in sponsorRepspose yes block " + game.gameLogic.getSponsorID());
             game.gameLogic.setSponsorID(id);
+            // System.out.println("GameData getSponsorID: in sponsorRepspose yes block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in sponsorRepspose yes block " + game.gameLogic.getSponsorID());
             //Set GameData sponsorID
             gameData.setSponsorID(id);
             // gameData.getSponsorID() = new String(id);
+            // System.out.println("GameData getSponsorID: in sponsorRepspose yes block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in sponsorRepspose yes block " + game.gameLogic.getSponsorID());
 
             Thread.sleep(500);
             return new QuestMessage(currentEventCard, gameData.getSponsorID(), "yes", String.valueOf(stage));
@@ -288,7 +294,11 @@ public class GameController {
         }
 
         //Calling Game to build quest in backend
+        // System.out.println("GameData getSponsorID: in buildtage  " + gameData.getSponsorID());
+        // System.out.println("game sponsorID: in buildtage  " + game.gameLogic.getSponsorID());
         ArrayList<Card> stageCardsFromSponsorHand = game.gameLogic.getStageCardsFromSponsor(gameData.getSponsorID(), stageCards);
+        // System.out.println("GameData getSponsorID: in buildtage  " + gameData.getSponsorID());
+        // System.out.println("game sponsorID: in buildtage  " + game.gameLogic.getSponsorID());
         game.gameLogic.sortStageCards(stageCardsFromSponsorHand);
         game.gameLogic.addCardstoQuestInfo(stage, stageCardsFromSponsorHand);
         previousStageValue = game.gameLogic.getStageValue(stage, game.gameLogic.getQuestInfo());
@@ -559,8 +569,8 @@ public class GameController {
         // System.out.println("id and attack cards from message : id=" + id + " attackCards" + attackCards );
         // System.out.println(id);
         // System.out.println(cards);
-        System.out.println(attackCards.size());
-        System.out.println(attackCards);
+        // System.out.println(attackCards.size());
+        // System.out.println(attackCards);
 
         //Add attack cards to backend
         // System.out.println("gameData parts=" + gameData.getParticipants());
@@ -586,7 +596,7 @@ public class GameController {
 
         String playerToBuildNextAttack = getFirstPlayer(gameData.getParticipants());
 
-        System.out.println("player next " + playerToBuildNextAttack);
+        // System.out.println("player next " + playerToBuildNextAttack);
 
         if(!playerToBuildNextAttack.equals("")) {
             // System.out.println("hit does not equal empty str");
@@ -611,11 +621,19 @@ public class GameController {
         if(stage < gameData.getTotalStages() && game.gameLogic.getEligiblePlayers().size() < 2) {
             //End quest early - Discard All Sponsors cards and redraws (Boolean FLAG)
             int numberToDraw = (gameData.getTotalStages()+game.gameLogic.getNumberofCardsUsedInQuestAndDiscard());
-            System.out.println(numberToDraw);
+            // System.out.println(numberToDraw);
+            // System.out.println("GameData getSponsorID: in not enough eligible particpants block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in not enough eligible particpants block " + game.gameLogic.getSponsorID());
             game.dealNumberOfAdventureCardsToPlayer(gameData.getSponsorID(), numberToDraw);
+            // System.out.println("GameData getSponsorID: in not enough eligible particpants block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in not enough eligible particpants block " + game.gameLogic.getSponsorID());
             game.gameLogic.getPlayer(gameData.getSponsorID()).sortHand();
+            // System.out.println("GameData getSponsorID: in not enough eligible particpants block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in not enough eligible particpants block " + game.gameLogic.getSponsorID());
             String discardsLeft = String.valueOf(game.computeNumberOfCardsToDiscard(gameData.getSponsorID()));
             StringBuilder sponsorHand = generatePlayerHand(gameData.getSponsorID());
+            // System.out.println("GameData getSponsorID: in not enough eligible particpants block " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in not enough eligible particpants block " + game.gameLogic.getSponsorID());
             sponsorRedraw = true;
             questFinished = true;
 
@@ -643,11 +661,21 @@ public class GameController {
             //End quest early - Discard All Sponsors cards and redraws (Boolean FLAG)
             //number of cards to draw is number of stages + cards used in quest
             int numberToDraw = (gameData.getTotalStages()+game.gameLogic.getNumberofCardsUsedInQuestAndDiscard());
-            System.out.println(numberToDraw);
+            // System.out.println(numberToDraw);
+            // System.out.println("GameData getSponsorID: in last stage " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in last stage " + game.gameLogic.getSponsorID());
             game.dealNumberOfAdventureCardsToPlayer(gameData.getSponsorID(), numberToDraw);
+            // System.out.println("GameData getSponsorID: in last stage " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in last stage " + game.gameLogic.getSponsorID());
             game.gameLogic.getPlayer(gameData.getSponsorID()).sortHand();
+            // System.out.println("GameData getSponsorID: in last stage " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in last stage " + game.gameLogic.getSponsorID());
             String discardsLeft = String.valueOf(game.computeNumberOfCardsToDiscard(gameData.getSponsorID()));
+            // System.out.println("GameData getSponsorID: in last stage " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in last stage " + game.gameLogic.getSponsorID());
             StringBuilder sponsorHand = generatePlayerHand(gameData.getSponsorID());
+            // System.out.println("GameData getSponsorID: in last stage " + gameData.getSponsorID());
+            // System.out.println("game sponsorID: in last stage " + game.gameLogic.getSponsorID());
 
             if(!game.gameLogic.getStageWinners().isEmpty()) {
                 game.gameLogic.addShieldsToWinners(game.gameLogic.getStageWinners());
