@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -107,7 +108,6 @@ public class AcceptanceTests {
             registerBtn.click();
             slowDown(1000);
         }
-
         //Rigging Adventure Deck for Proper Game Play
         rigAdventureDeckForGamePlayA1_Scenario();
         slowDown(1000);
@@ -603,26 +603,339 @@ public class AcceptanceTests {
                 P2: shields = 0, card count = 12
                 P3: shields = 0, card count = 5
                 P4: shields = 4, card count = 4
+        */
 
+        //Confirming asserts requried in the correction grid are made
+        //Player 1
+        assertEquals(0, getShieldsCount("P1"));
+        assertEquals(9, getPlayerHandCardCount("P1"));
+        //Player 2
+        assertEquals(0, getShieldsCount("P2"));
+        assertEquals(12, getPlayerHandCardCount("P2"));
+        //Player 3
+        assertEquals(0, getShieldsCount("P3"));
+        assertEquals(5, getPlayerHandCardCount("P3"));
+        //Player 4
+        assertEquals(4, getShieldsCount("P4"));
+        assertEquals(4, getPlayerHandCardCount("P4"));
 
+        /*
         Row 22: The number of shields and the number of cards of each participant is correctly 
                 updated throughout the scenario. YES
 
         Row 23: The final hand of each player is displayed and is correct at the end of the scenario.
                 
                 P1: F5 F10 F15 F15 F30 H10 B15 B15 L20
-                P2: NEED TO FIGURE OUT
+                P2: N/A
                 P3: F5 F5 F15 F30 S10
                 P4: F15 F15 F40 L20
-        
-        Also, ASSERT the winner(s) or absence of:
-                None are Game Winner(s) (have >= 7 sheilds)
-
         */
 
+        //Confirming asserts requried in the correction grid are made
+        //Player 1
+        assertEquals("F5 F10 F15 F15 F30 H10 B15 B15 L20", getStringPlayerHand("P1"));
+        //Player 3
+        assertEquals("F5 F5 F15 F30 S10", getStringPlayerHand("P3"));
+        //Player 4
+        assertEquals("F15 F15 F40 L20", getStringPlayerHand("P4"));
+
+        /*
+        Also, ASSERT the winner(s) or absence of:
+                None are Game Winner(s) (have >= 7 sheilds)
+                The Message appears on all screens "There are no player's with 7 or more Shields<br>A Game of Quests Continues!"
+        */
+
+        WebElement okLeaveQuestDiscardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
+        okLeaveQuestDiscardPlayer2.click();
         slowDown(1000);
+
+        String expectedMessage = "There are no player's with 7 or more Shields\nA Game of Quests Continues!";
+        assertEquals(expectedMessage, finalQuestMessage("P1"));
+        assertEquals(expectedMessage, finalQuestMessage("P2"));
+        assertEquals(expectedMessage, finalQuestMessage("P3"));
+        assertEquals(expectedMessage, finalQuestMessage("P4"));
+
+        slowDown(10000);
     }
 
+    @Test
+    @DirtiesContext
+    @DisplayName("0_winner_quest")
+    public void Scenario_0_winner_quest() {
+        //Navigate to webpage and register each player
+        for (WebDriver driver : multiDriver) {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            driver.get("http://localhost:" + port);
+            WebElement registerBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("registerBtn")));
+            registerBtn.click();
+            slowDown(1000);
+        }
+        //Rigging Adventure Deck for Proper Game Play
+        rigAdventureDeckForGamePlay0_winner_quest();
+        slowDown(1000);
+        //Rigging Players Hands
+        rigAdventureDeckForPlayersHands0_winner_quest();
+        slowDown(1000);
+        //Rigging Event Deck for Proper Game Play
+        rigEventDeck0_winner_quest();
+        slowDown(1000);
+
+        //Set all Players WebDriverWait
+        WebDriverWait waitPlayer1 = new WebDriverWait(multiDriver[0], Duration.ofSeconds(10));
+        WebDriverWait waitPlayer2 = new WebDriverWait(multiDriver[1], Duration.ofSeconds(10));
+        WebDriverWait waitPlayer3 = new WebDriverWait(multiDriver[2], Duration.ofSeconds(10));
+        WebDriverWait waitPlayer4 = new WebDriverWait(multiDriver[3], Duration.ofSeconds(10));
+
+        //Player 1 clicks start button to start game
+        WebElement startBtn = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("startBtn")));
+        startBtn.click();
+        slowDown(1000);
+
+        /*
+        P1 draws a 2 stage quest and decides to sponsor it.
+         */
+        //Player 1 clicks on 'Draw Event Card'
+        WebElement drawEventCardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
+        drawEventCardPlayer1.click();
+        slowDown(1000);
+
+        WebElement declineSponsorPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesSponsor")));
+        declineSponsorPlayer1.click();
+        slowDown(1000);
+
+        /* P1 builds 2 stages:
+        i. Stage 1: F50 + dagger, sword, horse, axe, lance 
+        */
+        
+        WebElement cardElement = selectCard(waitPlayer1, "P1", "F50");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "D5");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "S10");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "H10");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "B15");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "L20");
+        cardElement.click();
+        slowDown(1000);
+
+        WebElement quitStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
+        quitStagePlayer1.click();
+        slowDown(1000);
+
+        /* 
+        ii. Stage 2: F70 + dagger, sword, horse, axe, lance
+        */
+        cardElement = selectCard(waitPlayer1, "P1", "F70");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "D5");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "S10");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "H10");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "B15");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "L20");
+        cardElement.click();
+        slowDown(1000);
+
+        quitStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
+        quitStagePlayer1.click();
+        slowDown(1000);
+
+        //Player 1 (Sponsor) clicks Begins Quest
+        WebElement beginQuestPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("sponsorDone")));
+        beginQuestPlayer1.click();
+        slowDown(1000);
+
+        /*  P2, P3 and P4 participate in stage 1
+            i. P2 participates, draws 1xF5, discards F5
+        */
+        WebElement participatesInStagePlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
+        participatesInStagePlayer2.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer2, "P2", "F5");
+        cardElement.click();
+        slowDown(1000);
+
+        WebElement okLeaveQuestDiscardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
+        okLeaveQuestDiscardPlayer2.click();
+        slowDown(1000);
+
+        /* 
+        ii. P3 participates, draws 1xF15, discards F15
+        */
+        WebElement participatesInStagePlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
+        participatesInStagePlayer3.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer3, "P3", "F10");
+        cardElement.click();
+        slowDown(1000);
+
+        WebElement okLeaveQuestDiscardPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
+        okLeaveQuestDiscardPlayer3.click();
+        slowDown(1000);
+
+        /* 
+        iii. P4 participates, draws 1xF10, discards F10
+        */
+        WebElement participatesInStagePlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
+        participatesInStagePlayer4.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer4, "P4", "F10");
+        cardElement.click();
+        slowDown(1000);
+
+        WebElement okLeaveQuestDiscardPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
+        okLeaveQuestDiscardPlayer4.click();
+        slowDown(1000);
+
+        /* iv. P2 attack: Excalibur thus loses */
+        cardElement = selectCard(waitPlayer2, "P2", "E30");
+        cardElement.click();
+        slowDown(1000);
+
+        WebElement finishAttackPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
+        finishAttackPlayer2.click();
+        slowDown(1000);
+
+        /* v. P3 plays nothing as attack and thus loses */
+        WebElement finishAttackPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
+        finishAttackPlayer3.click();
+        slowDown(5000);
+
+        /* g. vi. P4 plays nothing as attack and thus loses */
+        WebElement finishAttackPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
+        finishAttackPlayer4.click();
+        slowDown(80000);
+
+        /* 
+        The quest ends with no winner 
+        P1 does discards 12 quests cards 
+        P1 draws 14 cards: 1xF5, 1xF10, 1xF15, 4 daggers, 4 horses, 3 swords 
+        P1 discards 1xF5, 1x10
+        */
+        cardElement = selectCard(waitPlayer1, "P1", "F5");
+        cardElement.click();
+        slowDown(1000);
+
+        cardElement = selectCard(waitPlayer1, "P1", "F10");
+        cardElement.click();
+        slowDown(1000);
+
+        WebElement okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
+        okLeaveQuestDiscardPlayer1.click();
+        slowDown(1000);
+
+        /* 
+            From A3 Specs:
+
+            P1’s hand: 1xF15, 4 daggers, 4 horses, 3 swords
+            P2 has 2xF5, 1xF10, 2xF15, 2xF20, 1xF25, 2xF30, 1xF40
+            P3 and P4 have their initial hands
+        */
+
+
+        /* Correction Grid Reqs
+        
+        0_winner_quest:
+        Row 42: the number of shields and the number of cards of each participant at the end 
+                of the scenario is correct.
+
+                P1: shields = 0, card count = 12
+                P2: shields = 0, card count = 11
+                P3: shields = 0, card count = 12
+                P4: shields = 0, card count = 12
+        */
+
+        //Confirming asserts requried in the correction grid are made
+        //Player 1
+        assertEquals(0, getShieldsCount("P1"));
+        assertEquals(12, getPlayerHandCardCount("P1"));
+        //Player 2
+        assertEquals(0, getShieldsCount("P2"));
+        assertEquals(11, getPlayerHandCardCount("P2"));
+        //Player 3
+        assertEquals(0, getShieldsCount("P3"));
+        assertEquals(12, getPlayerHandCardCount("P3"));
+        //Player 4
+        assertEquals(0, getShieldsCount("P4"));
+        assertEquals(12, getPlayerHandCardCount("P4"));
+
+        /*
+        Row 43: The number of shields and the number of cards of each participant is correctly 
+                updated throughout the scenario. YES
+
+        Row 44: the final hand of each player is displayed and is correct at the end of the scenario
+            
+                P1: F15 D5 D5 D5 D5 S10 S10 S10 H10 H10 H10 H10
+                P2: F5 F5 F10 F15 F15 F20 F20 F25 F30 F30 F40
+                P3: F5 F5 F10 F15 F15 F20 F20 F25 F25 F30 F40 L20
+                P4: F5 F5 F10 F15 F15 F20 F20 F25 F25 F30 F50 E30
+        */
+
+        //Confirming asserts requried in the correction grid are made
+        //Player 1
+        assertEquals("F15 D5 D5 D5 D5 S10 S10 S10 H10 H10 H10 H10", getStringPlayerHand("P1"));
+        //Player 2
+        assertEquals("F5 F5 F10 F15 F15 F20 F20 F25 F30 F30 F40", getStringPlayerHand("P2"));
+        //Player 3
+        assertEquals("F5 F5 F10 F15 F15 F20 F20 F25 F25 F30 F40 L20", getStringPlayerHand("P3"));
+        //Player 4
+        assertEquals("F5 F5 F10 F15 F15 F20 F20 F25 F25 F30 F50 E30", getStringPlayerHand("P4"));
+
+        /*
+        Also, ASSERT the winner(s) or absence of:
+                None are Game Winner(s) (have >= 7 sheilds)
+                The Message appears on all screens "There are no player's with 7 or more Shields<br>A Game of Quests Continues!"
+        */
+
+        okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
+        okLeaveQuestDiscardPlayer1.click();
+        slowDown(1000);
+
+        String expectedMessage = "There are no player's with 7 or more Shields\nA Game of Quests Continues!";
+        assertEquals(expectedMessage, finalQuestMessage("P1"));
+        assertEquals(expectedMessage, finalQuestMessage("P2"));
+        assertEquals(expectedMessage, finalQuestMessage("P3"));
+        assertEquals(expectedMessage, finalQuestMessage("P4"));
+
+        slowDown(10000);
+    }
+
+    //Helper Methods
+    private String finalQuestMessage(String playerID) {
+        String elementID = "finalQuestMessage";
+        int webDriverIndex = Integer.valueOf(playerID.substring(1)) - 1;
+        WebElement elementMessage = multiDriver[webDriverIndex].findElement(By.id(elementID));
+        return elementMessage.getText();
+    }
     private int getPlayerHandCardCount(String playerID) {
         int webDriverIndex = Integer.valueOf(playerID.substring(1)) - 1;
         WebElement playerHand = multiDriver[webDriverIndex].findElement(By.id(playerID + "hand"));
@@ -673,6 +986,10 @@ public class AcceptanceTests {
         }
         return String.join(" ", cardIDs);
     }
+    private WebElement selectCard(WebDriverWait wait, String id, String card) {
+        String playerHandCardID = id + card;
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(playerHandCardID)));
+    }
     private void slowDown(long millis) {
         try {
             Thread.sleep(millis);
@@ -680,6 +997,8 @@ public class AcceptanceTests {
             e.printStackTrace();
         }
     }
+
+    //Rigging A1_Scenario Methods
     private void rigAdventureDeckForPlayersHandsA1_Scenario() {
 
         /* Posted Initial Hands:
@@ -793,20 +1112,6 @@ public class AcceptanceTests {
         gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
     }
     private void rigAdventureDeckForGamePlayA1_Scenario() {
-        //Rig adventure deck to draw the right cards for game play
-        //Cards in Adventure deck rigged for end Quest dsicard of the sponsor
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H",10));
-        // gameData.getAdventureDeck().getDeck().add(0, new FoeCard(40));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("B",15));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("L",20));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
-        // gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("B",15));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
-        // gameData.getAdventureDeck().getDeck().add(0, new FoeCard(10));
-        // gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("L",20));
-
         //For game play
         gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("L",20));
         gameData.getAdventureDeck().getDeck().add(0, new FoeCard(30));
@@ -818,14 +1123,147 @@ public class AcceptanceTests {
         gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("B",15));
         gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
         gameData.getAdventureDeck().getDeck().add(0, new FoeCard(30));
-
     }
     private void rigEventDeckA1_Scenario() {
         QuestCard q4 = new QuestCard(4);
         gameData.getEventDeck().getDeck().add(0, q4);
     }
-    private WebElement selectCard(WebDriverWait wait, String id, String card) {
-        String playerHandCardID = id + card;
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(playerHandCardID)));
+    //Rigging 0_winner_quest
+    private void rigAdventureDeckForPlayersHands0_winner_quest() {
+
+        /* A3 Specs - Initial Hands
+
+        P1 - F50 F70 D5 D5 S10 S10 H10 H10 B15 B15 L20 L20
+        P2 - F5 F5 F10 F15 F15 F20 F20 F25 F30 F30 F40 E30
+        P3 - F5 F5 F10 F15 F15 F20 F20 F25 F25 F30 F40 L20
+        P4 - F5 F5 F10 F15 F15 F20 F20 F25 F25 F30 F50 E30
+        */
+
+        //Rigging the Adventure Card Deck (backwards) to have the Players hand dealt in the right order
+
+        //      P4   P3   P2   P1
+        // 12 - E30, L20, E30, L20. 
+        // 11 - F50, F40, F40, L20. 
+        // 10 - F30, F30, F30, B15. 
+        // 9 -  F25, F25, F30, B15. 
+        // 8 -  F25, F25, F25, H10.
+        // 7 -  F20, F20, F20, H10.
+        // 6 -  F20, F20, F20, S10.
+        // 5 -  F15, F15, F15, S10.
+        // 4 -  F15, F15, F15, D5.
+        // 3 -  F10, F10, F10, D5.
+        // 2 -  F5,  F5,  F5,  F70.
+        // 1 -  F5,  F5,  F5,  F50.
+        
+        //Player hands P4 -> P3 -> P2 -> P1
+        //12th Card
+        // 12 - E30, L20, E30, L20. 
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("E", 30));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("L", 20));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("E", 30));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("L", 20));
+
+        //11th Card
+        // 11 - F50, F40, F40, L20. 
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(50));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(40));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(40));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("L", 20));
+
+        //10th Card
+        // 10 - F30, F30, F30, B15. 
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(30));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(30));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(30));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("B", 15));
+
+        //9th Card
+        // 9 -  F25, F25, F30, B15. 
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(25));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(25));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(30));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("B", 15));
+
+        //8th Card
+        // 8 -  F25, F25, F25, H10.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(25));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(25));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(25));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H", 10));
+
+        //7th Card
+        // 7 -  F20, F20, F20, H10.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(20));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(20));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(20));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H", 10));
+
+        //6th Card
+        // 6 -  F20, F20, F20, S10.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(20));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(20));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(20));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S", 10));
+
+        //5th Card
+        // 5 -  F15, F15, F15, S10.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S", 10));
+
+        //4th Card
+        // 4 -  F15, F15, F15, D5.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("D", 5));
+
+        //3rd Card
+        // 3 -  F10, F10, F10, D5.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(10));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(10));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("D", 5));
+
+        //2nd Card
+        // 2 -  F5,  F5,  F5,  F70.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(70));
+
+        //1st Card
+        // 1 -  F5,  F5,  F5,  F50.
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(50));
+    }
+    private void rigAdventureDeckForGamePlay0_winner_quest() {
+        //For game play
+        //Sponsor redraw
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("S",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("H",10));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("D",5));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("D",5));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("D",5));
+        gameData.getAdventureDeck().getDeck().add(0, new WeaponCard("D",5));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(10));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+        //Cards drawn during Quest
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(10));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(15));
+        gameData.getAdventureDeck().getDeck().add(0, new FoeCard(5));
+    }
+    private void rigEventDeck0_winner_quest() {
+        QuestCard q2 = new QuestCard(2);
+        gameData.getEventDeck().getDeck().add(0, q2);
     }
 }

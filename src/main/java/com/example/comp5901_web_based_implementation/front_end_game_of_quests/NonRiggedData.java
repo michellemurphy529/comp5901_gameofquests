@@ -75,7 +75,7 @@ public class NonRiggedData implements GameData {
 
     @Override
     public void setSponsorID(String playerId) {
-        this.sponsorPlayer = playerId;
+        this.sponsorPlayer = new String(playerId);
     }
 
     @Override

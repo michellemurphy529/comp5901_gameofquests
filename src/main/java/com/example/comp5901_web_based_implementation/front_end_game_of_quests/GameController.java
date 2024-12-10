@@ -24,9 +24,10 @@ public class GameController {
     int playersAskedSponsorship = 0;
     int stage = 0;
     int previousStageValue = 0;
-    // int eligiblePlayersAsked = 0;
+    // String sponsorID = "";
     ArrayList<String> playersToRemoveFromEligibility;
     Boolean sponsorRedraw = false;
+    Boolean questFinishedEarly = false;
     Boolean questFinished = false;
 
     public GameController(GameData gameData) {
@@ -252,7 +253,8 @@ public class GameController {
             //set Sponsor ID in Game
             game.gameLogic.setSponsorID(id);
             //Set GameData sponsorID
-            gameData.setSponsorID(game.getSponsorPlayerID());
+            gameData.setSponsorID(id);
+            // gameData.getSponsorID() = new String(id);
 
             Thread.sleep(500);
             return new QuestMessage(currentEventCard, gameData.getSponsorID(), "yes", String.valueOf(stage));
@@ -358,12 +360,47 @@ public class GameController {
         String response = msg[1];
 
         //Participant responded YES and has discarded card        
-        if (response.equals("playerDiscardDone") && gameData.getEligiblePlayers().size() != 0) {
+        if (response.equals("playerDiscardDone") && questFinished) {
+
+            //reset questFinished
+            questFinished = false;
+
+            //Process end of Quest in the backend
+            ArrayList<Player> playersWhoHave7Shields = game.gameLogic.determineWinners();
+            String gameWinners = "";
+            if (playersWhoHave7Shields.size() > 0) {
+                for (Player player : playersWhoHave7Shields) {
+                    gameWinners += player.getPlayerID() + " ";
+                }
+                gameWinners = gameWinners.trim();
+            }else {
+                gameWinners = "none";
+            }
+
+            if (gameWinners.equals("none")) {
+                System.out.println("currentplayer in game backend before turn change" + game.getCurrentPlayer().getPlayerID());
+                for (int i = 0; i < 4; i++) {
+                    if (gameData.getCurrentPlayerInHotseat().equals(game.getCurrentPlayer().getPlayerID())) {
+                        break;
+                    }
+                    game.gameLogic.nextTurn();
+                }
+                System.out.println("currentplayer in game backend after turn change" + game.getCurrentPlayer().getPlayerID());
+                // gameData.setCurrentPlayerInHotseat(game.getCurrentPlayer().getPlayerID());
+
+                Thread.sleep(500);
+                return new Message("continueGame", gameData.getCurrentPlayerInHotseat());
+            }
+
+            Thread.sleep(500);
+            return new Message("winnersFound", gameWinners);
+        } 
+        else if (response.equals("playerDiscardDone") && gameData.getEligiblePlayers().size() != 0) {
 
             Thread.sleep(500);
             return new Message("askStage", getFirstPlayer(gameData.getEligiblePlayers()), String.valueOf(stage));
         } 
-
+        //Participant responded YES and has discarded card    
         else if (response.equals("playerDiscardDone") && gameData.getEligiblePlayers().size() == 0) {
             game.gameLogic.removePlayerFromSubsequentStages(playersToRemoveFromEligibility);
             gameData.setParticpants(game.gameLogic.getEligiblePlayers());
@@ -462,7 +499,7 @@ public class GameController {
                 Thread.sleep(500);
                 //change this to update last player asked hand first then endQuest??
 
-                //sponsorID send 
+                //gameData.getSponsorID() send 
                 //sponsor redraw boolean
                 //add cards to sponsor hand
                 //add shields for end of quest gained
@@ -507,9 +544,10 @@ public class GameController {
     @SendTo("/topic/message")
     public Object buildAttack(ConnectionMessage message) throws Exception {
         String [] msg = message.getName().split(" ");
+        System.out.println(message.getName());
         String id = msg[0];
         ArrayList<Card> attackCards = new ArrayList<>();
-        if (!msg[1].equals("")) {
+        if (!msg[1].equals("none")) {
             String [] cards = msg[1].split(",");
             for (String card : cards) {
                 String cardType = card.substring(0,1);
@@ -521,22 +559,34 @@ public class GameController {
         // System.out.println("id and attack cards from message : id=" + id + " attackCards" + attackCards );
         // System.out.println(id);
         // System.out.println(cards);
-        // System.out.println(attackCards.size());
+        System.out.println(attackCards.size());
+        System.out.println(attackCards);
 
         //Add attack cards to backend
         // System.out.println("gameData parts=" + gameData.getParticipants());
         // System.out.println("before addAttackCards: " +game.gameLogic.getEligiblePlayers());
         game.gameLogic.addAttackCards(id, attackCards);
+        int positionInArray = getPlayerIDPosition(id, game.gameLogic.getEligiblePlayers());
+        if (msg[1].equals("none")) {
+            System.out.println("hit in none with id " + id);
+            game.gameLogic.addAttackValue(positionInArray, 0);
+        }else {
+            System.out.println("hit in else with id " + id);
+            game.gameLogic.addAttackValue(positionInArray, game.gameLogic.getAttackValue(attackCards));
+        }
+        game.gameLogic.getPlayer(id).sortHand();
+        
         // System.out.println("line 456: " +game.gameLogic.getEligiblePlayers());
         // System.out.println("line 457: " +gameData.getEligiblePlayers());
-        int positionInArray = getPlayerIDPosition(id, game.gameLogic.getEligiblePlayers());
+        
         // System.out.println("line 459: " + game.gameLogic.getEligiblePlayers().size());
         // System.out.println("line 460: " +game.gameLogic.getEligiblePlayers());
         // System.out.println("line 461: " + positionInArray);
-        game.gameLogic.addAttackValue(positionInArray, game.gameLogic.getAttackValue(attackCards));
-        game.gameLogic.getPlayer(id).sortHand();
+        
 
         String playerToBuildNextAttack = getFirstPlayer(gameData.getParticipants());
+
+        System.out.println("player next " + playerToBuildNextAttack);
 
         if(!playerToBuildNextAttack.equals("")) {
             // System.out.println("hit does not equal empty str");
@@ -546,11 +596,16 @@ public class GameController {
         }
 
         //Begin Resolve Attacks
+        game.gameLogic.setCurrentStageValue(game.gameLogic.getCurrentStageValueFromQuestInfo());
         game.resolveAttacks();
         game.discardParticipantsCards();
 
         String stageLosers = String.join(" ", game.gameLogic.getStageLosers());
         String stageWinners = String.join(" ", game.gameLogic.getStageWinners());
+        System.out.println(game.gameLogic.getEligiblePlayers().size());
+        System.out.println(game.gameLogic.getEligiblePlayers());
+        System.out.println(stageLosers);
+        System.out.println(stageWinners);
 
         //Not enough eligible participants to continue quest
         if(stage < gameData.getTotalStages() && game.gameLogic.getEligiblePlayers().size() < 2) {
@@ -562,6 +617,9 @@ public class GameController {
             String discardsLeft = String.valueOf(game.computeNumberOfCardsToDiscard(gameData.getSponsorID()));
             StringBuilder sponsorHand = generatePlayerHand(gameData.getSponsorID());
             sponsorRedraw = true;
+            questFinished = true;
+
+            System.out.println("hit if");
 
             Thread.sleep(500);
             return new EndQuestMessage("endQuestEarly", gameData.getSponsorID(), discardsLeft, sponsorHand.toString(), stageLosers, stageWinners);

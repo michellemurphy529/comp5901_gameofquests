@@ -7,16 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class Game {
-    // private final GameLogic gameLogic;
-    // private final GameDisplay gameDisplay;
-
-    // @Autowired
-    // public Game(GameLogic gameLogic, GameDisplay gameDisplay) {
-    //     this.gameLogic = gameLogic;
-    //     this.gameDisplay = gameDisplay;
-    //     this.input = new Scanner(System.in);
-    // }
-
     public GameLogic gameLogic;
     public GameDisplay gameDisplay;
     protected Scanner input;
@@ -529,14 +519,25 @@ public class Game {
         //Set stage winners array list
         gameLogic.setStageWinners();
         for(int i = 0; i < gameLogic.getEligiblePlayers().size(); i++) {
+            System.out.println("IN GAEM RESOLVE ATTACKS I:" + i);
             boolean isLoser = gameLogic.compareStageValueToCurrentStageValue(gameLogic.getAttackValues().get(i));
+            System.out.println("IN GAEM RESOLVE ATTACKS I:" + i + " isLoser: " + isLoser);
+            System.out.println("IN GAEM RESOLVE ATTACKS I:" + i + " attackValues: " + gameLogic.getAttackValues());
+            System.out.println("IN GAEM RESOLVE ATTACKS I:" + i + " stageValue: " + gameLogic.getCurrentStageValue());
             if(isLoser) {
+                System.out.println("stageLosers before " + gameLogic.getStageLosers());
                 gameLogic.addToLosers(gameLogic.getEligiblePlayers().get(i));
+                System.out.println(gameLogic.getStageLosers());
+                System.out.println("stageLosers after " + gameLogic.getStageLosers());
             }else {
+                System.out.println("stageLosers before " + gameLogic.getStageWinners());
                 gameLogic.addToWinners(gameLogic.getEligiblePlayers().get(i));
+                System.out.println("stageLosers after " + gameLogic.getStageWinners());
             }
         }
+        System.out.println("eligiblplayer beofre " + gameLogic.getEligiblePlayers());
         gameLogic.removePlayerFromSubsequentStages(gameLogic.getStageLosers());
+        System.out.println("eligiblplayer after " + gameLogic.getEligiblePlayers());
     }
     public void nextTurn() {
         gameLogic.nextTurn();
