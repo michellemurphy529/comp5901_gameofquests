@@ -77,10 +77,7 @@ function sendDiscard(playerID, card) {
     );
 }
 function changeHotseat() {
-    let noSponsorElement = document.getElementById("noSponsorFound");
-    if (noSponsorElement) {
-        noSponsorElement.remove();
-    }
+    removeNoSponsorFound();
     removeContinueGameMessage();
     removeHotseatButton(id);
     stompClient.send("/app/changeHotseat", {}, JSON.stringify({ name: "" }));
@@ -377,6 +374,17 @@ function getParticipantAttackCards(playerID) {
         disableFoeCardsAndEnableWeaponCardsForAttack(playerID);
     }
 }
+function removeAllPlayerDeclineSponsorshipMessages() {
+    if (id === "P1") {
+        removeDeclinedSponsorshipMessage("P1");
+    } else if (id === "P2") {
+        removeDeclinedSponsorshipMessage("P2");
+    } else if (id === "P3") {
+        removeDeclinedSponsorshipMessage("P3");
+    } else if (id === "P4") {
+        removeDeclinedSponsorshipMessage("P4");
+    }
+}
 
 //Set up subscriptions based on info sent from Game Controller
 function setupSubscriptions() {
@@ -417,9 +425,9 @@ function setupSubscriptions() {
             updateHotseatPlayerLabel(msg.id);
             if (msg.sponsorFound === "no") {
                 askForSponsorship(msg);
-            }else if (msg.sponsorFound === "done") {
+            }else if (msg.sponsorFound === "done" && msg.playerHand === null && msg.stageBeingBuilt === null) {
                 disableDraw(msg.id);
-                showNoSponsorFoundMessage(msg.id);
+                showNoSponsorFound(msg.id);
                 showHotseatButton(msg.id);
             }else if (msg.sponsorFound === "yes" && msg.stageBeingBuilt !== "finishedBuilding") {
                 executeSponsorshipResponse(msg);
@@ -433,6 +441,7 @@ function setupSubscriptions() {
             sponsorID = "0";
             updateHotseatPlayerLabelAndDraw(msg.id);
             removeContinueGameMessage();
+            removeAllPlayerDeclineSponsorshipMessages();
         }
         else if (msg.content === "askStageDiscard") {
             updateHotseatPlayerLabel(msg.id);
@@ -478,15 +487,7 @@ function setupSubscriptions() {
                 updateHand(msg.id, msg.playerHand);
             }
             builtQuest = {};
-            if (id === "P1") {
-                removeDeclinedSponsorshipMessage("P1");
-            } else if (id === "P2") {
-                removeDeclinedSponsorshipMessage("P2");
-            } else if (id === "P3") {
-                removeDeclinedSponsorshipMessage("P3");
-            } else if (id === "P4") {
-                removeDeclinedSponsorshipMessage("P4");
-            }
+            removeAllPlayerDeclineSponsorshipMessages();
             updateHotseatPlayerLabel(msg.id);
             removeAttackCards();
             showStageWinners(msg.stageWinners);
@@ -576,13 +577,11 @@ function displayDeclinedSponsorship(playerID) {
     }
 }
 function removeDeclinedSponsorshipMessage(playerID) {
-    if (id === playerID) {
-        let declinedLabelID = playerID + "DeclinedSponsorshipLabel";
-        let declinedLabel = document.getElementById(declinedLabelID);
+    let declinedLabelID = playerID + "DeclinedSponsorshipLabel";
+    let declinedLabel = document.getElementById(declinedLabelID);
 
-        if (declinedLabel) {
-            declinedLabel.parentNode.removeChild(declinedLabel);
-        }
+    if (declinedLabel) {
+        declinedLabel.parentNode.removeChild(declinedLabel);
     }
 }
 function updateDiscardLabel(playerID, card) {
@@ -1015,12 +1014,20 @@ function removeAttackCards() {
         }
     }
 }
-function showNoSponsorFoundMessage(playerID) {
+function removeNoSponsorFound() {
+    let noSponsorElement = document.getElementById("noSponsorFound");
+    if (noSponsorElement) {
+        noSponsorElement.remove();
+    }
+}
+function showNoSponsorFound(playerID) {
     if (id === playerID) {
-        let noSponsorElement = document.createElement("DIV");
-        noSponsorElement.setAttribute("id", "noSponsorFound");
-        noSponsorElement.innerHTML = "No Player's Sponsored Quest... Game Continues!";
-        document.getElementById("mainMessageArea").appendChild(noSponsorElement);
+        if (!document.getElementById("noSponsorFound")) {
+            let noSponsorElement = document.createElement("DIV");
+            noSponsorElement.setAttribute("id", "noSponsorFound");
+            noSponsorElement.innerHTML = "No Player's Sponsored Quest... Game Continues!";
+            document.getElementById("mainMessageArea").appendChild(noSponsorElement);
+        }
     }
 }
 function showAskSponsorMessageAndButtons(playerID) {
