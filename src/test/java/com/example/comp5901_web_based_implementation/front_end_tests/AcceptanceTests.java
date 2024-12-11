@@ -114,7 +114,7 @@ public class AcceptanceTests {
             driver.get("http://localhost:" + port);
             WebElement registerBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("registerBtn")));
             registerBtn.click();
-            slowDown(1000);
+            slowDown(2000);
         }
         //Rigging Adventure Deck for Proper Game Play
         rigAdventureDeckForGamePlayA1_Scenario();
@@ -135,7 +135,7 @@ public class AcceptanceTests {
         //Player 1 clicks start button to start game
         WebElement startBtn = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("startBtn")));
         startBtn.click();
-        slowDown(1000);
+        slowDown(2000);
 
         /*
         3) P1 draws a quest of 4 stages
@@ -143,7 +143,7 @@ public class AcceptanceTests {
         //Player 1 clicks on 'Draw Event Card'
         WebElement drawEventCardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*
         4) P1 is asked but declines to sponsor
@@ -151,7 +151,7 @@ public class AcceptanceTests {
         //Player 1 clicks 'No'
         WebElement declineSponsorPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("noSponsor")));
         declineSponsorPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 5) P2 is asked and sponsors and then builds the 4 stages of the quest as:
         
@@ -174,73 +174,73 @@ public class AcceptanceTests {
         
         WebElement acceptsSponsorPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesSponsor")));
         acceptsSponsorPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* STAGE 1:
         CARDS - F5 H10
         VALUE = 15 */
         WebElement cardElement = selectCard(waitPlayer2, "P2", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement quitStagePlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
         quitStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* STAGE 2:
         CARDS - F15 S10
         VALUE = 25 */
         cardElement = selectCard(waitPlayer2, "P2", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* STAGE 3:
         CARDS - F15 D5 B15
         VALUE = 35 */
         cardElement = selectCard(waitPlayer2, "P2", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* STAGE 4:
         CARDS - F40 B15
         VALUE = 55 */
         cardElement = selectCard(waitPlayer2, "P2", "F40");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 2 (Sponsor) clicks Begins Quest
         WebElement beginQuestPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("sponsorDone")));
         beginQuestPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 6) Stage 1:
             a. P1 is asked and decides to participate – draws a F30 – discards a F5 
@@ -248,84 +248,84 @@ public class AcceptanceTests {
         */
         WebElement participatesInStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* b. P3 is asked and decides to participate – draws a Sword - discards a F5
             (to trim down to 12 cards)
         */
         WebElement participatesInStagePlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* c. P4 is asked and decides to participate – draws an Axe - discards a F5 
             (to trim down to 12 cards)  
         */
         WebElement participatesInStagePlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* e. P1 sees their hand and builds an attack: Dagger + Sword => value of 15 */
         cardElement = selectCard(waitPlayer1, "P1", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* f. P3 sees their hand and builds an attack: Sword + Dagger => value of 15 */
         cardElement = selectCard(waitPlayer3, "P3", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* g. P4 sees their hand and builds an attack: Dagger + Horse => value of 15 */
         cardElement = selectCard(waitPlayer4, "P4", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
 
         /* h. Resolution: all 3 attacks are sufficient thus all participants can go onto the next stage
@@ -337,70 +337,70 @@ public class AcceptanceTests {
         P1 draws a F10
         */
         participatesInStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* b. P3 is asked and decides to participate. 
         P3 draws a Lance
         */
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* c. P4 is asked and decides to participate. 
         P4 draws a Lance 
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* d. P1 sees their hand and builds an attack: 
         Horse + Sword => value of 20
         */
         cardElement = selectCard(waitPlayer1, "P1", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* e. P3 sees their hand and builds an attack: 
         Axe + Sword => value of 25 
         */
         cardElement = selectCard(waitPlayer3, "P3", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* f. P4 sees their hand and builds an attack: 
         Horse + Axe => value of 25 
         */
         cardElement = selectCard(waitPlayer4, "P4", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* i. P1’s attack is insufficient – P1 loses and cannot go to the next stage.
         ii. P3’s and P4’s attack are sufficient go onto the next stage
@@ -411,65 +411,65 @@ public class AcceptanceTests {
 
         //Player 1 Hand Assert
         String actualHandPlayer1 = getStringPlayerHand("P1"); 
-        slowDown(1000);
+        slowDown(4000);
         String expectedHandPlayer1 = "F5 F10 F15 F15 F30 H10 B15 B15 L20";
         assertEquals(expectedHandPlayer1, actualHandPlayer1);
-        slowDown(1000);
+        slowDown(4000);
 
         /* 8) Stage 3:
         a. P3 is asked and decides to participate. 
         P3 draws an Axe.
         */
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* b. P4 is asked and decides to participate. 
         P4 draws a Sword. 
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* c. P3 sees their hand and builds an attack: 
         Lance + Horse + Sword => value of 40.
         */
         cardElement = selectCard(waitPlayer3, "P3", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* d. P4 sees their hand and builds an attack: 
         Axe + Sword + Lance => value of 45
         */
         cardElement = selectCard(waitPlayer4, "P4", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* e. Resolution: P3’s and P4’s attack are sufficient go onto the next stage.
         f. All 2 participants discard the cards used for their attacks. 
@@ -480,59 +480,59 @@ public class AcceptanceTests {
         P3 draws an F30.
         */
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* b. P4 is asked and decides to participate. 
         P4 draws a Lance. 
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* c. P3 sees their hand and builds an attack: 
         Axe + Horse + Lance => value of 45.
         */
         cardElement = selectCard(waitPlayer3, "P3", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* d. P4 sees their hand and builds an attack: 
         Dagger + Sword + Lance + Excalibur => value of 65.
         */
         cardElement = selectCard(waitPlayer4, "P4", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "E30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* e. Resolution:
             i. P3’s attack is insufficient – P3 loses and receives no shields.
@@ -548,20 +548,20 @@ public class AcceptanceTests {
 
         //Player 3 Hand Assert
         String actualHandPlayer3 = getStringPlayerHand("P3"); 
-        slowDown(1000);
+        slowDown(4000);
         String expectedHandPlayer3 = "F5 F5 F15 F30 S10";
         assertEquals(expectedHandPlayer3, actualHandPlayer3);
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 4 Shield Assert (should = 0)
         assertEquals(4, getShieldsCount("P4"));
 
         //Player 4 Hand Assert
         String actualHandPlayer4 = getStringPlayerHand("P4"); 
-        slowDown(1000);
+        slowDown(4000);
         String expectedHandPlayer4 = "F15 F15 F40 L20";
         assertEquals(expectedHandPlayer4, actualHandPlayer4);
-        slowDown(1000);
+        slowDown(4000);
         
         /*
             10) P2 discards all 9 cards used in the quest and draws 9 + 4 = 13 random cards and then
@@ -650,7 +650,7 @@ public class AcceptanceTests {
 
         WebElement okLeaveQuestDiscardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         String expectedMessage = "There are no player's with 7 or more Shields\nA Game of Quests Continues!";
         assertEquals(expectedMessage, finalQuestMessage("P1"));
@@ -658,7 +658,7 @@ public class AcceptanceTests {
         assertEquals(expectedMessage, finalQuestMessage("P3"));
         assertEquals(expectedMessage, finalQuestMessage("P4"));
 
-        slowDown(10000);
+        slowDown(40000);
     }
 
     @Test
@@ -671,7 +671,7 @@ public class AcceptanceTests {
             driver.get("http://localhost:" + port);
             WebElement registerBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("registerBtn")));
             registerBtn.click();
-            slowDown(1000);
+            slowDown(2000);
         }
 
         //Rigging Adventure Deck for Proper Game Play
@@ -693,7 +693,7 @@ public class AcceptanceTests {
         //Player 1 clicks start button to start game
         WebElement startBtn = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("startBtn")));
         startBtn.click();
-        slowDown(1000);
+        slowDown(2000);
 
         /*
         P1’s turn: P1 draws a 4-stage quest and decides to sponsor it.
@@ -701,11 +701,11 @@ public class AcceptanceTests {
         //Player 1 clicks on 'Draw Event Card'
         WebElement drawEventCardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement acceptSponsorshipPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesSponsor")));
         acceptSponsorshipPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P1 builds 4 stages:
             i. Stage 1: F5
@@ -713,54 +713,54 @@ public class AcceptanceTests {
         
         WebElement cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement quitStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* ii. Stage 2: F5 + dagger */
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*
             iii. Stage 3: F10 + horse
         */
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* iv. Stage 4: F10 + axe */
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 1 (Sponsor) clicks Begins Quest
         WebElement beginQuestPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("sponsorDone")));
         beginQuestPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* Stage 1:
             P2, P3 and P4 participate in stage 1 and build their attack:
@@ -768,199 +768,199 @@ public class AcceptanceTests {
         */
         WebElement participatesInStagePlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P3 draws F40, discards F5 
         */
         WebElement participatesInStagePlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iii. P4 draws F10, discards F10
         */
         WebElement participatesInStagePlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* iv. P2 attack: 1 horse thus wins */
         cardElement = selectCard(waitPlayer2, "P2", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* v. P3 attack: nothing thus loses */
         WebElement finishAttackPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* vi. P4 attack: 1 horse thus wins */
         cardElement = selectCard(waitPlayer4, "P4", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
 
         /* P2 and P4 participate in stage 2:
             i.   P2 draws F10 (no need to discard) 
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii.  P4 draws F30
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iii. P2 attack: sword thus wins
         */
         cardElement = selectCard(waitPlayer2, "P2", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iv.  P4 attack: sword thus wins
         */
         cardElement = selectCard(waitPlayer4, "P4", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 and P4 participate in stage 3:
             i.   P2 draws F30 (no need to discard) 
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii.  P4 draws F15
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iii. P2 attack: horse + sword, thus wins
         */
         cardElement = selectCard(waitPlayer2, "P2", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iv.  P4 attack: horse + sword, thus wins
         */
         cardElement = selectCard(waitPlayer4, "P4", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 and P4 participate in stage 4:
             i.   P2 draws F15 (no need to discard) 
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii.  P4 draws F20
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iii. P2 attack: sword + axe thus wins
         */
         cardElement = selectCard(waitPlayer2, "P2", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iv.  P4 attack: sword + axe thus wins
         */
         cardElement = selectCard(waitPlayer4, "P4", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 and P4 each earn 4 shields (visible in UI)
         */
@@ -980,27 +980,27 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerTurnPressPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveHotseat")));
         nextPlayerTurnPressPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*
         P2’s turn: P2 draws a 3 stage quest and declines to sponsor it.
@@ -1008,18 +1008,18 @@ public class AcceptanceTests {
         //Player 2 clicks on 'Draw Event Card'
         WebElement drawEventCardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement declinesSponsorshipPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("noSponsor")));
         declinesSponsorshipPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*
         P3 sponsors this quest and builds its stages:
         */
         WebElement acceptsSponsorshipPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesSponsor")));
         acceptsSponsorshipPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* i. Stage 1: F5 
         Stage 2: F5 + dagger 
@@ -1027,60 +1027,60 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer3, "P3", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement quitStagePlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
         quitStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 3 (Sponsor) clicks Begins Quest
         WebElement beginQuestPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("sponsorDone")));
         beginQuestPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*
             P1 declines to participate.
         */
         WebElement declineStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("noStage")));
         declineStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 and P4 participate in stage 1:
             i. P2 draws dagger P4 draws dagger 
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P2 attack: dagger thus wins
@@ -1088,81 +1088,81 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer2, "P2", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 and P4 participate in stage 2:
             i. P2 draws 1xF15 P4 draws 1xF15
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P2 and P4 attacks are the same: 1 axe; both win
         */
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 and P4 participate in stage 3:
             i. P2 draws 1xF25 P4 draws 1xF25
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P2 and P4 attack are the same: 1 excalibur; both win
         */
         cardElement = selectCard(waitPlayer2, "P2", "E30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "E30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*  
             P3 discards 5 quest cards
@@ -1171,18 +1171,18 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer3, "P3", "F20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F25");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* Correction Grid Reqs
         
@@ -1254,7 +1254,7 @@ public class AcceptanceTests {
         assertEquals(expectedMessage, finalQuestMessage("P3"));
         assertEquals(expectedMessage, finalQuestMessage("P4"));
 
-        slowDown(10000);
+        slowDown(40000);
     }
 
     @Test
@@ -1267,7 +1267,7 @@ public class AcceptanceTests {
             driver.get("http://localhost:" + port);
             WebElement registerBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("registerBtn")));
             registerBtn.click();
-            slowDown(1000);
+            slowDown(2000);
         }
 
         //Rigging Adventure Deck for Proper Game Play
@@ -1289,7 +1289,7 @@ public class AcceptanceTests {
         //Player 1 clicks start button to start game
         WebElement startBtn = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("startBtn")));
         startBtn.click();
-        slowDown(1000);
+        slowDown(2000);
 
         /*
         P1’s turn: P1 draws a 4-stage quest and decides to sponsor it.
@@ -1297,11 +1297,11 @@ public class AcceptanceTests {
         //Player 1 clicks on 'Draw Event Card'
         WebElement drawEventCardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement acceptSponsorshipPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesSponsor")));
         acceptSponsorshipPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P1 builds 4 stages:
             stage 1: F5 
@@ -1312,37 +1312,37 @@ public class AcceptanceTests {
         
         WebElement cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement quitStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 1 (Sponsor) clicks Begins Quest
         WebElement beginQuestPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("sponsorDone")));
         beginQuestPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* Stage 1:
             P2, P3 and P4 participate in stage 1 and build their attack:
@@ -1350,218 +1350,218 @@ public class AcceptanceTests {
         */
         WebElement participatesInStagePlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P3 draws F10, discards F10 
         */
         WebElement participatesInStagePlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             iii. P4 draws F20, discards F20
         */
         WebElement participatesInStagePlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3, P4 all use the same attack, a sword. All win and have 11 cards. */
         cardElement = selectCard(waitPlayer2, "P2", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3 and P4 participate in stage 2:
             i.   P2 draws F15
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P3 draws F5
         */
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P4 draws F25
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3, P4 all use the same attack, a horse. All win and have 11 cards. */
         cardElement = selectCard(waitPlayer2, "P2", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3 and P4 participate in stage 3:
             i.   P2 draws F5
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P3 draws F10
         */
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P4 draws F20
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3, P4 all use the same attack, an axe. All win and have 11 cards. */
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
 
         /* P2, P3 and P4 participate in stage 4:
             i.   P2 draws F5
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P3 draws F10
         */
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             ii. P4 draws F20
         */
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3, P4 all use the same attack, a lance. All win and have 11 cards. */
         cardElement = selectCard(waitPlayer2, "P2", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
         
         /* 
             P1 discards 4 cards used in quest and draws 8 cards: 2xF5, 2xF10, 4xF15
@@ -1569,27 +1569,27 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerTurnPressPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveHotseat")));
         nextPlayerTurnPressPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3 and P4 each earn 4 shields */
         //Player 1
@@ -1607,11 +1607,11 @@ public class AcceptanceTests {
 
         WebElement drawEventCardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerTurnPressPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveHotseat")));
         nextPlayerTurnPressPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 1
         assertEquals(0, getShieldsCount("P1"));
@@ -1625,7 +1625,7 @@ public class AcceptanceTests {
         /* P3 draws ‘Prosperity’: All 4 players receive 2 adventure cards */
         WebElement drawEventCardPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Web app goes in order from the player who drew the Propsperity card
         /* 
@@ -1634,11 +1634,11 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer3, "P3", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerProsperityOkPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("prosperityOk")));
         nextPlayerProsperityOkPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             P4 draws 2 cards: 2 daggers
@@ -1646,11 +1646,11 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer4, "P4", "F20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerProsperityOkPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("prosperityOk")));
         nextPlayerProsperityOkPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             P1 draws 2 cards: 2xF25 
@@ -1658,15 +1658,15 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerProsperityOkPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("prosperityOk")));
         nextPlayerProsperityOkPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             P2 draws 2 cards: horse, sword
@@ -1674,16 +1674,16 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer2, "P2", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerProsperityOkPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("prosperityOk")));
         nextPlayerProsperityOkPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P3 Leaves Hotseat */
         WebElement nextPlayerTurnPressPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveHotseat")));
         nextPlayerTurnPressPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 1
         assertEquals(12, getPlayerHandCardCount("P1"));
@@ -1701,19 +1701,19 @@ public class AcceptanceTests {
         */
         WebElement drawEventCardPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F25");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement nextPlayerTurnPressPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveHotseat")));
         nextPlayerTurnPressPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             P1 draws a 3 stage quest and decides to sponsor it. 
@@ -1724,43 +1724,43 @@ public class AcceptanceTests {
             Stage3: F20 + dagger 
         */
         drawEventCardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         acceptSponsorshipPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
         
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 1 (Sponsor) clicks Begins Quest
         beginQuestPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
         P2, P3 and P4 participate in stage 1
@@ -1770,57 +1770,57 @@ public class AcceptanceTests {
             iii. P4 draws F50 and discards F20
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2, P3 attack with an axe, and win
         P4 attack with a horse and loses*/
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 4
         assertEquals(11, getPlayerHandCardCount("P4"));
@@ -1832,40 +1832,40 @@ public class AcceptanceTests {
             ii. P3 draws sword
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 attack: axe + horse thus wins (has 10 cards) 
         P3 attack: axe + sword thus wins (has 10 cards)*/
         cardElement = selectCard(waitPlayer2, "P2", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         
         //Player 2
@@ -1880,36 +1880,36 @@ public class AcceptanceTests {
             ii. P3 draws F50
         */
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P2 attack: lance + sword thus wins (has 9 cards)
         P3 attack: excalibur thus wins (has 10 cards)*/
         cardElement = selectCard(waitPlayer2, "P2", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "E30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 2
         assertEquals(9, getPlayerHandCardCount("P2"));
@@ -1923,15 +1923,15 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
         P2 and P3 earn 3 shields: P3 is declared (and asserted as) the winner
@@ -1949,7 +1949,7 @@ public class AcceptanceTests {
         /* P1 exits the Sponsor redraw */
         // okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* Correction Grid Reqs
         
@@ -2010,7 +2010,7 @@ public class AcceptanceTests {
         assertEquals(expectedMessage, finalQuestMessage("P3"));
         assertEquals(expectedMessage, finalQuestMessage("P4"));
 
-        slowDown(10000);
+        slowDown(40000);
     }
 
     @Test
@@ -2023,7 +2023,7 @@ public class AcceptanceTests {
             driver.get("http://localhost:" + port);
             WebElement registerBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("registerBtn")));
             registerBtn.click();
-            slowDown(1000);
+            slowDown(2000);
         }
         //Rigging Adventure Deck for Proper Game Play
         rigAdventureDeckForGamePlay0_winner_quest();
@@ -2044,7 +2044,7 @@ public class AcceptanceTests {
         //Player 1 clicks start button to start game
         WebElement startBtn = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("startBtn")));
         startBtn.click();
-        slowDown(1000);
+        slowDown(2000);
 
         /*
         P1 draws a 2 stage quest and decides to sponsor it.
@@ -2052,11 +2052,11 @@ public class AcceptanceTests {
         //Player 1 clicks on 'Draw Event Card'
         WebElement drawEventCardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("draw")));
         drawEventCardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement acceptSponsorshipPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesSponsor")));
         acceptSponsorshipPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* P1 builds 2 stages:
         i. Stage 1: F50 + dagger, sword, horse, axe, lance 
@@ -2064,130 +2064,130 @@ public class AcceptanceTests {
         
         WebElement cardElement = selectCard(waitPlayer1, "P1", "F50");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement quitStagePlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitStage")));
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
         ii. Stage 2: F70 + dagger, sword, horse, axe, lance
         */
         cardElement = selectCard(waitPlayer1, "P1", "F70");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "D5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "S10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "H10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "B15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "L20");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         quitStagePlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         //Player 1 (Sponsor) clicks Begins Quest
         WebElement beginQuestPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("sponsorDone")));
         beginQuestPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /*  P2, P3 and P4 participate in stage 1
             i. P2 participates, draws 1xF5, discards F5
         */
         WebElement participatesInStagePlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer2, "P2", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
         ii. P3 participates, draws 1xF15, discards F15
         */
         WebElement participatesInStagePlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer3, "P3", "F15");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
         iii. P4 participates, draws 1xF10, discards F10
         */
         WebElement participatesInStagePlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("yesStage")));
         participatesInStagePlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer4, "P4", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* iv. P2 attack: Excalibur thus loses */
         cardElement = selectCard(waitPlayer2, "P2", "E30");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement finishAttackPlayer2 = waitPlayer2.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer2.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* v. P3 plays nothing as attack and thus loses */
         WebElement finishAttackPlayer3 = waitPlayer3.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer3.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* g. vi. P4 plays nothing as attack and thus loses */
         WebElement finishAttackPlayer4 = waitPlayer4.until(ExpectedConditions.visibilityOfElementLocated(By.id("quitAttack")));
         finishAttackPlayer4.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
         The quest ends with no winner 
@@ -2197,15 +2197,15 @@ public class AcceptanceTests {
         */
         cardElement = selectCard(waitPlayer1, "P1", "F5");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         cardElement = selectCard(waitPlayer1, "P1", "F10");
         cardElement.click();
-        slowDown(1000);
+        slowDown(4000);
 
         WebElement okLeaveQuestDiscardPlayer1 = waitPlayer1.until(ExpectedConditions.visibilityOfElementLocated(By.id("leaveQuestDiscard")));
         okLeaveQuestDiscardPlayer1.click();
-        slowDown(1000);
+        slowDown(4000);
 
         /* 
             From A3 Specs:
@@ -2276,7 +2276,7 @@ public class AcceptanceTests {
         assertEquals(expectedMessage, finalQuestMessage("P3"));
         assertEquals(expectedMessage, finalQuestMessage("P4"));
 
-        slowDown(10000);
+        slowDown(40000);
     }
 
     //Helper Methods
