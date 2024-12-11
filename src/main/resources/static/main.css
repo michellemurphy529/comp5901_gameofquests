@@ -138,3 +138,20 @@ html, body {
     width: 100%;
     text-align: center;
 }
+#finalQuestMessage {
+    font-family: 'Uncial Antiqua', serif; /*Medieval font*/
+    font-size: 6rem;
+    color: #b38b0b; /*Gold Colour*/
+    text-shadow: 1px 1px 2px black;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    width: 70%;
+    height: auto;
+    margin: 20px auto;
+    border: 2px solid #000;
+    background-color: #9a3131;
+    border-radius: 10px;
+}

@@ -116,11 +116,13 @@ function sponsorDone() {
 function yesStage() {
     removeAskPlayerStage(id);
     removeStageLoserOrWinnerMessage(id);
+    removeDeclinedSponsorshipMessage(id);
     stompClient.send("/app/carryOutQuest", {}, JSON.stringify({ name: id + " yes" }));
 }
 function noStage() {
     removeAskPlayerStage(id);
     removeStageLoserOrWinnerMessage(id);
+    removeDeclinedSponsorshipMessage(id);
     stompClient.send("/app/carryOutQuest", {}, JSON.stringify({ name: id + " no"}));
 }
 function changePlayerQuestDiscard() {
@@ -130,6 +132,7 @@ function changePlayerQuestDiscard() {
 function sendAttack() {
     removeSelectAttackMessage(id);
     removeAttackCardsFromHand(id);
+    disableHandCards(id);
 
     let attackCardsString = attackCards.length === 0 ? "none" : attackCards.join(",");
     if (attackCardsString === "none") {
@@ -405,13 +408,13 @@ function setupSubscriptions() {
             if(!document.getElementById("eventCard")) {
                 displayEventCard(msg);
             }
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             carryOutProsperity(msg);
         }else if (msg.content.includes("Q") && msg.content.length === 2) {
             if(!document.getElementById("eventCard")) {
                 displayEventCard(msg);
             }
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             if (msg.sponsorFound === "no") {
                 askForSponsorship(msg);
             }else if (msg.sponsorFound === "done") {
@@ -429,37 +432,33 @@ function setupSubscriptions() {
             removeEventCard();
             sponsorID = "0";
             updateHotseatPlayerLabelAndDraw(msg.id);
+            removeContinueGameMessage();
         }
         else if (msg.content === "askStageDiscard") {
-            console.log("HITHITHIT");
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             carryOutQuestDiscard(msg);
         }
         else if (msg.content === "askStage") {
             if (stage === "0") {
-                console.log("hit stage 0");
                 stage = msg.stage;
                 removeDeclinedSponsorshipMessage(msg.id);
             }
             if (parseInt(stage) === parseInt(msg.stage) && msg.playerHand !== null &&
                 msg.stageLosers === null && msg.stageWinners === null) {
-                console.log("hit second if");
                 if (id === msg.id) {
                     updateHand(msg.id, msg.playerHand);
                 }
-                updateHotseatPlayerLabelAndDraw(msg.id);
+                updateHotseatPlayerLabel(msg.id);
                 askPlayerJoinStage(msg.id);
             }else if (parseInt(stage) === parseInt(msg.stage) && msg.playerHand === null &&
                 msg.stageLosers === null && msg.stageWinners === null) {
-                console.log("hit first else if ");
-                updateHotseatPlayerLabelAndDraw(msg.id);
+                updateHotseatPlayerLabel(msg.id);
                 askPlayerJoinStage(msg.id);
             }else if (parseInt(stage) < parseInt(msg.stage) &&
                     msg.stageLosers !== null &&
                     msg.stageWinners !== null &&
                     msg.playerHand === null) {
-                console.log("hit last block");
-                updateHotseatPlayerLabelAndDraw(msg.id);
+                updateHotseatPlayerLabel(msg.id);
                 removeAttackCards();
                 showStageWinners(msg.stageWinners);
                 showStageLosers(msg.stageLosers);
@@ -471,14 +470,14 @@ function setupSubscriptions() {
             if (msg.playerHand !== null && id === msg.id) {
                 updateHand(msg.id, msg.playerHand);
             }
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             getParticipantAttackCards(msg.id);
         }
         else if (msg.content === "endQuestEarly") {
             if (id === msg.id) {
-                console.log(msg.playerHand);
                 updateHand(msg.id, msg.playerHand);
             }
+            builtQuest = {};
             if (id === "P1") {
                 removeDeclinedSponsorshipMessage("P1");
             } else if (id === "P2") {
@@ -488,7 +487,7 @@ function setupSubscriptions() {
             } else if (id === "P4") {
                 removeDeclinedSponsorshipMessage("P4");
             }
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             removeAttackCards();
             showStageWinners(msg.stageWinners);
             showStageLosers(msg.stageLosers);
@@ -503,6 +502,7 @@ function setupSubscriptions() {
             if (id === msg.id) {
                 updateHand(msg.id, msg.playerHand);
             }
+            builtQuest = {};
             removeAttackCards();
             showStageWinnersAndShieldsEarnedForEndQuest(msg.stageWinners);
             showStageLosers(msg.stageLosers);
@@ -513,17 +513,17 @@ function setupSubscriptions() {
             updateShieldCounts("P3", msg.shields3);
             updateShieldCounts("P4", msg.shields4);
             stage = "0";
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             if (id === msg.id && msg.discardsLeft !== null) {
                 carryOutQuestDiscard(msg);
             }
         }
         else if (msg.content === "endQuestDiscard") {
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             carryOutQuestDiscard(msg);
         }
         else if (msg.content === "continueGame") {
-            updateHotseatPlayerLabelAndDraw(msg.id);
+            updateHotseatPlayerLabel(msg.id);
             if (id === msg.id) {
                 showHotseatButton(msg.id);
                 disableDraw(msg.id);
@@ -540,6 +540,9 @@ function setupSubscriptions() {
             showContinueGameMessage();
         }
         else if (msg.content === "winnersFound") {
+            removeEndingQuest();
+            removeEventCardDeckAndDrawButton();
+            document.getElementById("hotseatPlayerID").remove();
             let gameWinners = msg.id.split(" ");
             displayWinnersMessage(gameWinners);
         }
@@ -551,9 +554,7 @@ function displayWinnersMessage(gameWinners) {
     if (!document.getElementById("finalQuestMessage")) {
         let messageElement = document.createElement("DIV");
         messageElement.setAttribute("id", "finalQuestMessage");
-        messageElement.style.fontWeight = "bold";
-        messageElement.style.backgroundColor = "red";
-        messageElement.innerHTML = `A Game of Quests is Over!<br>Winners are ${gameWinners.join(" & ")}!`;
+        messageElement.innerHTML = `A Game of Quests is Over!<br>Winner(s) are ${gameWinners.join(" & ")}!`;
         document.getElementById("mainMessageArea").appendChild(messageElement);
     }
 }
@@ -622,6 +623,23 @@ function removeEndingQuest() {
     }
     if (document.getElementById("endEarlyMessage")) {
         document.getElementById("endEarlyMessage").remove();
+    }
+}
+function removeEventCardDeckAndDrawButton() {
+    if (document.getElementById("deck")) {
+        document.getElementById("deck").remove();
+    }
+    if (document.getElementById("draw")) {
+        document.getElementById("draw").remove();
+    }
+    if (document.getElementById("quitStage")) {
+        document.getElementById("quitStage").remove();
+    }
+    if (document.getElementById("sponsorDone")) {
+        document.getElementById("sponsorDone").remove();
+    }
+    if (document.getElementById("quitAttack")) {
+        document.getElementById("quitAttack").remove();
     }
 }
 function showEndingQuestEarlyMessage() {
@@ -808,7 +826,6 @@ function displayStageBuildingMessage(msg) {
         if (!document.getElementById("buildStage")) {
             //Set globals for all stages
             maxStages = parseInt(msg.content.slice(1), 10);
-            // console.log(maxStages);
     
             let buildingStageMessage = document.createElement("DIV");
             buildingStageMessage.setAttribute("id", "buildStage");
@@ -1066,8 +1083,10 @@ function updateHotseatPlayerLabelAndDraw(playerID) {
     }
     document.getElementById("hotseatPlayerID").innerHTML = "Player in Hotseat: " + playerID;
 }
+function updateHotseatPlayerLabel(playerID) {
+    document.getElementById("hotseatPlayerID").innerHTML = "Player in Hotseat: " + playerID;
+}
 function enableHandCards(playerID) {
-    console.log("HIT IN ENABLE");
     let handContainer = document.getElementById(playerID + "hand");
     let cards = handContainer.getElementsByClassName("card");
     for (let card of cards) {
@@ -1145,7 +1164,7 @@ function findCardDrawnAndDisplay(playerID, newHand) {
         drawnCardLabel.setAttribute("id", drawnCardLabelID);
         document.getElementById("header").appendChild(drawnCardLabel);
     }
-    
+
     if (addedCards.length > 0 && addedCards[0] !== undefined) {
         if (addedCards.length === 1) {
             drawnCardLabel.innerHTML = "Your Last Adventure Card Drawn: <strong>" + addedCards[0] + "</strong>";
